@@ -193,28 +193,28 @@
 
         /* 🌟 OUTSIDE FLYING ANIMATIONS FOR LOGOS (SUPER SLOW) 🌟 */
         @keyframes fly1 {
-            0% { transform: translate(-30vw, 130vh) rotate(0deg) scale(0.5); opacity: 0; }
-            5% { opacity: 0.3; }
-            95% { opacity: 0.3; }
-            100% { transform: translate(130vw, -30vh) rotate(360deg) scale(1.5); opacity: 0; }
+            0% { transform: translate(-40vw, 130vh) rotate(0deg) scale(0.5); opacity: 0; }
+            5% { opacity: 0.15; }
+            95% { opacity: 0.15; }
+            100% { transform: translate(140vw, -30vh) rotate(360deg) scale(1.5); opacity: 0; }
         }
         @keyframes fly2 {
-            0% { transform: translate(130vw, 110vh) rotate(0deg) scale(1); opacity: 0; }
-            5% { opacity: 0.25; }
-            95% { opacity: 0.25; }
-            100% { transform: translate(-30vw, -30vh) rotate(-360deg) scale(0.8); opacity: 0; }
+            0% { transform: translate(140vw, 110vh) rotate(0deg) scale(1); opacity: 0; }
+            5% { opacity: 0.15; }
+            95% { opacity: 0.15; }
+            100% { transform: translate(-40vw, -30vh) rotate(-360deg) scale(0.8); opacity: 0; }
         }
         @keyframes fly3 {
             0% { transform: translate(50vw, 130vh) rotate(0deg) scale(1.2); opacity: 0; }
-            5% { opacity: 0.35; }
-            95% { opacity: 0.35; }
-            100% { transform: translate(-30vw, -50vh) rotate(180deg) scale(0.5); opacity: 0; }
+            5% { opacity: 0.15; }
+            95% { opacity: 0.15; }
+            100% { transform: translate(-40vw, -50vh) rotate(180deg) scale(0.5); opacity: 0; }
         }
         @keyframes fly4 {
-            0% { transform: translate(-30vw, 30vh) rotate(0deg) scale(0.8); opacity: 0; }
-            5% { opacity: 0.2; }
-            95% { opacity: 0.2; }
-            100% { transform: translate(130vw, 90vh) rotate(270deg) scale(1.2); opacity: 0; }
+            0% { transform: translate(-40vw, 30vh) rotate(0deg) scale(0.8); opacity: 0; }
+            5% { opacity: 0.15; }
+            95% { opacity: 0.15; }
+            100% { transform: translate(140vw, 90vh) rotate(270deg) scale(1.2); opacity: 0; }
         }
     </style>
 </head>
@@ -274,6 +274,7 @@
             { id: 'sms', label: 'Buy SMS', icon: Smartphone },
             { id: 'store', label: 'Buy Accounts', icon: ShoppingCart },
             { id: 'add_funds', label: 'Add Funds', icon: Wallet },
+            // 🟢 Name strictly set to Purchased to avoid button overlapping 🟢
             { id: 'my_accounts', label: 'Purchased', icon: Key },
             { id: 'profile', label: 'Profile', icon: UserIcon } 
         ];
@@ -303,7 +304,7 @@
           return { threshold: 0, name: 'Standard', next: 20, color: 'text-gray-400', icon: Award };
         };
 
-        // 🛡️ SAFE DATE FORMATTER (To prevent crash during mapping)
+        // 🛡️ SAFE DATE FORMATTER
         const safeFormatDate = (d) => {
             try {
                 if (!d) return 'N/A';
@@ -324,30 +325,25 @@
         // 🌟 CRYSTAL CLEAR COLORFUL FLOATING LOGOS (Fewer Logos, Less Clutter) 🌟
         const FloatingLogos = () => {
             const baseLogos = [
-                // WhatsApp (Green)
                 <svg className="text-[#25D366] drop-shadow-[0_0_20px_rgba(37,211,102,0.8)]" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>,
-                // Telegram (Blue)
                 <svg className="text-[#0088cc] drop-shadow-[0_0_20px_rgba(0,136,204,0.8)]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12zm5.894-17.717c.504-.227.876.108.736.69l-2.035 9.585c-.15.688-.564.86-.145.498l-3.155-2.322-1.523 1.468c-.168.168-.31.31-.635.31l.226-3.206 5.828-5.266c.253-.226-.055-.352-.393-.119L6.592 12.19l-3.107-.972c-.675-.21-.688-.675.14-.997l14.269-5.5Z"/></svg>,
-                // Facebook (Blue)
                 <svg className="text-[#1877F2] drop-shadow-[0_0_20px_rgba(24,119,242,0.8)]" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>,
-                // Google Voice (Emerald)
                 <svg className="text-[#10b981] drop-shadow-[0_0_20px_rgba(16,185,129,0.8)]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.5 16.5c-1.33 0-3.83-1.67-5-3C10.17 12.17 8.5 9.67 8.5 8.33 8.5 7.6 9.17 7 9.83 7c.22 0 .44.1.58.28l1.42 2.13c.12.18.12.43 0 .61l-.8.8c.83 1.67 2.17 3 3.83 3.83l.8-.8c.18-.12.43-.12.61 0l2.13 1.42c.18.14.28.36.28.58 0 .66-.6 1.33-1.33 1.33z"/></svg>
             ];
             
             const renderedLogos = useMemo(() => {
                 const arr = [];
                 const animationsList = ['fly1', 'fly2', 'fly3', 'fly4'];
-                // 🟢 Reduced the number of logos to ONLY 4 to remove clutter 🟢
+                // 🟢 Reduced to only 4 clean logos 🟢
                 for(let i=0; i<4; i++) {
                     const logo = baseLogos[i % baseLogos.length];
                     const randomSize = Math.floor(Math.random() * 40) + 50;
                     const randomDelay = Math.random() * -60; 
-                    // 🟢 Super Slow Flying (100s to 160s duration) 🟢
-                    const randomDuration = Math.floor(Math.random() * 60) + 100; 
+                    const randomDuration = Math.floor(Math.random() * 80) + 120; // Super Slow (120-200s)
                     const animationName = animationsList[i % animationsList.length];
                     
                     arr.push(
-                        <div key={i} className="absolute opacity-30" style={{
+                        <div key={i} className="absolute opacity-15" style={{
                             width: `${randomSize}px`,
                             height: `${randomSize}px`,
                             animation: `${animationName} ${randomDuration}s linear infinite`,
@@ -418,6 +414,30 @@
                 </div>
             );
         };
+
+        // 🌟 ERROR BOUNDARY FOR CRASH PREVENTION 🌟
+        class ErrorBoundary extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { hasError: false, errorMsg: '' };
+            }
+            static getDerivedStateFromError(error) {
+                return { hasError: true, errorMsg: error.toString() };
+            }
+            render() {
+                if (this.state.hasError) {
+                    return (
+                        <div className="w-full flex flex-col items-center justify-center p-10 text-center glass-effect rounded-3xl border border-red-500/30 animate-pop-in min-h-[400px]">
+                            <AlertTriangle className="w-10 h-10 text-red-500 mb-4" />
+                            <p className="text-white font-bold mb-2">Rendering Interrupted</p>
+                            <p className="text-[10px] text-red-400 font-mono mb-6 bg-red-900/20 p-3 rounded-lg border border-red-900/50 break-all">{this.state.errorMsg}</p>
+                            <button onClick={() => this.setState({hasError: false})} className="btn-animate bg-white text-black px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest shadow-lg">Try Again</button>
+                        </div>
+                    );
+                }
+                return this.props.children;
+            }
+        }
 
         // 🌟 VAULT ITEM COMPONENT (SAFE HOOKS & SAFE RENDER) 🌟
         const VaultItem = ({ acc, idx, db, appId, triggerToast }) => {
@@ -627,7 +647,7 @@
             unsubs.push(onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'Store_Orders'), (snap) => { 
                 const o = []; 
                 snap.forEach((d) => { o.push({ id: d.id, ...d.data() }); }); 
-                // Using safer sort for dates
+                // 🟢 FULLY SAFE SORTING 🟢
                 setAllOrders(o.sort((a,b) => {
                     const timeA = a.date ? new Date(a.date).getTime() : 0;
                     const timeB = b.date ? new Date(b.date).getTime() : 0;
@@ -733,6 +753,7 @@
             return (
               <div className="min-h-screen flex items-center justify-center p-4 relative font-sans w-full bg-transparent text-white">
                 <PremiumBackground />
+                {/* 🟢 FLOATING LOGOS ON LOGIN SCREEN 🟢 */}
                 <FloatingLogos />
                 <div className="w-full max-w-[400px] animate-scale-up z-10">
                   <div className="flex flex-col items-center mb-8">
@@ -781,6 +802,7 @@
           return (
             <div className="min-h-screen w-full relative overflow-x-hidden font-sans pb-24 flex flex-col bg-transparent text-white">
               <PremiumBackground />
+              {/* 🟢 FLOATING LOGOS ON DASHBOARD SCREEN AS WELL 🟢 */}
               <FloatingLogos />
               <MessageNotification msg={incomingMsg} onClose={() => setIncomingMsg(null)} />
               
@@ -844,18 +866,21 @@
                 </div>
 
                 <div className="w-full relative tab-transition-enter" key={activeTab}>
-                    {user.role === 'admin' ? (
-                      <AdminDashboard inventory={inventory} orders={allOrders} deposits={deposits} categories={categories} usersDB={usersDB} triggerToast={triggerToast} db={db} appId={appId} promoSettings={promoSettings} tickets={tickets} featureSettings={featureSettings} bankSettings={bankSettings} smsSettings={smsSettings} activeChats={activeChats} auth={auth} user={user} activeTab={activeTab} setActiveTab={setActiveTab} />
-                    ) : (
-                      <>
-                          {activeTab === 'sms' && <CustomerDashboardSMS user={user} balance={currentUserBalance} triggerToast={triggerToast} smsSettings={smsSettings} />}
-                          {activeTab === 'store' && <CustomerDashboardStore inventory={inventory} categories={categories} cart={cart} setCart={setCart} allOrders={allOrders} triggerToast={triggerToast} />}
-                          {activeTab === 'add_funds' && <CustomerDashboardFunds user={user} db={db} appId={appId} triggerToast={triggerToast} addNotification={addNotification} bankSettings={bankSettings} />}
-                          {/* 🟢 FULLY FIXED VAULT COMPONENT RENDERING 🟢 */}
-                          {activeTab === 'my_accounts' && <CustomerDashboardVault user={user} purchases={purchases} db={db} appId={appId} triggerToast={triggerToast} />}
-                          {activeTab === 'profile' && <CustomerDashboardProfile user={user} balance={currentUserBalance} tier={currentUserTier} userInfo={usersDB[user.email]} allOrders={allOrders} deposits={deposits} purchases={purchases} tickets={tickets.filter(t => t.email === user.email)} db={db} appId={appId} featureSettings={featureSettings} triggerToast={triggerToast} />}
-                      </>
-                    )}
+                    {/* 🟢 ERROR BOUNDARY: NO MORE BLANK SCREENS 🟢 */}
+                    <ErrorBoundary>
+                        {user.role === 'admin' ? (
+                          <AdminDashboard inventory={inventory} orders={allOrders} deposits={deposits} categories={categories} usersDB={usersDB} triggerToast={triggerToast} db={db} appId={appId} promoSettings={promoSettings} tickets={tickets} featureSettings={featureSettings} bankSettings={bankSettings} smsSettings={smsSettings} activeChats={activeChats} auth={auth} user={user} activeTab={activeTab} setActiveTab={setActiveTab} />
+                        ) : (
+                          <>
+                              {activeTab === 'sms' && <CustomerDashboardSMS user={user} balance={currentUserBalance} triggerToast={triggerToast} smsSettings={smsSettings} />}
+                              {activeTab === 'store' && <CustomerDashboardStore inventory={inventory} categories={categories} cart={cart} setCart={setCart} allOrders={allOrders} triggerToast={triggerToast} />}
+                              {activeTab === 'add_funds' && <CustomerDashboardFunds user={user} db={db} appId={appId} triggerToast={triggerToast} addNotification={addNotification} bankSettings={bankSettings} />}
+                              {/* 🟢 FULLY FIXED VAULT COMPONENT RENDERING 🟢 */}
+                              {activeTab === 'my_accounts' && <CustomerDashboardVault user={user} purchases={purchases} db={db} appId={appId} triggerToast={triggerToast} />}
+                              {activeTab === 'profile' && <CustomerDashboardProfile user={user} balance={currentUserBalance} tier={currentUserTier} userInfo={usersDB[user.email]} allOrders={allOrders} deposits={deposits} purchases={purchases} tickets={tickets.filter(t => t && t.email === user.email)} db={db} appId={appId} featureSettings={featureSettings} triggerToast={triggerToast} />}
+                          </>
+                        )}
+                    </ErrorBoundary>
                 </div>
               </main>
 
@@ -1131,7 +1156,7 @@
           const formatPhoneDisplay = (phone) => { return `+${String(phone).replace(/\D/g, '')}`; };
           const copyNumberOnly = (phone) => { copyText(String(phone).replace(/\D/g, '')); };
 
-          if(!smsSettings?.active) return <div className={uiCard + " text-center py-32 text-gray-500 font-mono text-sm uppercase tracking-widest border border-white/10"}><Smartphone className="w-12 h-12 mx-auto mb-4 opacity-30" strokeWidth={1.5}/> Service Offline.</div>;
+          if(!smsSettings?.active) return <div className="glass-effect rounded-3xl w-full text-center py-32 text-gray-500 font-mono text-sm uppercase tracking-widest border border-white/10"><Smartphone className="w-12 h-12 mx-auto mb-4 opacity-30" strokeWidth={1.5}/> Service Offline.</div>;
 
           return (
             <div className="w-full max-w-3xl mx-auto space-y-6 sm:space-y-8 relative animate-fade-in-up">
@@ -1157,7 +1182,7 @@
                     </div>
                 )}
 
-                <div className={uiCard + " p-6 sm:p-8 border border-white/10"}>
+                <div className="glass-effect rounded-3xl w-full p-6 sm:p-8 border border-white/10">
                     <div className="flex items-center justify-between mb-8 pb-5 border-b border-white/10 relative z-10">
                         <h2 className="text-lg sm:text-xl font-light tracking-[0.2em] text-white flex items-center gap-3 uppercase">
                             <div className="w-10 h-10 rounded-xl glass-panel flex items-center justify-center shadow-inner backdrop-blur-md">
@@ -1175,7 +1200,7 @@
                         <div className="glass-panel p-4 rounded-2xl shadow-inner hover:border-brand-primary/30 transition-colors backdrop-blur-sm">
                             <label className="block text-[9px] font-bold text-gray-400 mb-2.5 uppercase tracking-[0.2em] ml-1">Select Region</label>
                             <div className="relative">
-                                <select value={smsCountry} onChange={e => setSmsCountry(e.target.value)} className={uiInput + " appearance-none cursor-pointer pr-10 text-white h-12 bg-black/40"}>
+                                <select value={smsCountry} onChange={e => setSmsCountry(e.target.value)} className="glass-input appearance-none cursor-pointer pr-10 text-white h-12 bg-black/40">
                                     {NETWORK_REGIONS.map(c => <option key={c.id} value={c.id} className="bg-[#121212]">{c.name}</option>)}
                                 </select>
                                 <ChevronDown className="w-4 h-4 text-white absolute right-4 top-4 pointer-events-none" />
@@ -1189,7 +1214,7 @@
                                     value={selectedTier?.originalPrice ? String(selectedTier.originalPrice) : ''}
                                     onChange={(e) => { const tier = Array.isArray(priceTiers) ? priceTiers.find(t => String(t?.originalPrice) === e.target.value) : null; if(tier) setSelectedTier(tier); }}
                                     disabled={isTiersLoading || (!Array.isArray(priceTiers)) || priceTiers.length === 0}
-                                    className={uiInput + " h-12 pl-10 appearance-none cursor-pointer text-[13px] font-mono text-white bg-black/40 disabled:opacity-50"}
+                                    className="glass-input h-12 pl-10 appearance-none cursor-pointer text-[13px] font-mono text-white bg-black/40 disabled:opacity-50"
                                 >
                                     {isTiersLoading ? (
                                         <option value="" className="text-xs bg-[#121212] text-gray-500">...</option>
@@ -1210,7 +1235,7 @@
                     <div className="glass-panel p-5 sm:p-6 rounded-3xl mb-8 shadow-inner relative z-10 backdrop-blur-sm hover:border-brand-primary/30 transition-all">
                        <label className="block text-[10px] font-bold text-gray-400 mb-3 uppercase tracking-[0.2em] ml-1">Select Application</label>
                        <div className="relative w-full">
-                           <div onClick={() => setIsAppDropdownOpen(!isAppDropdownOpen)} className={uiInput + " h-14 pl-12 pr-10 flex items-center justify-between cursor-pointer bg-black/50 shadow-md hover:border-white/40"}>
+                           <div onClick={() => setIsAppDropdownOpen(!isAppDropdownOpen)} className="glass-input h-14 pl-12 pr-10 flex items-center justify-between cursor-pointer bg-black/50 shadow-md hover:border-white/40">
                                <span className="truncate text-white font-bold text-[13px] tracking-wide">{isFetchingServices ? 'Loading Apps...' : (currentService ? `${currentService.name}` : (availableServices.length > 0 ? 'Select App' : 'No services found'))}</span>
                                {isFetchingServices ? <RefreshCw className="w-4 h-4 text-brand-primary absolute left-4 animate-spin"/> : <Smartphone className="w-4 h-4 text-brand-primary absolute left-4"/>}
                                <ChevronDown className={`w-4 h-4 text-gray-400 absolute right-4 transition-transform ${isAppDropdownOpen ? 'rotate-180' : ''}`}/>
@@ -1649,6 +1674,50 @@
         }
 
         // ==========================================
+        // 🟢 FIXED: VAULT MODULE (SAFE RENDERING)
+        // ==========================================
+        function CustomerDashboardVault({ purchases, db, appId, triggerToast, user }) {
+          // 🛡️ SAFE ARRAY FILTERING
+          const myPurchases = (purchases || []).filter(p => p && p.customer === user?.email);
+
+          return (
+            <div className="animate-fade-in-up w-full">
+              <div className="glass-effect rounded-3xl p-6 sm:p-8 min-h-[600px] border border-white/10">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 pb-6 border-b border-white/10 gap-4">
+                    <div>
+                        <h2 className="text-xl font-bold tracking-widest text-white uppercase mb-1">Purchased Accounts</h2>
+                        <p className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Your Digital Assets</p>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl flex items-center gap-2 backdrop-blur-md">
+                        <Lock className="w-3.5 h-3.5 text-white"/>
+                        <span className="text-xs font-mono font-bold text-white">{myPurchases.length}</span>
+                    </div>
+                </div>
+
+                {myPurchases.length === 0 ? (
+                  <div className="text-center py-32 flex flex-col items-center">
+                    <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6">
+                        <Key className="w-6 h-6 text-gray-400" strokeWidth={1.5} />
+                    </div>
+                    <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Vault is empty.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 w-full">
+                    {/* 🛡️ SAFE MAPPING */}
+                    {myPurchases.map((acc, idx) => {
+                        if (!acc) return null;
+                        return (
+                            <VaultItem key={acc.id || idx} acc={acc} idx={idx} db={db} appId={appId} triggerToast={triggerToast} />
+                        )
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        }
+
+        // ==========================================
         // PROFILE MODULE
         // ==========================================
         function CustomerDashboardProfile({ user, balance, tier, userInfo, allOrders, deposits, purchases, tickets, db, appId, featureSettings, triggerToast }) {
@@ -1680,9 +1749,10 @@
 
           const referralCode = `REF-${(user?.email || '').split('@')[0].toUpperCase()}`;
           
-          const myDeposits = deposits.filter(d => d.email === user?.email);
-          const myOrders = allOrders.filter(o => o.customer === user?.email);
-          const myPurchases = purchases.filter(p => p.customer === user?.email);
+          // 🛡️ SAFE FILTERING
+          const myDeposits = (deposits || []).filter(d => d && d.email === user?.email);
+          const myOrders = (allOrders || []).filter(o => o && o.customer === user?.email);
+          const myPurchases = (purchases || []).filter(p => p && p.customer === user?.email);
 
           const unifiedHistory = [
               ...myDeposits.map(d => ({ id: d.id, type: 'Funds Added', amount: d.amount, date: d.date, status: d.status, method: d.method })),
@@ -1784,6 +1854,7 @@
                     ) : (
                       <div className="space-y-4 w-full">
                         {unifiedHistory.map((item, idx) => {
+                            if (!item) return null;
                             const isDeposit = item.type === 'Funds Added';
                             return (
                                 <div key={idx} className="bg-black/40 border border-white/5 hover:border-white/20 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors group animate-scale-up backdrop-blur-md" style={{animationDelay: `${idx * 0.05}s`, opacity: 0, animationFillMode: 'forwards'}}>
