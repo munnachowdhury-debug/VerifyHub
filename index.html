@@ -18,22 +18,27 @@
             },
             colors: {
               brand: {
-                primary: '#ffffff', // Clean White
-                primaryHover: '#e5e5e5', 
-                darkBg: '#000000', 
+                primary: '#06b6d4', // Cyan/Blue futuristic color
+                primaryHover: '#0891b2', 
+                darkBg: '#030712', // Very Deep Blue/Navy
                 border: 'rgba(255, 255, 255, 0.1)' 
               }
             },
+            backgroundImage: {
+              'gold-gradient': 'linear-gradient(to right, #06b6d4, #3b82f6, #6366f1)',
+              'premium-glow': 'radial-gradient(circle at top right, rgba(99,102,241,0.2) 0%, rgba(0,0,0,0) 60%)',
+              'glass-gradient': 'linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)'
+            },
             animation: {
-              'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards',
-              'scale-up': 'scaleUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'fade-in-up': 'fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+              'scale-up': 'scaleUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
               'slide-in-right': 'slideInRight 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards',
               'slide-in-down': 'slideInDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
               'pop-in': 'popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-              'pulse-slow': 'pulseSlow 4s ease-in-out infinite',
+              'pulse-slow': 'pulseSlow 6s ease-in-out infinite',
               'shimmer': 'shimmer 2.5s linear infinite',
               'float': 'float 8s ease-in-out infinite',
-              'float-logo': 'floatLogo 15s linear infinite',
+              'float-logo': 'floatLogo 20s linear infinite',
             },
             keyframes: {
               shimmer: {
@@ -41,15 +46,15 @@
                 'to': { backgroundPosition: '-200% center' }
               },
               fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '0%': { opacity: '0', transform: 'translateY(25px)' },
                 '100%': { opacity: '1', transform: 'translateY(0)' }
               },
               scaleUp: {
-                '0%': { opacity: '0', transform: 'scale(0.95) translateY(10px)' },
+                '0%': { opacity: '0', transform: 'scale(0.92) translateY(10px)' },
                 '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
               },
               slideInRight: {
-                '0%': { opacity: '0', transform: 'translateX(20px)' },
+                '0%': { opacity: '0', transform: 'translateX(25px)' },
                 '100%': { opacity: '1', transform: 'translateX(0)' }
               },
               slideInDown: {
@@ -61,17 +66,18 @@
                 '100%': { opacity: '1', transform: 'scale(1)' }
               },
               pulseSlow: {
-                '0%, 100%': { opacity: '0.8' },
-                '50%': { opacity: '0.4' }
+                '0%, 100%': { opacity: '0.8', transform: 'scale(1)' },
+                '50%': { opacity: '0.4', transform: 'scale(1.05)' }
               },
               float: {
                 '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-20px)' }
+                '50%': { transform: 'translateY(-25px)' }
               },
               floatLogo: {
-                '0%': { transform: 'translateY(0) rotate(0deg)' },
-                '50%': { transform: 'translateY(-30px) rotate(10deg)' },
-                '100%': { transform: 'translateY(0) rotate(0deg)' }
+                '0%': { transform: 'translateY(0) rotate(0deg) scale(1)' },
+                '33%': { transform: 'translateY(-40px) rotate(15deg) scale(1.1)' },
+                '66%': { transform: 'translateY(20px) rotate(-10deg) scale(0.9)' },
+                '100%': { transform: 'translateY(0) rotate(0deg) scale(1)' }
               }
             }
           }
@@ -80,7 +86,7 @@
     </script>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <script async src="https://unpkg.com/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
 
@@ -105,46 +111,69 @@
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         
         body {
-            background-color: #000;
-            color: #fff;
+            /* 🌟 DEEP MODERN BACKGROUND 🌟 */
+            background-color: #030712;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: #ffffff;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
         }
+        
+        input, textarea, select {
+            -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text;
+        }
+        pre { -webkit-user-select: auto; user-select: auto; }
 
         .btn-animate {
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            overflow: hidden;
         }
         .btn-animate:hover {
             transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.4);
         }
         .btn-animate:active {
             transform: translateY(1px) scale(0.97);
+            box-shadow: 0 2px 10px rgba(6, 182, 212, 0.2);
+            transition: all 0.1s ease;
         }
         
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.4); }
 
-        /* 🌟 ULTRA GLASSMORPHISM CSS 🌟 */
+        /* 🌟 PURE GLASSMORPHISM 🌟 */
         .glass-effect {
-            background: rgba(20, 20, 20, 0.4);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
-            transition: all 0.4s ease;
+            background: rgba(20, 25, 35, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
         .glass-effect:hover {
-            background: rgba(30, 30, 30, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(30, 35, 45, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 40px -5px rgba(0, 0, 0, 0.4), 0 0 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .glass-panel {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
         }
 
         .glass-input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
             border-radius: 14px;
             padding: 14px 18px;
             font-size: 13px;
@@ -153,19 +182,12 @@
             outline: none;
         }
         .glass-input:focus {
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(20, 20, 20, 0.7);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+            border-color: #06b6d4;
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
         }
 
-        .glass-panel {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border-radius: 16px;
-        }
-
-        .tab-transition-enter { animation: fadeInUp 0.5s ease forwards; }
+        .tab-transition-enter { animation: fadeInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 
         @keyframes slideInNotify {
             0% { transform: translateY(-100%); opacity: 0; }
@@ -250,57 +272,57 @@
         const uiCard = "glass-effect rounded-3xl relative overflow-hidden transition-all duration-500 w-full";
         const uiInput = "glass-input";
         const uiBtnPrimary = "btn-animate w-full bg-white text-black font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all disabled:opacity-50 shadow-[0_5px_20px_rgba(255,255,255,0.2)] tracking-widest uppercase text-xs";
-        const uiBtnSecondary = "btn-animate w-full glass-panel hover:bg-[rgba(255,255,255,0.1)] text-white font-bold py-3.5 px-6 rounded-2xl transition-all flex items-center justify-center gap-2 uppercase text-xs tracking-widest";
-        const uiBtnAction = "btn-animate glass-panel hover:bg-[rgba(255,255,255,0.1)] text-white font-semibold py-2.5 px-4 rounded-xl text-[10px] flex items-center gap-1.5 transition-all disabled:opacity-50 uppercase tracking-widest";
+        const uiBtnSecondary = "btn-animate w-full glass-panel hover:bg-white/20 text-white font-bold py-3.5 px-6 rounded-2xl transition-all flex items-center justify-center gap-2 uppercase text-xs tracking-widest shadow-md";
+        const uiBtnAction = "btn-animate glass-panel hover:bg-white/20 text-white font-semibold py-2.5 px-4 rounded-xl text-[10px] flex items-center gap-1.5 transition-all disabled:opacity-50 uppercase tracking-widest";
         const uiInnerPanel = "glass-panel p-5 w-full transition-all";
 
         const getTier = (spent) => {
-          if(typeof spent !== 'number' || isNaN(spent)) return { threshold: 0, name: 'Standard', next: 20, color: 'text-gray-400' };
-          if(spent >= 100) return { threshold: 100, name: 'VIP', next: 100, color: 'text-white' };
-          if(spent >= 50) return { threshold: 50, name: 'Pro', next: 100, color: 'text-gray-200' };
-          if(spent >= 20) return { threshold: 20, name: 'Plus', next: 50, color: 'text-gray-300' };
-          return { threshold: 0, name: 'Standard', next: 20, color: 'text-gray-400' };
+          if(typeof spent !== 'number' || isNaN(spent)) return { threshold: 0, name: 'Standard', next: 20, color: 'text-gray-400', icon: Award };
+          if(spent >= 100) return { threshold: 100, name: 'VIP', next: 100, color: 'text-brand-primary', icon: Zap };
+          if(spent >= 50) return { threshold: 50, name: 'Pro', next: 100, color: 'text-purple-400', icon: Star };
+          if(spent >= 20) return { threshold: 20, name: 'Plus', next: 50, color: 'text-blue-400', icon: Award };
+          return { threshold: 0, name: 'Standard', next: 20, color: 'text-gray-400', icon: Award };
         };
 
-        // 🌟 GLASS BACKGROUND WITH FLOATING ORBS 🌟
         const PremiumBackground = () => (
-          <div className="fixed inset-0 z-[-1] pointer-events-none bg-[#000] overflow-hidden flex items-center justify-center">
-             <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.2)_1px,transparent_1px)] bg-[size:80px_80px]"></div>
-             <div className="absolute top-[-10%] right-[-5%] w-[50vw] h-[50vw] min-w-[500px] min-h-[500px] bg-[rgba(255,255,255,0.03)] rounded-full blur-[100px] animate-float pointer-events-none"></div>
-             <div className="absolute bottom-[-10%] left-[-5%] w-[40vw] h-[40vw] min-w-[400px] min-h-[400px] bg-[rgba(212,175,55,0.02)] rounded-full blur-[120px] animate-float pointer-events-none" style={{ animationDelay: '-4s' }}></div>
+          <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden flex items-center justify-center bg-transparent">
+             <div className="absolute top-[-15%] right-[-10%] w-[60vw] h-[60vw] min-w-[600px] min-h-[600px] bg-[#06b6d4] opacity-[0.06] rounded-full blur-[120px] animate-float pointer-events-none"></div>
+             <div className="absolute bottom-[-15%] left-[-10%] w-[50vw] h-[50vw] min-w-[500px] min-h-[500px] bg-[#a855f7] opacity-[0.05] rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '-4s' }}></div>
           </div>
         );
 
-        // 🌟 FLOATING LOGOS COMPONENT 🌟
+        // 🌟 CRYSTAL CLEAR COLORFUL FLOATING LOGOS 🌟
         const FloatingLogos = () => {
             const logos = [
-                // WhatsApp
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>,
-                // Telegram
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12zm5.894-17.717c.504-.227.876.108.736.69l-2.035 9.585c-.15.688-.564.86-.145.498l-3.155-2.322-1.523 1.468c-.168.168-.31.31-.635.31l.226-3.206 5.828-5.266c.253-.226-.055-.352-.393-.119L6.592 12.19l-3.107-.972c-.675-.21-.688-.675.14-.997l14.269-5.5Z"/></svg>,
-                // Facebook
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>,
-                // Google Voice 
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.5 16.5c-1.33 0-3.83-1.67-5-3C10.17 12.17 8.5 9.67 8.5 8.33 8.5 7.6 9.17 7 9.83 7c.22 0 .44.1.58.28l1.42 2.13c.12.18.12.43 0 .61l-.8.8c.83 1.67 2.17 3 3.83 3.83l.8-.8c.18-.12.43-.12.61 0l2.13 1.42c.18.14.28.36.28.58 0 .66-.6 1.33-1.33 1.33z"/></svg>,
-                // TextPlus (Generic Chat Icon)
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>
+                // WhatsApp (Green)
+                <svg className="text-[#25D366] drop-shadow-[0_0_20px_rgba(37,211,102,0.8)]" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>,
+                // Telegram (Blue)
+                <svg className="text-[#0088cc] drop-shadow-[0_0_20px_rgba(0,136,204,0.8)]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12zm5.894-17.717c.504-.227.876.108.736.69l-2.035 9.585c-.15.688-.564.86-.145.498l-3.155-2.322-1.523 1.468c-.168.168-.31.31-.635.31l.226-3.206 5.828-5.266c.253-.226-.055-.352-.393-.119L6.592 12.19l-3.107-.972c-.675-.21-.688-.675.14-.997l14.269-5.5Z"/></svg>,
+                // Facebook (Blue)
+                <svg className="text-[#1877F2] drop-shadow-[0_0_20px_rgba(24,119,242,0.8)]" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>,
+                // Google Voice (Emerald)
+                <svg className="text-[#10b981] drop-shadow-[0_0_20px_rgba(16,185,129,0.8)]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.5 16.5c-1.33 0-3.83-1.67-5-3C10.17 12.17 8.5 9.67 8.5 8.33 8.5 7.6 9.17 7 9.83 7c.22 0 .44.1.58.28l1.42 2.13c.12.18.12.43 0 .61l-.8.8c.83 1.67 2.17 3 3.83 3.83l.8-.8c.18-.12.43-.12.61 0l2.13 1.42c.18.14.28.36.28.58 0 .66-.6 1.33-1.33 1.33z"/></svg>,
+                // Generic/TextPlus (Purple)
+                <svg className="text-[#8b5cf6] drop-shadow-[0_0_20px_rgba(139,92,246,0.8)]" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>
             ];
 
             return (
-                <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+                <div className="fixed inset-0 z-[-5] pointer-events-none overflow-hidden">
                     {logos.map((logo, i) => {
                         const randomTop = Math.floor(Math.random() * 80) + 10;
                         const randomLeft = Math.floor(Math.random() * 80) + 10;
-                        const randomSize = Math.floor(Math.random() * 30) + 40;
+                        const randomSize = Math.floor(Math.random() * 40) + 50;
                         const randomDelay = Math.random() * 5;
-                        const randomDuration = Math.floor(Math.random() * 10) + 15;
+                        const randomDuration = Math.floor(Math.random() * 15) + 15;
+                        // Higher opacity for "Crystal Clear" visibility through the glass
+                        const randomOpacity = (Math.random() * 0.4) + 0.4; 
                         return (
-                            <div key={i} className="absolute text-white animate-float-logo" style={{
+                            <div key={i} className="absolute animate-float-logo" style={{
                                 top: `${randomTop}%`,
                                 left: `${randomLeft}%`,
                                 width: `${randomSize}px`,
                                 height: `${randomSize}px`,
-                                opacity: 0.05,
+                                opacity: randomOpacity,
                                 animationDelay: `-${randomDelay}s`,
                                 animationDuration: `${randomDuration}s`
                             }}>
@@ -314,22 +336,23 @@
 
         const SplashScreen = () => {
           return (
-            <div className="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-[#000] overflow-hidden transition-opacity duration-1000 w-full h-full">
+            <div className="fixed inset-0 z-[999] flex flex-col items-center justify-center overflow-hidden transition-opacity duration-1000 w-full h-full bg-[#030712]">
+               <PremiumBackground />
                <FloatingLogos />
                <div className="relative z-10 flex flex-col items-center justify-center px-4 w-full h-full animate-scale-up text-center">
                   <div className="relative mb-8 mx-auto">
-                      <div className="absolute inset-0 bg-white rounded-full blur-3xl opacity-20 animate-pulse-slow"></div>
-                      <div className="relative w-20 h-20 bg-[rgba(20,20,20,0.6)] backdrop-blur-xl border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)] rounded-3xl flex items-center justify-center mx-auto relative z-10">
-                          <Fingerprint className="w-10 h-10 text-white" strokeWidth={1.5}/>
+                      <div className="absolute inset-0 bg-brand-primary rounded-full blur-3xl opacity-40 animate-pulse-slow"></div>
+                      <div className="relative w-24 h-24 glass-effect rounded-[2rem] flex items-center justify-center mx-auto relative z-10 hover:rotate-180 transition-transform duration-1000 shadow-[0_0_40px_rgba(6,182,212,0.3)] border border-white/20">
+                          <Fingerprint className="w-12 h-12 text-white" strokeWidth={1.5}/>
                       </div>
                   </div>
 
-                  <h1 className="text-3xl sm:text-5xl font-bold tracking-[0.2em] mb-4 text-white uppercase text-center w-full">
-                      Verify<span className="text-gray-500 font-light">Hub</span>
+                  <h1 className="text-4xl sm:text-6xl font-bold tracking-[0.2em] mb-4 text-white uppercase text-center w-full drop-shadow-lg">
+                      Verify<span className="text-brand-primary font-light">Hub</span>
                   </h1>
                   
-                  <div className="w-32 h-[2px] bg-white/10 mt-6 overflow-hidden relative mx-auto rounded-full">
-                      <div className="absolute top-0 left-0 h-full bg-white w-full animate-[shimmer_1.5s_ease-in-out_infinite]"></div>
+                  <div className="w-40 h-[2px] bg-white/10 mt-6 overflow-hidden relative mx-auto rounded-full">
+                      <div className="absolute top-0 left-0 h-full bg-brand-primary w-full animate-[shimmer_1.5s_ease-in-out_infinite]"></div>
                   </div>
                </div>
             </div>
@@ -356,13 +379,13 @@
             return (
                 <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-[300] w-[90%] max-w-sm transition-all duration-500 ease-in-out ${show ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'}`}>
                     <div className="glass-effect p-4 rounded-3xl flex items-center gap-4 border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
-                        <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center shrink-0">
+                        <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(255,255,255,0.5)]">
                             <MessageSquare className="w-6 h-6 animate-pulse" />
                         </div>
                         <div className="flex-grow pt-0.5">
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 flex items-center justify-between">
+                            <p className="text-[10px] font-bold text-brand-primary uppercase tracking-widest mb-1.5 flex items-center justify-between">
                                 Admin Protocol
-                                <button onClick={() => setShow(false)} className="text-gray-500 hover:text-white transition-colors"><X className="w-4 h-4"/></button>
+                                <button onClick={() => setShow(false)} className="text-gray-400 hover:text-white transition-colors"><X className="w-4 h-4"/></button>
                             </p>
                             <p className="text-sm text-white font-medium leading-snug line-clamp-2">{msg}</p>
                         </div>
@@ -538,14 +561,14 @@
 
           if (showSplash) return <SplashScreen />;
 
-          if (isAuthChecking) return <div className="min-h-screen flex items-center justify-center bg-[#000]"><RefreshCw className="w-8 h-8 text-white animate-spin"/></div>;
+          if (isAuthChecking) return <div className="min-h-screen flex items-center justify-center bg-[#030712]"><RefreshCw className="w-8 h-8 text-brand-primary animate-spin"/></div>;
 
           if (!user) {
             return (
-              <div className="min-h-screen flex items-center justify-center p-4 relative font-sans w-full bg-[#000] text-white">
+              <div className="min-h-screen flex items-center justify-center p-4 relative font-sans w-full bg-transparent text-white">
                 <PremiumBackground />
                 <FloatingLogos />
-                <div className="w-full max-w-[380px] animate-scale-up z-10">
+                <div className="w-full max-w-[400px] animate-scale-up z-10">
                   <div className="flex flex-col items-center mb-10">
                     <div className="w-20 h-20 rounded-[2rem] glass-effect flex items-center justify-center mb-6 relative">
                       <div className="absolute inset-0 rounded-[2rem] border border-white/20"></div>
@@ -554,18 +577,18 @@
                     <h2 className="text-3xl font-light tracking-[0.3em] text-white uppercase text-center">Verify<span className="font-bold">Hub</span></h2>
                   </div>
                   
-                  <div className="glass-effect rounded-3xl p-8">
+                  <div className="glass-effect rounded-3xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/10">
                     {authMethod !== 'admin' && (
-                        <div className="flex glass-panel p-1 rounded-xl mb-8">
-                             <button type="button" onClick={() => { setAuthMethod('login'); setAuthError(''); setAuthSuccessMsg(''); }} className={`flex-1 flex items-center justify-center py-3 rounded-lg text-xs font-bold transition-all duration-300 uppercase tracking-widest ${authMethod === 'login' ? 'bg-white text-black shadow-md' : 'text-gray-500 hover:text-white'}`}>Login</button>
-                             <button type="button" onClick={() => { setAuthMethod('signup'); setAuthError(''); setAuthSuccessMsg(''); }} className={`flex-1 flex items-center justify-center py-3 rounded-lg text-xs font-bold transition-all duration-300 uppercase tracking-widest ${authMethod === 'signup' ? 'bg-white text-black shadow-md' : 'text-gray-500 hover:text-white'}`}>Sign Up</button>
+                        <div className="flex glass-panel p-1 rounded-xl mb-8 border border-white/5">
+                             <button type="button" onClick={() => { setAuthMethod('login'); setAuthError(''); setAuthSuccessMsg(''); }} className={`flex-1 flex items-center justify-center py-3 rounded-lg text-xs font-bold transition-all duration-300 uppercase tracking-widest ${authMethod === 'login' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}>Login</button>
+                             <button type="button" onClick={() => { setAuthMethod('signup'); setAuthError(''); setAuthSuccessMsg(''); }} className={`flex-1 flex items-center justify-center py-3 rounded-lg text-xs font-bold transition-all duration-300 uppercase tracking-widest ${authMethod === 'signup' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}>Sign Up</button>
                         </div>
                     )}
-                    {authMethod === 'admin' && <div className="text-center mb-8 pb-4 border-b border-white/10"><span className="text-[10px] font-bold text-white uppercase tracking-[0.3em] flex items-center justify-center gap-2"><ShieldCheck className="w-4 h-4"/> Admin Portal</span></div>}
+                    {authMethod === 'admin' && <div className="text-center mb-8 pb-4 border-b border-white/10"><span className="text-[10px] font-bold text-brand-primary uppercase tracking-[0.3em] flex items-center justify-center gap-2"><ShieldCheck className="w-4 h-4"/> Admin Portal</span></div>}
                     
                     <form onSubmit={handleAuthSubmit} className="space-y-5">
-                      {authError && <div className="text-red-400 text-xs font-bold bg-red-900/20 border border-red-900/50 p-4 rounded-xl flex items-center gap-3 animate-pop-in"><AlertTriangle className="w-5 h-5 shrink-0"/>{authError}</div>}
-                      {authSuccessMsg && <div className="text-green-400 text-xs font-bold bg-green-900/20 border border-green-900/50 p-4 rounded-xl flex items-center gap-3 animate-pop-in"><CheckCircle className="w-5 h-5 shrink-0"/>{authSuccessMsg}</div>}
+                      {authError && <div className="text-red-400 text-xs font-bold glass-panel border-red-500/30 p-4 rounded-xl flex items-center gap-3 animate-pop-in"><AlertTriangle className="w-5 h-5 shrink-0"/>{authError}</div>}
+                      {authSuccessMsg && <div className="text-green-400 text-xs font-bold glass-panel border-green-500/30 p-4 rounded-xl flex items-center gap-3 animate-pop-in"><CheckCircle className="w-5 h-5 shrink-0"/>{authSuccessMsg}</div>}
                       
                       <div className="space-y-2">
                         <label className="text-[9px] font-bold text-gray-400 pl-1 uppercase tracking-widest">Email Address</label>
@@ -574,13 +597,13 @@
                       <div className="space-y-2">
                         <div className="flex justify-between items-center px-1">
                            <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Password</label>
-                           {(authMethod === 'login' || authMethod === 'admin') && <button type="button" onClick={handleForgotPassword} className="text-[9px] font-bold text-gray-300 hover:text-white transition-colors uppercase tracking-widest">Forgot?</button>}
+                           {(authMethod === 'login' || authMethod === 'admin') && <button type="button" onClick={handleForgotPassword} className="text-[9px] font-bold text-brand-primary hover:text-white transition-colors uppercase tracking-widest">Forgot?</button>}
                         </div>
                         <input type="password" value={passwordInput} onChange={e=>setPasswordInput(e.target.value)} placeholder="••••••••" required className="glass-input" />
                       </div>
                       <div className="pt-6">
                         <button type="submit" disabled={isLoading} className="minimal-btn-primary !py-4 !text-sm tracking-widest">
-                            {isLoading ? <span className="flex items-center gap-2"><RefreshCw className="w-4 h-4 animate-spin"/> Processing...</span> : (authMethod === 'signup' ? 'Create Account' : authMethod === 'login' ? 'Access Account' : 'Admin Login')}
+                            {isLoading ? <span className="flex items-center gap-2"><RefreshCw className="w-4 h-4 animate-spin"/> Processing...</span> : (authMethod === 'signup' ? 'Create Account' : authMethod === 'login' ? 'Access Terminal' : 'Admin Login')}
                         </button>
                       </div>
                     </form>
@@ -594,8 +617,9 @@
           const currentUserTier = user.role === 'customer' ? getTier(usersDB[user.email]?.totalSpent || 0) : null;
 
           return (
-            <div className="min-h-screen w-full relative overflow-x-hidden font-sans pb-24 flex flex-col bg-[#000] text-white">
+            <div className="min-h-screen w-full relative overflow-x-hidden font-sans pb-24 flex flex-col bg-transparent text-white">
               <PremiumBackground />
+              <FloatingLogos />
               <MessageNotification msg={incomingMsg} onClose={() => setIncomingMsg(null)} />
               
               {toastData.show && (
@@ -607,49 +631,48 @@
                 </div>
               )}
 
-              <header className="sticky top-0 z-40 w-full glass-effect rounded-none border-t-0 border-x-0 border-b border-white/5">
+              <header className="sticky top-0 z-40 w-full glass-effect rounded-none border-t-0 border-x-0 border-b border-white/10 shadow-lg">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
                   <div className="flex items-center gap-3 sm:gap-4 animate-slide-in-right">
-                      <div className="w-10 h-10 rounded-[14px] glass-panel flex items-center justify-center shadow-lg">
-                        <ShieldCheck className="w-5 h-5 text-white" strokeWidth={1.5} />
+                      <div className="w-10 h-10 rounded-xl glass-panel flex items-center justify-center shadow-lg border border-white/20 hover:rotate-12 transition-transform cursor-pointer">
+                        <ShieldCheck className="w-5 h-5 text-brand-primary" strokeWidth={1.5} />
                       </div>
-                      <span className="text-xl font-light tracking-[0.25em] text-white hidden sm:block uppercase">Verify<span className="font-bold">Hub</span></span>
+                      <span className="text-xl font-light tracking-[0.25em] text-white hidden sm:block uppercase drop-shadow-md">Verify<span className="font-bold text-brand-primary">Hub</span></span>
                   </div>
                   <div className="flex items-center gap-3 sm:gap-4">
                     {user.role === 'customer' && (
-                        <button onClick={() => setShowCart(true)} className="btn-animate relative p-3 rounded-xl glass-panel text-white hover:bg-white/10 transition-colors">
+                        <button onClick={() => setShowCart(true)} className="btn-animate relative p-3 rounded-xl glass-panel text-white hover:bg-white/10 transition-colors border border-white/10">
                             <ShoppingCart className="w-4 h-4" strokeWidth={1.5}/>
-                            {cart.length > 0 && <span className="absolute -top-2 -right-2 bg-white text-black text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full animate-pop-in">{cart.length}</span>}
+                            {cart.length > 0 && <span className="absolute -top-2 -right-2 bg-brand-primary text-black text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full animate-pop-in">{cart.length}</span>}
                         </button>
                     )}
                     {user.role === 'customer' && (
-                        <div className="glass-panel px-4 py-2.5 rounded-xl flex items-center gap-2 cursor-default">
-                            <Wallet className="w-4 h-4 text-white opacity-70" />
-                            <span className="font-mono font-bold text-xs sm:text-sm tracking-wider text-white">${Number(currentUserBalance).toFixed(2)}</span>
+                        <div className="glass-panel px-4 py-2.5 rounded-xl flex items-center gap-2 border border-white/10 cursor-default">
+                            <Wallet className="w-4 h-4 text-brand-primary opacity-90" />
+                            <span className="font-mono font-bold text-xs sm:text-sm tracking-wider text-white drop-shadow-sm">${Number(currentUserBalance).toFixed(2)}</span>
                         </div>
                     )}
-                    <button onClick={handleLogout} className="btn-animate p-3 glass-panel text-white hover:text-red-400 hover:bg-white/10 transition-colors"><LogOut className="w-4 h-4" strokeWidth={1.5}/></button>
+                    <button onClick={handleLogout} className="btn-animate p-3 glass-panel text-white hover:text-red-400 hover:bg-white/10 transition-colors border border-white/10"><LogOut className="w-4 h-4" strokeWidth={1.5}/></button>
                   </div>
                 </div>
               </header>
 
               <main className="max-w-7xl mx-auto px-4 sm:px-6 mt-8 relative z-10 w-full flex-grow flex flex-col items-center">
                 {globalNotice && (
-                  <div className="w-full mb-6 glass-panel border-l-4 border-l-white p-4 rounded-2xl flex items-start sm:items-center gap-4 animate-fade-in-up shadow-xl">
-                     <Megaphone className="w-5 h-5 text-white shrink-0 mt-0.5 sm:mt-0" />
+                  <div className="w-full mb-6 glass-panel border-l-4 border-l-brand-primary p-4 rounded-2xl flex items-start sm:items-center gap-4 animate-fade-in-up shadow-xl">
+                     <Megaphone className="w-5 h-5 text-brand-primary shrink-0 mt-0.5 sm:mt-0" />
                      <p className="text-xs font-medium text-gray-200 leading-relaxed tracking-wide">{globalNotice}</p>
                   </div>
                 )}
 
                 <div className="w-full relative z-30 mb-8 animate-slide-in-down">
-                  {/* 🟢 FULLY VISIBLE & BEAUTIFUL MENU LABELS 🟢 */}
-                  <div className="glass-effect rounded-[20px] p-1.5 flex justify-between w-full border border-white/10 shadow-2xl mx-auto max-w-5xl">
+                  {/* 🟢 FULLY VISIBLE & BEAUTIFUL GLASS MENU 🟢 */}
+                  <div className="glass-effect rounded-[24px] p-2 flex justify-between w-full border border-white/10 shadow-[0_15px_40px_rgba(0,0,0,0.6)] mx-auto max-w-5xl">
                     {(user.role === 'admin' ? ADMIN_TABS : CUSTOMER_TABS).map(tab => (
-                      <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`relative flex-1 flex flex-col items-center justify-center gap-1.5 py-3 px-1 rounded-2xl transition-all duration-300 min-w-0 overflow-hidden group ${activeTab === tab.id ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)] transform scale-[1.02] z-10' : 'text-gray-400 hover:text-white hover:bg-white/5 z-0'}`}>
+                      <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`relative flex-1 flex flex-col items-center justify-center gap-2 py-3.5 px-2 rounded-xl transition-all duration-400 min-w-0 overflow-hidden group ${activeTab === tab.id ? 'bg-white text-black shadow-[0_0_25px_rgba(255,255,255,0.4)] transform scale-[1.02] z-10' : 'text-gray-400 hover:text-white hover:bg-white/10 z-0'}`}>
                           <div className="relative z-10 flex flex-col items-center justify-center w-full">
                               <tab.icon className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 ${activeTab === tab.id ? 'scale-110 drop-shadow-md mb-1' : 'group-hover:scale-110 group-hover:-translate-y-0.5 mb-1'}`} strokeWidth={activeTab === tab.id ? 2 : 1.5} /> 
-                              {/* Labels are now always visible */}
-                              <span className={`text-[8px] sm:text-[10px] uppercase tracking-widest text-center px-1 truncate w-full ${activeTab === tab.id ? 'font-bold' : 'font-medium'}`}>
+                              <span className={`text-[8px] sm:text-[10px] uppercase tracking-[0.2em] text-center px-1 truncate w-full ${activeTab === tab.id ? 'font-bold' : 'font-medium'}`}>
                                   {tab.label}
                               </span>
                           </div>
@@ -736,24 +759,24 @@
 
             return (
                 <>
-                    <button onClick={() => setIsOpen(!isOpen)} className="btn-animate fixed bottom-6 right-6 z-[150] w-14 h-14 bg-white rounded-full shadow-[0_10px_25px_rgba(255,255,255,0.3)] flex items-center justify-center text-black hover:scale-105 transition-transform">
+                    <button onClick={() => setIsOpen(!isOpen)} className="btn-animate fixed bottom-6 right-6 z-[150] w-14 h-14 bg-white rounded-full shadow-[0_10px_25px_rgba(255,255,255,0.4)] flex items-center justify-center text-black hover:scale-105 transition-transform">
                         {isOpen ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
                         {!isOpen && unreadCount > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-[#050505] animate-pulse shadow-lg">
+                            <span className="absolute -top-1 -right-1 bg-brand-primary text-black text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white animate-pulse shadow-lg">
                                 {unreadCount}
                             </span>
                         )}
                     </button>
                     {isOpen && (
                         <div className="fixed bottom-24 right-6 z-[150] w-[340px] h-[480px] glass-effect rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden animate-pop-in origin-bottom-right border border-white/20">
-                            <div className="bg-black/60 border-b border-white/10 p-5 flex items-center justify-between backdrop-blur-md">
+                            <div className="bg-black/40 border-b border-white/10 p-5 flex items-center justify-between backdrop-blur-md">
                                 <div className="flex items-center gap-3">
-                                   <div className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.8)]"></div>
+                                   <div className="w-2.5 h-2.5 bg-brand-primary rounded-full animate-pulse shadow-[0_0_10px_#06b6d4]"></div>
                                    <h3 className="text-white font-bold text-[11px] tracking-widest uppercase">Admin Support</h3>
                                 </div>
                                 <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white transition-colors"><X className="w-4 h-4"/></button>
                             </div>
-                            <div className="flex-grow overflow-y-auto p-5 space-y-4 custom-scrollbar bg-black/40">
+                            <div className="flex-grow overflow-y-auto p-5 space-y-4 custom-scrollbar bg-transparent">
                                 {chatMessages.length === 0 ? (
                                     <div className="h-full flex flex-col items-center justify-center opacity-40 animate-pulse">
                                         <Headset className="w-12 h-12 mb-4 text-white" strokeWidth={1} />
@@ -762,7 +785,7 @@
                                 ) : (
                                     chatMessages.map((msg, i) => (
                                         <div key={msg.id} className={`flex flex-col animate-fade-in-up ${msg.sender === 'user' ? 'items-end' : 'items-start'}`} style={{animationDelay: `${i * 0.03}s`, opacity: 0, animationFillMode: 'forwards'}}>
-                                            <div className={`px-4 py-3 rounded-2xl max-w-[85%] text-[12px] font-medium leading-relaxed shadow-lg ${msg.sender === 'user' ? 'bg-white text-black rounded-tr-sm' : 'bg-black/60 text-gray-100 border border-white/10 rounded-tl-sm backdrop-blur-md'}`}>
+                                            <div className={`px-4 py-3 rounded-2xl max-w-[85%] text-[12px] font-medium leading-relaxed shadow-lg ${msg.sender === 'user' ? 'bg-white text-black rounded-tr-sm' : 'glass-panel text-white rounded-tl-sm'}`}>
                                                 {msg.text}
                                             </div>
                                             <span className="text-[8px] text-gray-500 mt-1.5 font-mono tracking-wider">
@@ -773,7 +796,7 @@
                                 )}
                                 <div ref={messagesEndRef} />
                             </div>
-                            <form onSubmit={sendMessage} className="bg-black/60 border-t border-white/10 p-4 flex gap-3 items-center backdrop-blur-md">
+                            <form onSubmit={sendMessage} className="bg-black/40 border-t border-white/10 p-4 flex gap-3 items-center backdrop-blur-md">
                                 <input type="text" value={message} onChange={e => setMessage(e.target.value)} placeholder="Type a message..." className="glass-input !py-3"/>
                                 <button type="submit" disabled={!message.trim()} className="btn-animate bg-white text-black p-3.5 rounded-xl disabled:opacity-50 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.2)]"><Send className="w-4 h-4" /></button>
                             </form>
@@ -944,7 +967,7 @@
           const formatPhoneDisplay = (phone) => { return `+${String(phone).replace(/\D/g, '')}`; };
           const copyNumberOnly = (phone) => { copyText(String(phone).replace(/\D/g, '')); };
 
-          if(!smsSettings?.active) return <div className={uiCard + " text-center py-32 text-gray-500 font-mono text-sm uppercase tracking-widest backdrop-blur-xl border border-white/10"}><Smartphone className="w-12 h-12 mx-auto mb-4 opacity-30" strokeWidth={1.5}/> Service Offline.</div>;
+          if(!smsSettings?.active) return <div className={uiCard + " text-center py-32 text-gray-500 font-mono text-sm uppercase tracking-widest border border-white/10"}><Smartphone className="w-12 h-12 mx-auto mb-4 opacity-30" strokeWidth={1.5}/> Service Offline.</div>;
 
           return (
             <div className="w-full max-w-3xl mx-auto space-y-6 sm:space-y-8 relative animate-fade-in-up">
@@ -954,16 +977,16 @@
                         <div className="glass-effect w-full max-w-sm rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative overflow-hidden border border-white/20">
                             <div className="absolute top-0 left-0 w-full h-1.5 bg-red-600"></div>
                             <div className="flex items-center gap-4 mb-6">
-                                <div className="p-3.5 rounded-2xl bg-red-900/20 text-red-500 border border-red-900/50 shadow-inner">
+                                <div className="p-3.5 rounded-2xl glass-panel text-red-500 border border-red-500/30 shadow-inner">
                                     <Ban className="w-6 h-6"/>
                                 </div>
                                 <h3 className="text-base font-bold text-white tracking-widest uppercase">Skip Number?</h3>
                             </div>
-                            <p className="text-xs text-gray-400 leading-relaxed font-light mb-8">
+                            <p className="text-xs text-gray-300 leading-relaxed font-light mb-8">
                                 Are you sure you want to skip this number? It will be banned and balance refunded.
                             </p>
                             <div className="flex gap-3 w-full">
-                                <button onClick={() => setConfirmAction({ show: false, type: '', orderId: null, price: 0 })} className="btn-animate flex-1 py-3.5 rounded-xl font-bold text-gray-300 bg-black/50 hover:bg-black/80 transition-colors text-xs uppercase tracking-widest border border-white/10">Cancel</button>
+                                <button onClick={() => setConfirmAction({ show: false, type: '', orderId: null, price: 0 })} className="btn-animate flex-1 py-3.5 rounded-xl font-bold text-gray-300 glass-panel hover:bg-white/10 transition-colors text-xs uppercase tracking-widest">Cancel</button>
                                 <button onClick={executeConfirmAction} className="btn-animate flex-1 py-3.5 rounded-xl font-bold text-white transition-all text-xs uppercase tracking-widest shadow-lg bg-red-600 hover:bg-red-500 shadow-[0_0_15px_rgba(220,38,38,0.4)] border border-red-500/50">Yes, Skip</button>
                             </div>
                         </div>
@@ -973,36 +996,36 @@
                 <div className={uiCard + " p-6 sm:p-8 border border-white/10"}>
                     <div className="flex items-center justify-between mb-8 pb-5 border-b border-white/10 relative z-10">
                         <h2 className="text-lg sm:text-xl font-light tracking-[0.2em] text-white flex items-center gap-3 uppercase">
-                            <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 shadow-inner backdrop-blur-md">
-                                <Radar className="w-5 h-5 text-white animate-spin" style={{ animationDuration: '4s' }}/>
+                            <div className="w-10 h-10 rounded-xl glass-panel flex items-center justify-center shadow-inner backdrop-blur-md">
+                                <Radar className="w-5 h-5 text-brand-primary animate-spin" style={{ animationDuration: '4s' }}/>
                             </div>
-                            Control <span className="font-bold text-white">Panel</span>
+                            Control <span className="font-bold text-brand-primary">Panel</span>
                         </h2>
-                        <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
+                        <div className="flex items-center gap-2 glass-panel px-3 py-1.5 rounded-full backdrop-blur-sm border-white/10">
                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
                            <span className="text-[9px] text-gray-300 font-mono uppercase tracking-widest hidden sm:block pt-0.5">Status: Live</span>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 relative z-10 mb-8">
-                        <div className="bg-black/40 p-4 rounded-2xl border border-white/5 shadow-inner hover:border-white/20 transition-colors backdrop-blur-sm">
+                        <div className="glass-panel p-4 rounded-2xl shadow-inner hover:border-brand-primary/30 transition-colors backdrop-blur-sm">
                             <label className="block text-[9px] font-bold text-gray-400 mb-2.5 uppercase tracking-[0.2em] ml-1">Select Region</label>
                             <div className="relative">
-                                <select value={smsCountry} onChange={e => setSmsCountry(e.target.value)} className={uiInput + " appearance-none cursor-pointer pr-10 text-white h-12"}>
+                                <select value={smsCountry} onChange={e => setSmsCountry(e.target.value)} className={uiInput + " appearance-none cursor-pointer pr-10 text-white h-12 bg-black/40"}>
                                     {NETWORK_REGIONS.map(c => <option key={c.id} value={c.id} className="bg-[#121212]">{c.name}</option>)}
                                 </select>
                                 <ChevronDown className="w-4 h-4 text-white absolute right-4 top-4 pointer-events-none" />
                             </div>
                         </div>
 
-                        <div className="bg-black/40 p-4 rounded-2xl border border-white/5 shadow-inner hover:border-white/20 transition-colors backdrop-blur-sm">
+                        <div className="glass-panel p-4 rounded-2xl shadow-inner hover:border-brand-primary/30 transition-colors backdrop-blur-sm">
                             <label className="block text-[9px] font-bold text-gray-400 mb-2.5 uppercase tracking-[0.2em] ml-1">Select Price</label>
                             <div className="relative w-full">
                                 <select 
                                     value={selectedTier?.originalPrice ? String(selectedTier.originalPrice) : ''}
                                     onChange={(e) => { const tier = Array.isArray(priceTiers) ? priceTiers.find(t => String(t?.originalPrice) === e.target.value) : null; if(tier) setSelectedTier(tier); }}
                                     disabled={isTiersLoading || (!Array.isArray(priceTiers)) || priceTiers.length === 0}
-                                    className={uiInput + " h-12 pl-10 appearance-none cursor-pointer text-[13px] font-mono text-white disabled:opacity-50"}
+                                    className={uiInput + " h-12 pl-10 appearance-none cursor-pointer text-[13px] font-mono text-white bg-black/40 disabled:opacity-50"}
                                 >
                                     {isTiersLoading ? (
                                         <option value="" className="text-xs bg-[#121212] text-gray-500">...</option>
@@ -1020,22 +1043,22 @@
                         </div>
                     </div>
 
-                    <div className="bg-black/40 p-5 sm:p-6 rounded-3xl border border-white/5 mb-8 shadow-inner relative z-10 backdrop-blur-sm">
+                    <div className="glass-panel p-5 sm:p-6 rounded-3xl mb-8 shadow-inner relative z-10 backdrop-blur-sm hover:border-brand-primary/30 transition-all">
                        <label className="block text-[10px] font-bold text-gray-400 mb-3 uppercase tracking-[0.2em] ml-1">Select Application</label>
                        <div className="relative w-full">
-                           <div onClick={() => setIsAppDropdownOpen(!isAppDropdownOpen)} className={uiInput + " h-14 pl-12 pr-10 flex items-center justify-between cursor-pointer hover:border-white/40 shadow-md"}>
+                           <div onClick={() => setIsAppDropdownOpen(!isAppDropdownOpen)} className={uiInput + " h-14 pl-12 pr-10 flex items-center justify-between cursor-pointer bg-black/50 shadow-md"}>
                                <span className="truncate text-white font-bold text-[13px] tracking-wide">{isFetchingServices ? 'Loading Apps...' : (currentService ? `${currentService.name}` : (availableServices.length > 0 ? 'Select App' : 'No services found'))}</span>
-                               {isFetchingServices ? <RefreshCw className="w-4 h-4 text-white absolute left-4 animate-spin"/> : <Smartphone className="w-4 h-4 text-white absolute left-4"/>}
+                               {isFetchingServices ? <RefreshCw className="w-4 h-4 text-brand-primary absolute left-4 animate-spin"/> : <Smartphone className="w-4 h-4 text-brand-primary absolute left-4"/>}
                                <ChevronDown className={`w-4 h-4 text-gray-400 absolute right-4 transition-transform ${isAppDropdownOpen ? 'rotate-180' : ''}`}/>
                            </div>
                            {isAppDropdownOpen && (
                                <>
                                    <div className="fixed inset-0 z-30" onClick={() => setIsAppDropdownOpen(false)}></div>
                                    <div className="absolute top-full left-0 mt-3 w-full glass-effect border border-white/20 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] z-40 overflow-hidden animate-pop-in">
-                                       <div className="p-3.5 border-b border-white/10 bg-black/40">
+                                       <div className="p-3.5 border-b border-white/10 bg-black/60 backdrop-blur-md">
                                            <input type="text" autoFocus placeholder="Search app..." value={appSearch} onChange={(e) => setAppSearch(e.target.value)} className="glass-input !py-3"/>
                                        </div>
-                                       <div className="max-h-[300px] overflow-y-auto custom-scrollbar bg-black/60 p-2">
+                                       <div className="max-h-[300px] overflow-y-auto custom-scrollbar bg-black/40 p-2 backdrop-blur-md">
                                            {filteredApps.length === 0 ? (<p className="text-center text-gray-500 py-8 text-[10px] font-mono uppercase tracking-widest">{isFetchingServices ? 'Fetching...' : 'No apps found.'}</p>) : 
                                                filteredApps.map(s => {
                                                    if(!s) return null;
@@ -1062,16 +1085,16 @@
                 {activeOrders.map((order, index) => {
                     const timeLeft = Math.max(0, Math.floor((order.expiresAt - now) / 1000));
                     return (
-                        <div key={order.id} ref={index === 0 ? latestOrderRef : null} className="glass-effect rounded-3xl border border-white/20 flex flex-col items-center py-10 px-6 sm:px-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-pop-in relative overflow-hidden group">
-                            <div className="absolute top-0 left-0 w-full h-[3px] bg-black/50"><div className="bg-white h-full transition-all ease-linear shadow-[0_0_15px_rgba(255,255,255,0.8)]" style={{width: `${(timeLeft / 240) * 100}%`}}></div></div>
+                        <div key={order.id} ref={index === 0 ? latestOrderRef : null} className="glass-effect rounded-3xl border border-white/20 flex flex-col items-center py-10 px-6 sm:px-10 shadow-[0_20px_50px_rgba(6,182,212,0.15)] animate-pop-in relative overflow-hidden group">
+                            <div className="absolute top-0 left-0 w-full h-[3px] bg-white/10"><div className="bg-brand-primary h-full transition-all ease-linear shadow-[0_0_15px_rgba(6,182,212,0.8)]" style={{width: `${(timeLeft / 240) * 100}%`}}></div></div>
                             
-                            <div className="flex items-center gap-2.5 mb-8 bg-white/10 px-5 py-2.5 rounded-full border border-white/20 shadow-lg relative z-10 backdrop-blur-md">
+                            <div className="flex items-center gap-2.5 mb-8 glass-panel px-5 py-2.5 rounded-full border-white/20 shadow-lg relative z-10 backdrop-blur-md">
                                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
                                 <p className="text-white font-bold uppercase tracking-[0.3em] text-[10px] pt-0.5">{order.service}</p>
                             </div>
 
                             <div className="flex items-center gap-4 w-full max-w-md mb-10 relative z-10">
-                                <div className="text-3xl sm:text-5xl font-mono font-bold text-white bg-black/40 px-6 py-6 rounded-2xl border border-white/10 shadow-inner flex-grow text-center whitespace-nowrap overflow-hidden text-ellipsis tracking-wider backdrop-blur-md">
+                                <div className="text-3xl sm:text-5xl font-mono font-bold text-white bg-black/40 px-6 py-6 rounded-2xl border border-white/10 shadow-inner flex-grow text-center whitespace-nowrap overflow-hidden text-ellipsis tracking-wider backdrop-blur-md drop-shadow-md">
                                     +{String(order.phone).replace(/\D/g, '')}
                                 </div>
                                 <button onClick={() => copyNumberOnly(order.phone)} className="btn-animate p-6 bg-white hover:bg-gray-200 text-black rounded-2xl shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-colors shrink-0">
@@ -1095,8 +1118,8 @@
                                 <div className="w-full max-w-md space-y-4 animate-pop-in relative z-10">
                                     <p className="text-[11px] text-green-400 font-bold uppercase tracking-[0.3em] text-center mb-5">SMS Received</p>
                                     {order.codes.map((c, i) => (
-                                        <div key={i} className="flex items-center justify-between gap-4 bg-white/10 border border-white/20 p-5 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] animate-scale-up backdrop-blur-md" style={{animationDelay: `${i * 0.1}s`, opacity: 0, animationFillMode: 'forwards'}}>
-                                            <div className="text-3xl sm:text-4xl font-mono font-bold text-white tracking-[0.3em] flex-grow text-center drop-shadow-md">{c}</div>
+                                        <div key={i} className="flex items-center justify-between gap-4 glass-panel border-white/20 p-5 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] animate-scale-up backdrop-blur-md" style={{animationDelay: `${i * 0.1}s`, opacity: 0, animationFillMode: 'forwards'}}>
+                                            <div className="text-3xl sm:text-4xl font-mono font-bold text-brand-primary tracking-[0.3em] flex-grow text-center drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">{c}</div>
                                             <button onClick={() => copyText(c)} className="btn-animate p-4 bg-white hover:bg-gray-200 rounded-xl text-black transition-colors shadow-[0_0_15px_rgba(255,255,255,0.3)] shrink-0"><Copy className="w-5 h-5"/></button>
                                         </div>
                                     ))}
@@ -1111,7 +1134,7 @@
         }
 
         // ==========================================
-        // 🌟 ASSET STORE MODULE (ULTRA PREMIUM) 🌟
+        // 🌟 ASSET STORE MODULE (ULTRA PREMIUM GLASS) 🌟
         // ==========================================
         function CustomerDashboardStore({ inventory, categories, cart, setCart, allOrders, uiCard, uiInput, uiBtnPrimary, uiInnerPanel, triggerToast }) {
           const [searchQuery, setSearchQuery] = useState('');
@@ -1147,9 +1170,9 @@
           return (
             <div className="space-y-6 w-full relative z-10">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4 w-full glass-effect p-5 rounded-3xl border border-white/10 shadow-[0_15px_40px_rgba(0,0,0,0.6)] animate-slide-in-right relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1.5 h-full bg-white shadow-[0_0_20px_#fff]"></div>
+                <div className="absolute top-0 left-0 w-1.5 h-full bg-brand-primary shadow-[0_0_20px_#06b6d4]"></div>
                 <div className="text-center sm:text-left w-full pl-4 py-1">
-                  <h1 className="text-xl sm:text-2xl font-bold text-white tracking-[0.25em] uppercase mb-1">Buy <span className="font-light text-gray-300">Accounts</span></h1>
+                  <h1 className="text-xl sm:text-2xl font-bold text-white tracking-[0.25em] uppercase mb-1">Buy <span className="font-light text-brand-primary">Accounts</span></h1>
                   <p className="text-gray-400 text-[9px] sm:text-[10px] font-mono tracking-widest uppercase">Verified Static Entities</p>
                 </div>
                 <div className="w-full sm:w-72 relative">
@@ -1167,11 +1190,10 @@
                       const isOutOfStock = stockCount === 0;
 
                       return (
-                          <div key={product.id} className={`relative bg-black/40 backdrop-blur-xl rounded-3xl p-6 flex flex-col group transition-all duration-500 border border-white/5 animate-scale-up shadow-xl ${isOutOfStock ? "opacity-50 grayscale" : "hover:border-white/20 hover:-translate-y-2 hover:shadow-[0_20px_50px_-15px_rgba(255,255,255,0.15)] hover:bg-black/60"}`} style={{animationDelay: `${idx * 0.05}s`, opacity: 0, animationFillMode: 'forwards'}}>
+                          <div key={product.id} className={`relative glass-panel rounded-3xl p-6 flex flex-col group transition-all duration-500 border border-white/5 animate-scale-up shadow-xl ${isOutOfStock ? "opacity-50 grayscale" : "hover:border-brand-primary/40 hover:-translate-y-2 hover:shadow-[0_20px_50px_-15px_rgba(6,182,212,0.3)] hover:bg-black/60"}`} style={{animationDelay: `${idx * 0.05}s`, opacity: 0, animationFillMode: 'forwards'}}>
                               
-                              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out"></div>
+                              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-primary to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out"></div>
 
-                              {/* 🟢 COMPACT OUT OF STOCK OVERLAY 🟢 */}
                               {isOutOfStock && (
                                   <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70 backdrop-blur-[2px] rounded-3xl pointer-events-none">
                                       <div className="bg-white/10 backdrop-blur-md text-white font-bold px-4 py-2 rounded-xl border border-white/20 shadow-2xl tracking-[0.3em] text-[10px] uppercase transform -rotate-12 drop-shadow-md">
@@ -1181,16 +1203,16 @@
                               )}
 
                               <div className="flex justify-between items-start mb-6 relative z-10">
-                                  <div className="bg-white/5 p-4 rounded-2xl border border-white/10 group-hover:bg-white/10 transition-colors duration-500 shadow-inner">
-                                      <Icon className={`w-6 h-6 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]`} strokeWidth={1.5} />
+                                  <div className="bg-white/5 p-4 rounded-2xl border border-white/10 group-hover:bg-brand-primary/10 transition-colors duration-500 shadow-inner backdrop-blur-md">
+                                      <Icon className={`w-6 h-6 text-brand-primary drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]`} strokeWidth={1.5} />
                                   </div>
                                   <div className="text-right flex flex-col items-end">
                                       <span className="text-white text-xl font-mono font-bold tracking-wider">${Number(product.price).toFixed(2)}</span>
-                                      <span className="text-[8px] text-gray-300 uppercase tracking-widest mt-1 font-mono bg-white/10 px-2.5 py-1 rounded-full border border-white/5">{stockCount} Units</span>
+                                      <span className="text-[8px] text-brand-primary uppercase tracking-widest mt-1 font-mono bg-brand-primary/10 px-2.5 py-1 rounded-full border border-brand-primary/20">{stockCount} Units</span>
                                   </div>
                               </div>
                               
-                              <h3 className="text-sm font-bold text-white mb-2 tracking-wider uppercase relative z-10 transition-colors duration-300">{product.name}</h3>
+                              <h3 className="text-sm font-bold text-white mb-2 tracking-wider uppercase relative z-10 group-hover:text-brand-primary transition-colors duration-300">{product.name}</h3>
                               <p className="text-gray-400 text-[10px] leading-relaxed mb-6 flex-grow line-clamp-2 font-light relative z-10">{product.description}</p>
                               
                               {!isOutOfStock && availableStates.length > 0 && (
@@ -1198,7 +1220,7 @@
                                       <select 
                                           value={selectedStates[product.id] || ''} 
                                           onChange={(e) => handleStateChange(product.id, e.target.value)}
-                                          className="w-full bg-black/50 border border-white/10 text-gray-300 text-[10px] rounded-xl px-4 py-3.5 appearance-none outline-none focus:border-white/30 tracking-wider font-mono cursor-pointer transition-colors shadow-inner backdrop-blur-md"
+                                          className="w-full bg-black/50 border border-white/10 text-gray-300 text-[10px] rounded-xl px-4 py-3.5 appearance-none outline-none focus:border-brand-primary/50 tracking-wider font-mono cursor-pointer transition-colors shadow-inner backdrop-blur-md"
                                       >
                                           <option value="">Select State</option>
                                           {availableStates.map(state => <option key={state} value={state}>{state}</option>)}
@@ -1207,13 +1229,13 @@
                                   </div>
                               )}
 
-                              <button onClick={() => handleAddToCart(product)} disabled={isOutOfStock} className="btn-animate w-full bg-white/5 border border-white/10 hover:bg-white text-white hover:text-black font-bold py-4 rounded-xl transition-all duration-300 text-[10px] tracking-widest uppercase relative z-10 flex justify-center items-center gap-2 shadow-md backdrop-blur-sm">
+                              <button onClick={() => handleAddToCart(product)} disabled={isOutOfStock} className="btn-animate w-full bg-white/5 border border-white/10 hover:bg-brand-primary text-white hover:text-black font-bold py-4 rounded-xl transition-all duration-300 text-[10px] tracking-widest uppercase relative z-10 flex justify-center items-center gap-2 shadow-md backdrop-blur-sm">
                                   {isOutOfStock ? 'Unavailable' : 'Add to Cart'} <ShoppingCart className="w-3.5 h-3.5" />
                               </button>
                           </div>
                       );
                   })}
-                  {filteredCategories.length === 0 && <div className="col-span-full py-16 text-center text-gray-600 font-mono text-[10px] uppercase tracking-widest"><Search className="w-8 h-8 mx-auto mb-3 opacity-20"/>No accounts found.</div>}
+                  {filteredCategories.length === 0 && <div className="col-span-full py-16 text-center text-gray-500 font-mono text-[10px] uppercase tracking-widest"><Search className="w-8 h-8 mx-auto mb-3 opacity-20"/>No accounts found.</div>}
               </div>
             </div>
           );
@@ -1629,7 +1651,7 @@
                             </div>
                             
                             {tier && tier.next && (
-                                <div className="w-full bg-[#111] rounded-full h-1.5 mb-3 overflow-hidden border border-[#222]">
+                                <div className="w-full bg-[#111] rounded-full h-1 mb-3 overflow-hidden border border-[#222]">
                                     <div className="bg-white h-full rounded-full shadow-[0_0_10px_#fff]" style={{width: `${Math.min(100, ((userInfo?.totalSpent || 0) / tier.next) * 100)}%`}}></div>
                                 </div>
                             )}
