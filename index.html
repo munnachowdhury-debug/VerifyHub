@@ -641,7 +641,7 @@
                             </div>
                             <form onSubmit={sendMessage} className="bg-[#121212] border-t border-[#2a2a2a] p-3 flex gap-2">
                                 <input type="text" value={message} onChange={e => setMessage(e.target.value)} placeholder="Type a message..." className="flex-grow bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-brand-primary"/>
-                                <button type="submit" disabled={!message.trim()} className="btn-animate bg-brand-primary text-black p-2.5 rounded-lg disabled:opacity-50"><Send className="w-4 h-4" /></button>
+                                <button type="submit" disabled={!message.trim()} className="btn-animate bg-brand-primary text-black p-2.5 rounded-lg disabled:opacity-50 transition-colors"><Send className="w-4 h-4" /></button>
                             </form>
                         </div>
                     )}
@@ -676,11 +676,21 @@
           useEffect(() => { if (user?.email) localStorage.setItem(`smsOrders_${user.email}`, JSON.stringify(activeOrders)); }, [activeOrders, user]);
           useEffect(() => { const int = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(int); }, []);
 
+          // 🟢 FIXED: Check API and Loading State
           useEffect(() => {
               if (smsSettings?.active) {
                   setIsFetchingServices(true);
                   fetch(`https://voicestore-backend.onrender.com/api/grizzly/getPrices?country=${smsCountry}`)
-                  .then(r => r.json()).then(json => { setAvailableServices(json?.success && Array.isArray(json.data) ? json.data : []); setIsFetchingServices(false); }).catch(() => { setIsFetchingServices(false); setAvailableServices([]); });
+                  .then(r => r.json()).then(json => { 
+                      const srvs = json?.success && Array.isArray(json.data) ? json.data : [];
+                      setAvailableServices(srvs); 
+                      // If only finding few services or none, log it.
+                      if(srvs.length === 0) console.log("No services fetched for", smsCountry);
+                      setIsFetchingServices(false); 
+                  }).catch(() => { 
+                      setIsFetchingServices(false); 
+                      setAvailableServices([]); 
+                  });
               }
           }, [smsSettings, smsCountry]);
 
@@ -744,18 +754,7 @@
               } catch (e) { triggerToast("Network Error."); } finally { setIsSmsLoading(false); }
           };
 
-          const performCancel = async (orderId, priceToRefund, isAuto = false) => {
-              if (isAuto) { setActiveOrders(prev => prev.filter(o => o.id !== orderId)); triggerToast(`Time expired. Refunded.`); }
-              try {
-                  const token = await getAuthToken();
-                  const cancelRes = await fetch(`https://voicestore-backend.onrender.com/api/juicy/cancel`, { method: 'POST', headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`}, body: JSON.stringify({orderId}) }); 
-                  const cancelData = await cancelRes.json();
-                  if (!cancelData.success && !String(cancelData.message).includes('already')) { if (!isAuto) { triggerToast(cancelData.message); return; } }
-                  await fetch('https://voicestore-backend.onrender.com/api/sms-refund', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ email: user.email, price: priceToRefund }) });
-                  if (!isAuto) { triggerToast(`Canceled. $${priceToRefund.toFixed(2)} refunded.`); setActiveOrders(prev => prev.filter(o => o.id !== orderId)); }
-              } catch (e) {} 
-          };
-
+          // 🟢 FIXED: REMOVED CANCEL FUNCTION, ONLY SKIP REMAINS
           const performSkip = async (orderId, priceToRefund) => {
               try {
                   const token = await getAuthToken();
@@ -769,8 +768,7 @@
           };
 
           const executeConfirmAction = () => {
-              if(confirmAction.type === 'cancel') performCancel(confirmAction.orderId, confirmAction.price);
-              else if(confirmAction.type === 'skip') performSkip(confirmAction.orderId, confirmAction.price);
+              if(confirmAction.type === 'skip') performSkip(confirmAction.orderId, confirmAction.price);
               setConfirmAction({ show: false, type: '', orderId: null, price: 0 });
           };
 
@@ -784,7 +782,7 @@
                               order.isCancelling = true;
                               setActiveOrders(prev => prev.filter(o => o.id !== order.id));
                               triggerToast(`Time expired. Refunded.`);
-                              performCancel(order.id, order.price, true);
+                              performSkip(order.id, order.price); // Auto skip when time ends
                           }
                           return;
                       }
@@ -825,19 +823,17 @@
                         <div className="bg-[#121212] border border-[#2a2a2a] w-full max-w-sm rounded-2xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-primary to-brand-primaryHover"></div>
                             <div className="flex items-center gap-3 mb-6">
-                                <div className={`p-3 rounded-full ${confirmAction.type === 'cancel' ? 'bg-[#1a1a1a] text-gray-400' : 'bg-red-900/20 text-red-500'}`}>
-                                    {confirmAction.type === 'cancel' ? <X className="w-5 h-5"/> : <Ban className="w-5 h-5"/>}
+                                <div className="p-3 rounded-full bg-red-900/20 text-red-500">
+                                    <Ban className="w-5 h-5"/>
                                 </div>
-                                <h3 className="text-lg font-bold text-white tracking-wide">{confirmAction.type === 'cancel' ? 'Cancel Order?' : 'Skip Number?'}</h3>
+                                <h3 className="text-lg font-bold text-white tracking-wide">Skip Number?</h3>
                             </div>
                             <p className="text-xs text-gray-400 leading-relaxed font-medium mb-8">
-                                {confirmAction.type === 'cancel' 
-                                    ? "Are you sure you want to cancel this number? Your balance will be refunded."
-                                    : "Are you sure you want to skip this number? It will be banned and balance refunded."}
+                                Are you sure you want to skip this number? It will be banned and balance refunded.
                             </p>
                             <div className="flex gap-3">
                                 <button onClick={() => setConfirmAction({ show: false, type: '', orderId: null, price: 0 })} className="btn-animate flex-1 py-3 rounded-xl font-bold text-gray-400 bg-[#1a1a1a] hover:bg-[#2a2a2a] transition-colors text-xs uppercase tracking-wider">No</button>
-                                <button onClick={executeConfirmAction} className={`btn-animate flex-1 py-3 rounded-xl font-bold text-black transition-all text-xs uppercase tracking-wider shadow-lg ${confirmAction.type === 'cancel' ? 'bg-gray-300 hover:bg-white shadow-white/10' : 'bg-red-500 hover:bg-red-400 shadow-red-500/20'}`}>Yes</button>
+                                <button onClick={executeConfirmAction} className="btn-animate flex-1 py-3 rounded-xl font-bold text-black transition-all text-xs uppercase tracking-wider shadow-lg bg-red-500 hover:bg-red-400 shadow-red-500/20">Yes</button>
                             </div>
                         </div>
                     </div>
@@ -859,8 +855,9 @@
                        <div className="flex flex-col sm:flex-row gap-4 items-center">
                            <div className="relative w-full">
                                <div onClick={() => setIsAppDropdownOpen(!isAppDropdownOpen)} className={uiInput + " h-14 pl-12 pr-10 flex items-center justify-between cursor-pointer border-[#2a2a2a] hover:border-brand-primary/50 bg-[#0a0a0a]"}>
-                                   <span className="truncate text-white font-medium">{isFetchingServices ? 'Loading prices...' : (currentService ? `${currentService.name}` : 'No services available')}</span>
-                                   <Smartphone className="w-4 h-4 text-brand-primary absolute left-4"/>
+                                   {/* 🟢 FIXED: Show proper state text based on fetching status */}
+                                   <span className="truncate text-white font-medium">{isFetchingServices ? 'Loading Apps...' : (currentService ? `${currentService.name}` : (availableServices.length > 0 ? 'Select App' : 'No services found'))}</span>
+                                   {isFetchingServices ? <RefreshCw className="w-4 h-4 text-brand-primary absolute left-4 animate-spin"/> : <Smartphone className="w-4 h-4 text-brand-primary absolute left-4"/>}
                                    <ChevronDown className={`w-4 h-4 text-gray-500 absolute right-4 transition-transform ${isAppDropdownOpen ? 'rotate-180' : ''}`}/>
                                </div>
                                {isAppDropdownOpen && (
@@ -871,7 +868,7 @@
                                                <input type="text" autoFocus placeholder="Search service..." value={appSearch} onChange={(e) => setAppSearch(e.target.value)} className="w-full bg-[#121212] text-white text-xs font-medium rounded-lg px-4 py-3 outline-none border border-[#2a2a2a] focus:border-brand-primary/50"/>
                                            </div>
                                            <div className="max-h-60 overflow-y-auto custom-scrollbar">
-                                               {filteredApps.length === 0 ? (<p className="text-center text-gray-500 py-6 text-xs">No services found.</p>) : 
+                                               {filteredApps.length === 0 ? (<p className="text-center text-gray-500 py-6 text-xs">{isFetchingServices ? 'Fetching...' : 'No services found.'}</p>) : 
                                                    filteredApps.map(s => {
                                                        if(!s) return null;
                                                        return (
@@ -944,14 +941,8 @@
                                             <span className="font-mono text-lg font-light text-gray-200 tracking-widest ml-1 sm:ml-0">{Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</span>
                                         </div>
                                         
-                                        {timeLeft > 220 ? (
-                                            <span className="text-[9px] sm:text-[10px] text-gray-500 font-bold px-3 py-2 bg-[#121212] rounded-lg flex items-center gap-1.5 border border-[#2a2a2a] uppercase tracking-wider"><Lock className="w-3 h-3"/> Wait: {timeLeft - 220}s</span>
-                                        ) : (
-                                            <div className="flex gap-2">
-                                                <button onClick={() => setConfirmAction({show: true, type: 'cancel', orderId: order.id, price: order.price})} className="btn-animate bg-[#121212] hover:bg-[#1a1a1a] border border-[#2a2a2a] text-gray-300 px-4 py-2.5 rounded-lg text-[10px] uppercase tracking-wider font-bold transition-all flex items-center gap-1.5"><X className="w-3 h-3"/> Cancel</button>
-                                                <button onClick={() => setConfirmAction({show: true, type: 'skip', orderId: order.id, price: order.price})} className="btn-animate bg-red-900/10 hover:bg-red-900/20 border border-red-900/30 text-red-500 px-4 py-2.5 rounded-lg text-[10px] uppercase tracking-wider font-bold transition-all flex items-center gap-1.5"><Ban className="w-3 h-3"/> Skip</button>
-                                            </div>
-                                        )}
+                                        {/* 🟢 ONLY SKIP BUTTON REMAINS HERE */}
+                                        <button onClick={() => setConfirmAction({show: true, type: 'skip', orderId: order.id, price: order.price})} className="btn-animate bg-red-900/10 hover:bg-red-900/20 border border-red-900/30 text-red-500 px-6 py-2.5 rounded-lg text-[10px] uppercase tracking-wider font-bold transition-all flex items-center gap-1.5"><Ban className="w-3 h-3"/> Skip Number</button>
                                     </div>
                                 </div>
                             ) : (
@@ -1269,7 +1260,7 @@
                               <p className="text-xs font-mono text-gray-500 flex items-center gap-2">
                                   <Clock className="w-3.5 h-3.5"/> {Math.floor(autoPay.time / 60)}:{(autoPay.time % 60).toString().padStart(2, '0')}
                               </p>
-                              <button onClick={() => setAutoPay({active: false, amount: 0, time: 0, checking: false, invoiceId: ''})} className="btn-animate text-[10px] text-red-500 hover:text-red-400 font-bold uppercase tracking-widest transition-colors">Cancel</button>
+                              <button onClick={() => setAutoPay({active: false, amount: 0, time: 0, checking: false, invoiceId: ''})} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase tracking-widest transition-colors">Cancel</button>
                           </div>
                       </div>
                   )}
@@ -1558,7 +1549,7 @@
                                <button onClick={() => {
                                   if (navigator.clipboard) navigator.clipboard.writeText(referralCode).then(() => triggerToast("Copied!"));
                                   else { const t = document.createElement("textarea"); t.value = referralCode; document.body.appendChild(t); t.select(); document.execCommand("copy"); document.body.removeChild(t); triggerToast("Copied!"); }
-                               }} className="btn-animate bg-[#121212] hover:bg-[#1a1a1a] text-gray-400 p-3 rounded-lg transition-colors border border-[#2a2a2a]"><Copy className="w-4 h-4"/></button>
+                               }} className="bg-[#121212] hover:bg-[#1a1a1a] text-gray-400 p-3 rounded-lg transition-colors border border-[#2a2a2a]"><Copy className="w-4 h-4"/></button>
                              </div>
                           </div>
                         )}
@@ -1877,7 +1868,7 @@
           // 🟢 FIXED: Navigate and pre-select chat 🟢
           const startTicketChat = (userEmail) => {
               setSelectedChatUser(userEmail);
-              setActiveTab('support');
+              // setActiveTab('support'); This is already active if we are clicking reply inside support tab, but it's safe to keep.
           };
 
           const pendingDeposits = deposits.filter(d => d.status === 'Pending' || d.status === 'Verifying...' || d.status === 'Pending Review' || d.status === 'Awaiting Payment');
