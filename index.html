@@ -294,6 +294,14 @@
             return 'Invalid Date';
         };
 
+        // 🟢 HELPER FUNCTION TO EXTRACT ONLY THE OTP CODE FROM SMS 🟢
+        const extractSmsCode = (fullText) => {
+            if (!fullText) return null;
+            const textStr = String(fullText);
+            const match = textStr.match(/\b\d{4,8}\b/);
+            return match ? match[0] : null;
+        };
+
         // 🟢 PREMIUM STATIC BACKGROUND 🟢
         const PremiumBackground = () => (
           <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden flex items-center justify-center bg-transparent">
@@ -1092,16 +1100,31 @@
           };
 
           const performSkip = async (orderId, priceToRefund, isAuto = false) => {
-              if (isAuto) { setActiveOrders(prev => prev.filter(o => o.id !== orderId)); triggerToast(`Time expired. Refunded.`); }
               try {
                   const token = await getAuthToken();
                   const skipRes = await fetch(`https://voicestore-backend.onrender.com/api/juicy/skip`, { method: 'POST', headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${token}`}, body: JSON.stringify({orderId}) }); 
                   const skipData = await skipRes.json();
-                  if (!skipData.success && !String(skipData.message).includes('already')) { if(!isAuto) triggerToast(skipData.message); return; }
+                  
+                  // 🟢 FIXED: DO NOT IGNORE BACKEND ERRORS. STOP REFUND IF CODE ALREADY RECEIVED. 🟢
+                  if (!skipData.success) { 
+                      if (!isAuto) triggerToast(skipData.message); 
+                      if (String(skipData.message).includes('received')) {
+                          setActiveOrders(prev => prev.map(o => o.id === orderId ? {...o, isCancelling: false} : o));
+                      }
+                      return; 
+                  }
+                  
+                  // Only refund if backend confirmed cancellation
                   await fetch('https://voicestore-backend.onrender.com/api/sms-refund', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ email: user.email, price: priceToRefund }) });
+                  
                   if(!isAuto) triggerToast(`Skipped. $${priceToRefund.toFixed(2)} refunded.`); 
+                  else triggerToast(`Time expired. Auto-refunded.`);
+                  
                   setActiveOrders(prev => prev.filter(o => o.id !== orderId));
-              } catch (e) {} 
+              } catch (e) {
+                  if(!isAuto) triggerToast("Network Error.");
+                  setActiveOrders(prev => prev.map(o => o.id === orderId ? {...o, isCancelling: false} : o));
+              } 
           };
 
           const executeConfirmAction = () => {
@@ -1116,9 +1139,7 @@
                       if (order.codes.length > 0) return; 
                       if (Date.now() >= order.expiresAt) {
                           if (!order.isCancelling) {
-                              order.isCancelling = true;
-                              setActiveOrders(prev => prev.filter(o => o.id !== order.id));
-                              triggerToast(`Time expired. Auto-refunded.`);
+                              setActiveOrders(prev => prev.map(o => o.id === order.id ? {...o, isCancelling: true} : o));
                               performSkip(order.id, order.price, true);
                           }
                           return;
