@@ -140,11 +140,11 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.15); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.4); }
 
-        /* 🌟 PURE GLASSMORPHISM 🌟 */
+        /* 🌟 REDUCED BLUR FOR PERFORMANCE (NO PHONE HEATING) 🌟 */
         .glass-effect {
             background: rgba(20, 25, 35, 0.4);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(4px); /* Changed from 24px to 4px */
+            -webkit-backdrop-filter: blur(4px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -158,7 +158,8 @@
         .glass-panel {
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(2px); /* Changed from 12px to 2px */
+            -webkit-backdrop-filter: blur(2px);
             border-radius: 16px;
         }
 
@@ -194,26 +195,26 @@
         /* 🌟 OUTSIDE FLYING ANIMATIONS FOR LOGOS (SUPER SLOW) 🌟 */
         @keyframes fly1 {
             0% { transform: translate(-40vw, 130vh) rotate(0deg) scale(0.5); opacity: 0; }
-            5% { opacity: 0.15; }
-            95% { opacity: 0.15; }
+            5% { opacity: 0.9; }
+            95% { opacity: 0.9; }
             100% { transform: translate(140vw, -30vh) rotate(360deg) scale(1.5); opacity: 0; }
         }
         @keyframes fly2 {
             0% { transform: translate(140vw, 110vh) rotate(0deg) scale(1); opacity: 0; }
-            5% { opacity: 0.15; }
-            95% { opacity: 0.15; }
+            5% { opacity: 0.85; }
+            95% { opacity: 0.85; }
             100% { transform: translate(-40vw, -30vh) rotate(-360deg) scale(0.8); opacity: 0; }
         }
         @keyframes fly3 {
             0% { transform: translate(50vw, 130vh) rotate(0deg) scale(1.2); opacity: 0; }
-            5% { opacity: 0.15; }
-            95% { opacity: 0.15; }
+            5% { opacity: 0.95; }
+            95% { opacity: 0.95; }
             100% { transform: translate(-40vw, -50vh) rotate(180deg) scale(0.5); opacity: 0; }
         }
         @keyframes fly4 {
             0% { transform: translate(-40vw, 30vh) rotate(0deg) scale(0.8); opacity: 0; }
-            5% { opacity: 0.15; }
-            95% { opacity: 0.15; }
+            5% { opacity: 0.85; }
+            95% { opacity: 0.85; }
             100% { transform: translate(140vw, 90vh) rotate(270deg) scale(1.2); opacity: 0; }
         }
     </style>
@@ -274,7 +275,6 @@
             { id: 'sms', label: 'Buy SMS', icon: Smartphone },
             { id: 'store', label: 'Buy Accounts', icon: ShoppingCart },
             { id: 'add_funds', label: 'Add Funds', icon: Wallet },
-            // 🟢 Name strictly set to Purchased to avoid button overlapping 🟢
             { id: 'my_accounts', label: 'Purchased', icon: Key },
             { id: 'profile', label: 'Profile', icon: UserIcon } 
         ];
@@ -322,7 +322,7 @@
           </div>
         );
 
-        // 🌟 CRYSTAL CLEAR COLORFUL FLOATING LOGOS (Fewer Logos, Less Clutter) 🌟
+        // 🌟 CRYSTAL CLEAR COLORFUL FLOATING LOGOS (Fewer Logos, Crystal Clear) 🌟
         const FloatingLogos = () => {
             const baseLogos = [
                 <svg className="text-[#25D366] drop-shadow-[0_0_20px_rgba(37,211,102,0.8)]" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>,
@@ -334,7 +334,7 @@
             const renderedLogos = useMemo(() => {
                 const arr = [];
                 const animationsList = ['fly1', 'fly2', 'fly3', 'fly4'];
-                // 🟢 Reduced to only 4 clean logos 🟢
+                // 🟢 Reduced to only 4 clean logos to prevent clutter 🟢
                 for(let i=0; i<4; i++) {
                     const logo = baseLogos[i % baseLogos.length];
                     const randomSize = Math.floor(Math.random() * 40) + 50;
@@ -343,7 +343,7 @@
                     const animationName = animationsList[i % animationsList.length];
                     
                     arr.push(
-                        <div key={i} className="absolute opacity-15" style={{
+                        <div key={i} className="absolute opacity-90" style={{
                             width: `${randomSize}px`,
                             height: `${randomSize}px`,
                             animation: `${animationName} ${randomDuration}s linear infinite`,
@@ -474,10 +474,10 @@
             if (!acc) return null; // Ultimate safety check
 
             return (
-                <div className="bg-black/40 backdrop-blur-xl border border-white/10 hover:border-white/30 transition-all duration-300 rounded-3xl p-6 flex flex-col animate-scale-up hover:shadow-[0_10px_30px_rgba(255,255,255,0.05)]" style={{animationDelay: `${idx * 0.05}s`, opacity: 0, animationFillMode: 'forwards'}}>
+                <div className="glass-panel border border-white/10 hover:border-white/30 transition-all duration-300 rounded-3xl p-6 flex flex-col animate-scale-up hover:shadow-[0_10px_30px_rgba(255,255,255,0.05)]" style={{animationDelay: `${idx * 0.05}s`, opacity: 0, animationFillMode: 'forwards'}}>
                     <div className="flex justify-between items-start mb-5 pb-4 border-b border-white/10">
                         <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                            <Package className="w-4 h-4 text-gray-300"/> {String(acc.type || 'Account')}
+                            <Package className="w-4 h-4 text-brand-primary"/> {String(acc.type || 'Account')}
                         </span>
                         <span className="text-[8px] font-mono text-gray-400 uppercase tracking-widest bg-white/5 px-2.5 py-1 rounded border border-white/10">
                             {safeFormatDate(acc.date)}
@@ -494,7 +494,7 @@
                         </div>
                     )}
 
-                    <div className="w-full bg-black/60 border border-white/5 p-4 rounded-xl mb-5 overflow-x-auto flex-grow shadow-inner">
+                    <div className="w-full bg-black/60 border border-white/5 p-4 rounded-xl mb-5 overflow-x-auto flex-grow shadow-inner custom-scrollbar">
                         <pre className="font-mono text-[10px] text-gray-300 whitespace-pre-wrap break-words leading-relaxed">{String(acc.data || '')}</pre>
                     </div>
                     
@@ -534,11 +534,12 @@
           const [activeChats, setActiveChats] = useState([]);
           const initialChatsLoadRef = useRef(true);
           
+          // 🟢 DYNAMIC SETTINGS STATES 🟢
           const [promoSettings, setPromoSettings] = useState({ code: '', discount: 0, isActive: false });
           const [globalNotice, setGlobalNotice] = useState('');
           const [featureSettings, setFeatureSettings] = useState({ dailyReward: false, referral: false });
-          const [bankSettings, setBankSettings] = useState({ nairaRate: 1500, flutterwaveKey: '', flutterwaveActive: false });
-          
+          const [bankSettings, setBankSettings] = useState({ bankName: 'Parallex', accountName: 'Samuel Osita Emmanuel', accountNumber: '1120927346', nairaRate: 1500, flutterwaveKey: '', flutterwaveActive: false });
+          const [cryptoSettings, setCryptoSettings] = useState({ usdtAddress: 'TELRyMwDmdKzBRb7Uaw3zNvphrc8V3D5Mj', btcAddress: '1EgVdWyoCsWepg3TAowifuhoR81Lm1xEUd' });
           const [smsSettings, setSmsSettings] = useState({ active: true, markup: 1.00 });
           const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
           
@@ -604,7 +605,11 @@
             unsubs.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'PromoCode'), (snap) => { if (snap.exists()) setPromoSettings(snap.data()); }, errLog));
             unsubs.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'Notice'), (snap) => { if (snap.exists()) setGlobalNotice(snap.data().text || ''); }, errLog));
             unsubs.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'Features'), (snap) => { if (snap.exists()) setFeatureSettings(snap.data()); }, errLog));
-            unsubs.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'Bank'), (snap) => { if (snap.exists()) setBankSettings(snap.data()); }, errLog));
+            
+            // 🟢 DYNAMIC PAYMENT SETTINGS FETCHING 🟢
+            unsubs.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'Bank'), (snap) => { if (snap.exists()) setBankSettings(prev => ({...prev, ...snap.data()})); }, errLog));
+            unsubs.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'Crypto'), (snap) => { if (snap.exists()) setCryptoSettings(prev => ({...prev, ...snap.data()})); }, errLog));
+            
             unsubs.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'SMS'), (snap) => { if (snap.exists()) setSmsSettings(snap.data()); }, errLog));
             
             unsubs.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'Products'), (snap) => { 
@@ -647,7 +652,6 @@
             unsubs.push(onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'Store_Orders'), (snap) => { 
                 const o = []; 
                 snap.forEach((d) => { o.push({ id: d.id, ...d.data() }); }); 
-                // 🟢 FULLY SAFE SORTING 🟢
                 setAllOrders(o.sort((a,b) => {
                     const timeA = a.date ? new Date(a.date).getTime() : 0;
                     const timeB = b.date ? new Date(b.date).getTime() : 0;
@@ -753,7 +757,6 @@
             return (
               <div className="min-h-screen flex items-center justify-center p-4 relative font-sans w-full bg-transparent text-white">
                 <PremiumBackground />
-                {/* 🟢 FLOATING LOGOS ON LOGIN SCREEN 🟢 */}
                 <FloatingLogos />
                 <div className="w-full max-w-[400px] animate-scale-up z-10">
                   <div className="flex flex-col items-center mb-8">
@@ -802,7 +805,6 @@
           return (
             <div className="min-h-screen w-full relative overflow-x-hidden font-sans pb-24 flex flex-col bg-transparent text-white">
               <PremiumBackground />
-              {/* 🟢 FLOATING LOGOS ON DASHBOARD SCREEN AS WELL 🟢 */}
               <FloatingLogos />
               <MessageNotification msg={incomingMsg} onClose={() => setIncomingMsg(null)} />
               
@@ -869,12 +871,12 @@
                     {/* 🟢 ERROR BOUNDARY: NO MORE BLANK SCREENS 🟢 */}
                     <ErrorBoundary>
                         {user.role === 'admin' ? (
-                          <AdminDashboard inventory={inventory} orders={allOrders} deposits={deposits} categories={categories} usersDB={usersDB} triggerToast={triggerToast} db={db} appId={appId} promoSettings={promoSettings} tickets={tickets} featureSettings={featureSettings} bankSettings={bankSettings} smsSettings={smsSettings} activeChats={activeChats} auth={auth} user={user} activeTab={activeTab} setActiveTab={setActiveTab} />
+                          <AdminDashboard inventory={inventory} orders={allOrders} deposits={deposits} categories={categories} usersDB={usersDB} triggerToast={triggerToast} db={db} appId={appId} promoSettings={promoSettings} tickets={tickets} featureSettings={featureSettings} bankSettings={bankSettings} cryptoSettings={cryptoSettings} smsSettings={smsSettings} activeChats={activeChats} auth={auth} user={user} activeTab={activeTab} setActiveTab={setActiveTab} />
                         ) : (
                           <>
                               {activeTab === 'sms' && <CustomerDashboardSMS user={user} balance={currentUserBalance} triggerToast={triggerToast} smsSettings={smsSettings} />}
                               {activeTab === 'store' && <CustomerDashboardStore inventory={inventory} categories={categories} cart={cart} setCart={setCart} allOrders={allOrders} triggerToast={triggerToast} />}
-                              {activeTab === 'add_funds' && <CustomerDashboardFunds user={user} db={db} appId={appId} triggerToast={triggerToast} addNotification={addNotification} bankSettings={bankSettings} />}
+                              {activeTab === 'add_funds' && <CustomerDashboardFunds user={user} db={db} appId={appId} triggerToast={triggerToast} addNotification={addNotification} bankSettings={bankSettings} cryptoSettings={cryptoSettings} />}
                               {/* 🟢 FULLY FIXED VAULT COMPONENT RENDERING 🟢 */}
                               {activeTab === 'my_accounts' && <CustomerDashboardVault user={user} purchases={purchases} db={db} appId={appId} triggerToast={triggerToast} />}
                               {activeTab === 'profile' && <CustomerDashboardProfile user={user} balance={currentUserBalance} tier={currentUserTier} userInfo={usersDB[user.email]} allOrders={allOrders} deposits={deposits} purchases={purchases} tickets={tickets.filter(t => t && t.email === user.email)} db={db} appId={appId} featureSettings={featureSettings} triggerToast={triggerToast} />}
@@ -1439,10 +1441,13 @@
         // ==========================================
         // FUNDS MODULE
         // ==========================================
-        function CustomerDashboardFunds({ user, db, appId, triggerToast, addNotification, bankSettings }) {
+        function CustomerDashboardFunds({ user, db, appId, triggerToast, addNotification, bankSettings, cryptoSettings }) {
           const [autoPay, setAutoPay] = useState({ active: false, amount: 0, time: 900, checking: false, invoiceId: '' });
-          const TRON_ADDRESS = 'TELRyMwDmdKzBRb7Uaw3zNvphrc8V3D5Mj';
-          const BTC_ADDRESS = '1EgVdWyoCsWepg3TAowifuhoR81Lm1xEUd';
+          
+          // 🟢 DYNAMIC CRYPTO ADDRESSES 🟢
+          const TRON_ADDRESS = cryptoSettings?.usdtAddress || 'TELRyMwDmdKzBRb7Uaw3zNvphrc8V3D5Mj';
+          const BTC_ADDRESS = cryptoSettings?.btcAddress || '1EgVdWyoCsWepg3TAowifuhoR81Lm1xEUd';
+          
           const [depositAmountUsd, setDepositAmountUsd] = useState('');
           const [cryptoAmountInput, setCryptoAmountInput] = useState(''); 
           const [cryptoMethod, setCryptoMethod] = useState('USDT TRC20');
@@ -1639,11 +1644,11 @@
                   </div>
 
                   <div className="bg-black/40 border border-white/5 rounded-xl p-4 mb-5 text-[11px] font-mono tracking-wide space-y-3">
-                    <div className="flex justify-between items-center border-b border-white/5 pb-2"><span className="text-gray-400">Bank</span> <span className="font-bold text-white">Parallex</span></div>
-                    <div className="flex justify-between items-center border-b border-white/5 pb-2 pt-1"><span className="text-gray-400">Name</span> <span className="font-bold text-white text-right">Samuel Osita Emmanuel</span></div>
-                    <div className="flex justify-between items-center pt-1"><span className="text-gray-400">A/C No.</span> <span className="text-white font-bold text-sm">1120927346</span></div>
+                    <div className="flex justify-between items-center border-b border-white/5 pb-2"><span className="text-gray-400">Bank</span> <span className="font-bold text-white">{bankSettings?.bankName || 'Parallex'}</span></div>
+                    <div className="flex justify-between items-center border-b border-white/5 pb-2 pt-1"><span className="text-gray-400">Name</span> <span className="font-bold text-white text-right">{bankSettings?.accountName || 'Samuel Osita Emmanuel'}</span></div>
+                    <div className="flex justify-between items-center pt-1"><span className="text-gray-400">A/C No.</span> <span className="text-white font-bold text-sm">{bankSettings?.accountNumber || '1120927346'}</span></div>
                   </div>
-                  <button onClick={() => copyToClipboard('1120927346')} className="btn-animate w-full glass-panel hover:bg-white/20 text-white font-bold py-3.5 px-6 rounded-2xl transition-all flex items-center justify-center gap-2 uppercase tracking-widest shadow-md mb-4 !text-xs"><Copy className="w-3.5 h-3.5" /> Copy Details</button>
+                  <button onClick={() => copyToClipboard(bankSettings?.accountNumber || '1120927346')} className="btn-animate w-full glass-panel hover:bg-white/20 text-white font-bold py-3.5 px-6 rounded-2xl transition-all flex items-center justify-center gap-2 uppercase tracking-widest shadow-md mb-4 !text-xs"><Copy className="w-3.5 h-3.5" /> Copy Details</button>
                   <p className="text-[8px] text-gray-500 font-mono uppercase tracking-widest text-center mt-2">Admin verification required.</p>
                 </div>
 
@@ -2007,7 +2012,7 @@
         // ==========================================
         // ADMIN DASHBOARD
         // ==========================================
-        function AdminDashboard({ inventory, orders, deposits, categories, usersDB, db, appId, promoSettings, globalNotice, tickets, featureSettings, bankSettings, smsSettings, activeChats, auth, user, triggerToast, activeTab, setActiveTab }) {
+        function AdminDashboard({ inventory, orders, deposits, categories, usersDB, db, appId, promoSettings, globalNotice, tickets, featureSettings, bankSettings, cryptoSettings, smsSettings, activeChats, auth, user, triggerToast, activeTab, setActiveTab }) {
           const [uploadCategory, setUploadCategory] = useState('new');
           const [uploadText, setUploadText] = useState('');
           const [customerSearch, setCustomerSearch] = useState('');
@@ -2026,6 +2031,13 @@
 
           const [smsMarkupInput, setSmsMarkupInput] = useState(1.00);
           const [smsActiveInput, setSmsActiveInput] = useState(true);
+          
+          // 🟢 ADDED DYNAMIC CRYPTO & BANK STATES 🟢
+          const [usdtAddressInput, setUsdtAddressInput] = useState('TELRyMwDmdKzBRb7Uaw3zNvphrc8V3D5Mj');
+          const [btcAddressInput, setBtcAddressInput] = useState('1EgVdWyoCsWepg3TAowifuhoR81Lm1xEUd');
+          const [bankNameInput, setBankNameInput] = useState('Parallex');
+          const [bankAccountNameInput, setBankAccountNameInput] = useState('Samuel Osita Emmanuel');
+          const [bankAccountNumberInput, setBankAccountNumberInput] = useState('1120927346');
 
           const [editUserModal, setEditUserModal] = useState({ show: false, email: '', password: '', balance: 0, totalSpent: 0 });
           
@@ -2091,12 +2103,19 @@
                 setNairaRateInput(bankSettings.nairaRate || 1500); 
                 setFlutterwaveKeyInput(bankSettings.flutterwaveKey || '');
                 setFlutterwaveActiveInput(bankSettings.flutterwaveActive || false);
+                setBankNameInput(bankSettings.bankName || 'Parallex');
+                setBankAccountNameInput(bankSettings.accountName || 'Samuel Osita Emmanuel');
+                setBankAccountNumberInput(bankSettings.accountNumber || '1120927346');
+            }
+            if (cryptoSettings) {
+                setUsdtAddressInput(cryptoSettings.usdtAddress || 'TELRyMwDmdKzBRb7Uaw3zNvphrc8V3D5Mj');
+                setBtcAddressInput(cryptoSettings.btcAddress || '1EgVdWyoCsWepg3TAowifuhoR81Lm1xEUd');
             }
             if (smsSettings) {
                 setSmsMarkupInput(smsSettings.markup !== undefined ? smsSettings.markup : 1.00);
                 setSmsActiveInput(smsSettings.active ?? true);
             }
-          }, [promoSettings, globalNotice, featureSettings, bankSettings, smsSettings]);
+          }, [promoSettings, globalNotice, featureSettings, bankSettings, cryptoSettings, smsSettings]);
 
           // Fetch messages for selected user in Admin
           useEffect(() => {
@@ -2227,9 +2246,16 @@
               await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'Notice'), { text: noticeInput });
               await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'Features'), { dailyReward: dailyRewardActive, referral: referralActive });
               await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'SMS'), { markup: parseFloat(smsMarkupInput), active: smsActiveInput });
+              
+              // 🟢 SAVING DYNAMIC PAYMENT SETTINGS 🟢
               await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'Bank'), { 
+                  bankName: bankNameInput, accountName: bankAccountNameInput, accountNumber: bankAccountNumberInput,
                   nairaRate: parseFloat(nairaRateInput) || 1500, flutterwaveKey: flutterwaveKeyInput, flutterwaveActive: flutterwaveActiveInput
               });
+              await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'Crypto'), { 
+                  usdtAddress: usdtAddressInput, btcAddress: btcAddressInput 
+              });
+              
               triggerToast("Settings saved.");
             } catch (error) { triggerToast("Error saving."); }
           };
@@ -2430,7 +2456,7 @@
                                 <span className="font-bold text-[10px] text-white uppercase tracking-wide">{t.subject}</span>
                               </div>
                               <div className="flex flex-col items-end gap-2">
-                                  <span className={`text-[8px] px-2 py-1 rounded border uppercase tracking-[0.2em] font-bold ${t.status === 'Open' ? 'bg-red-900/20 text-red-400 border-red-900/50' : 'bg-green-900/20 text-green-500 border-green-900/50'}`}>{t.status}</span>
+                                  <span className={`text-[8px] px-2 py-1 rounded border uppercase tracking-[0.2em] font-bold ${t.status === 'Open' ? 'bg-red-900/20 text-red-400 border-red-900/50' : 'bg-green-900/20 text-green-400 border-green-900/50'}`}>{t.status}</span>
                                   {t.status === 'Open' && (
                                     <div className="flex gap-2 mt-1">
                                         <button onClick={() => startTicketChat(t.email)} className="btn-animate text-[9px] text-white hover:text-gray-300 transition-colors underline flex items-center gap-1"><MessageCircle className="w-2.5 h-2.5"/> Reply</button>
@@ -2574,41 +2600,67 @@
                 {activeTab === 'settings' && (
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 w-full">
                     <div className="glass-effect rounded-3xl p-6 sm:p-8 w-full border border-white/10 animate-slide-in-right">
-                      <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-white mb-6 border-b border-white/10 pb-4">General Settings</h2>
+                      <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-white mb-6 border-b border-white/10 pb-4">Payment & Gateway Settings</h2>
                       
                       <form onSubmit={handleSaveSettings} className="space-y-8">
+                        {/* 🟢 DYNAMIC CRYPTO SETTINGS 🟢 */}
                         <div className="space-y-5">
-                           <h3 className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">SMS Markup</h3>
-                           <div className="grid grid-cols-1 gap-4">
-                             <div>
-                               <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Added Profit per SMS ($)</label>
-                               <input type="number" step="0.01" value={smsMarkupInput} onChange={(e) => setSmsMarkupInput(e.target.value)} placeholder="1.00" className={uiInput} />
-                             </div>
-                           </div>
-                           <label className="flex items-center gap-3 cursor-pointer mt-4 pl-1 bg-black/40 border border-white/5 p-4 rounded-xl transition-colors hover:border-white/20">
-                             <input type="checkbox" checked={smsActiveInput} onChange={(e) => setSmsActiveInput(e.target.checked)} className="w-4 h-4 rounded text-black focus:ring-white bg-[#000]" />
-                             <span className="text-xs font-bold text-white uppercase tracking-wider">Enable SMS Service</span>
-                           </label>
-                        </div>
-                        
-                        <div className="space-y-5 pt-4 border-t border-white/10">
-                           <h3 className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">Bank Transfer Rate</h3>
+                           <h3 className="text-[10px] font-bold text-brand-primary uppercase tracking-[0.3em] flex items-center gap-2"><DollarSign className="w-3.5 h-3.5"/> Crypto Addresses</h3>
                            <div>
-                             <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">1 USD to NGN Rate</label>
-                             <input type="number" step="0.01" value={nairaRateInput} onChange={(e) => setNairaRateInput(e.target.value)} className={uiInput} />
+                             <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">USDT (TRC20) Wallet Address</label>
+                             <input type="text" value={usdtAddressInput} onChange={(e) => setUsdtAddressInput(e.target.value)} required className={uiInput + " font-mono"} />
+                           </div>
+                           <div>
+                             <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Bitcoin (BTC) Wallet Address</label>
+                             <input type="text" value={btcAddressInput} onChange={(e) => setBtcAddressInput(e.target.value)} required className={uiInput + " font-mono"} />
+                           </div>
+                        </div>
+
+                        {/* 🟢 DYNAMIC BANK SETTINGS 🟢 */}
+                        <div className="space-y-5 pt-4 border-t border-white/10">
+                           <h3 className="text-[10px] font-bold text-brand-primary uppercase tracking-[0.3em] flex items-center gap-2"><Building className="w-3.5 h-3.5"/> Local Bank Details</h3>
+                           <div>
+                             <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Bank Name</label>
+                             <input type="text" value={bankNameInput} onChange={(e) => setBankNameInput(e.target.value)} required className={uiInput} />
+                           </div>
+                           <div>
+                             <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Account Name</label>
+                             <input type="text" value={bankAccountNameInput} onChange={(e) => setBankAccountNameInput(e.target.value)} required className={uiInput} />
+                           </div>
+                           <div className="grid grid-cols-2 gap-4">
+                               <div>
+                                 <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Account Number</label>
+                                 <input type="text" value={bankAccountNumberInput} onChange={(e) => setBankAccountNumberInput(e.target.value)} required className={uiInput + " font-mono"} />
+                               </div>
+                               <div>
+                                 <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">1 USD to NGN Rate</label>
+                                 <input type="number" step="0.01" value={nairaRateInput} onChange={(e) => setNairaRateInput(e.target.value)} required className={uiInput} />
+                               </div>
                            </div>
                         </div>
 
                         <div className="space-y-5 pt-4 border-t border-white/10">
                            <h3 className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">Flutterwave (Card Payment)</h3>
                            <label className="flex items-center gap-3 cursor-pointer mt-4 pl-1 bg-black/40 border border-white/5 p-4 rounded-xl mb-4 transition-colors hover:border-white/20">
-                             <input type="checkbox" checked={flutterwaveActiveInput} onChange={(e) => setFlutterwaveActiveInput(e.target.checked)} className="w-4 h-4 rounded text-black focus:ring-white bg-[#000]" />
-                             <span className="text-xs font-bold text-white uppercase tracking-wider">Enable Flutterwave</span>
+                             <input type="checkbox" checked={flutterwaveActiveInput} onChange={(e) => setFlutterwaveActiveInput(e.target.checked)} className="w-4 h-4 rounded text-brand-primary focus:ring-brand-primary bg-[#000]" />
+                             <span className="text-xs font-bold text-white uppercase tracking-wider">Enable Flutterwave Gateway</span>
                            </label>
                            <div>
                              <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Flutterwave Public Key</label>
-                             <input type="text" value={flutterwaveKeyInput} onChange={(e) => setFlutterwaveKeyInput(e.target.value)} placeholder="FLWPUBK_TEST-..." className={uiInput} />
+                             <input type="text" value={flutterwaveKeyInput} onChange={(e) => setFlutterwaveKeyInput(e.target.value)} placeholder="FLWPUBK_TEST-..." className={uiInput + " font-mono"} />
                            </div>
+                        </div>
+
+                        <div className="space-y-5 pt-4 border-t border-white/10">
+                           <h3 className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">SMS Settings</h3>
+                           <div>
+                             <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Added Profit per SMS ($)</label>
+                             <input type="number" step="0.01" value={smsMarkupInput} onChange={(e) => setSmsMarkupInput(e.target.value)} placeholder="1.00" className={uiInput} />
+                           </div>
+                           <label className="flex items-center gap-3 cursor-pointer mt-4 pl-1 bg-black/40 border border-white/5 p-4 rounded-xl transition-colors hover:border-white/20">
+                             <input type="checkbox" checked={smsActiveInput} onChange={(e) => setSmsActiveInput(e.target.checked)} className="w-4 h-4 rounded text-brand-primary focus:ring-brand-primary bg-[#000]" />
+                             <span className="text-xs font-bold text-white uppercase tracking-wider">Enable SMS Service Module</span>
+                           </label>
                         </div>
 
                         <div className="space-y-5 pt-4 border-t border-white/10">
