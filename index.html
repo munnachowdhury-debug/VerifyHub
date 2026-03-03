@@ -70,12 +70,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.2.2/otpauth.umd.min.js"></script>
     <script src="https://checkout.flutterwave.com/v3.js"></script>
 
+    <!-- 🟢 ANTI-HACKING & ANTI-DEBUGGING SCRIPT 🟢 -->
+    <script>
+        // Disable Right Click
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+        document.onkeydown = function(e) {
+            if (e.keyCode === 123 || 
+               (e.ctrlKey && e.shiftKey && (e.keyCode === 'I'.charCodeAt(0) || e.keyCode === 'J'.charCodeAt(0))) || 
+               (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))) {
+                e.preventDefault();
+                return false;
+            }
+        };
+
+        // Continuous Debugger Trap (Freezes console if opened)
+        setInterval(function() {
+            debugger;
+        }, 100);
+    </script>
+
     <style>
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         
         body {
-            /* 🌟 STATIC DEEP PREMIUM BACKGROUND (NO MOVEMENT = NO HEAT) 🌟 */
+            /* 🌟 STATIC DEEP PREMIUM BACKGROUND 🌟 */
             background-color: #030712;
             background-image: 
                 radial-gradient(circle at 15% 50%, rgba(6, 182, 212, 0.15) 0px, transparent 40%),
@@ -85,14 +106,19 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
+            /* Disable selection to prevent quick copying of elements */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         
-        input, textarea, select {
+        /* Allow selection only on inputs and textareas */
+        input, textarea, select, pre, .allow-select {
             -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text;
         }
-        pre { -webkit-user-select: auto; user-select: auto; }
 
-        /* 🌟 ELASTIC BUTTON ANIMATIONS 🌟 */
+        /* 🌟 CRAZY ELASTIC BUTTON ANIMATIONS (HARDWARE ACCELERATED) 🌟 */
         .btn-animate {
             transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
             will-change: transform;
@@ -112,10 +138,10 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.15); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.4); }
 
-        /* 🌟 1% BLUR & 100% TRANSPARENT GLASS (ZERO HEATING) 🌟 */
+        /* 🌟 1% BLUR & 100% TRANSPARENT GLASS (0% HEATING) 🌟 */
         .glass-effect {
-            background: rgba(15, 23, 42, 0.3); 
-            backdrop-filter: blur(2px); 
+            background: rgba(15, 23, 42, 0.3); /* Super sheer background */
+            backdrop-filter: blur(2px); /* 1% Blur */
             -webkit-backdrop-filter: blur(2px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
@@ -127,9 +153,9 @@
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.03); 
+            background: rgba(255, 255, 255, 0.03); /* Transparent */
             border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(2px); 
+            backdrop-filter: blur(2px); /* 1% Blur */
             -webkit-backdrop-filter: blur(2px);
             border-radius: 16px;
         }
@@ -152,13 +178,13 @@
 
         .tab-transition-enter { animation: fadeInUp 0.4s ease-out forwards; }
 
-        /* 🌟 HARDWARE ACCELERATED FLOATING LOGOS 🌟 */
+        /* 🌟 EXTREMELY OPTIMIZED FLOATING ANIMATIONS (GPU ONLY) 🌟 */
         .hardware-accelerated {
-            pointer-events: none;
-            position: absolute;
             transform-style: preserve-3d;
             backface-visibility: hidden;
+            pointer-events: none;
             will-change: transform;
+            position: absolute;
         }
 
         @keyframes fly1 {
@@ -321,7 +347,7 @@
                <PremiumBackground />
                <FloatingLogos />
                <div className="relative z-10 flex flex-col items-center justify-center px-4 w-full h-full animate-pop-in text-center">
-                  <h1 className="text-4xl sm:text-6xl font-bold tracking-[0.2em] mb-4 text-white uppercase text-center w-full">
+                  <h1 className="text-4xl sm:text-6xl font-bold tracking-[0.2em] mb-4 text-white uppercase text-center w-full drop-shadow-lg">
                       Verify<span className="text-brand-primary font-light">Hub</span>
                   </h1>
                </div>
@@ -442,7 +468,7 @@
             if (!acc) return null;
 
             return (
-                <div className="glass-panel p-6 flex flex-col animate-fade-in-up" style={{animationDelay: `${idx * 0.05}s`, animationFillMode: 'both'}}>
+                <div className="glass-panel p-6 flex flex-col animate-fade-in-up allow-select" style={{animationDelay: `${idx * 0.05}s`, animationFillMode: 'both'}}>
                     <div className="flex justify-between items-start mb-5 pb-4 border-b border-white/10">
                         <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
                             <Package className="w-4 h-4 text-brand-primary"/> {String(acc.type || 'Account')}
@@ -747,14 +773,14 @@
                       
                       <div className="space-y-2">
                         <label className="text-[9px] font-bold text-gray-400 pl-1 uppercase tracking-widest">Email Address</label>
-                        <input type="email" value={emailInput} onChange={e=>setEmailInput(e.target.value)} placeholder="name@example.com" required className="glass-input" />
+                        <input type="email" value={emailInput} onChange={e=>setEmailInput(e.target.value)} placeholder="name@example.com" required className="glass-input allow-select" />
                       </div>
                       <div className="space-y-2">
                         <div className="flex justify-between items-center px-1">
                            <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Password</label>
                            {(authMethod === 'login' || authMethod === 'admin') && <button type="button" onClick={handleForgotPassword} className="text-[9px] font-bold text-brand-primary hover:text-white transition-colors uppercase tracking-widest">Forgot?</button>}
                         </div>
-                        <input type="password" value={passwordInput} onChange={e=>setPasswordInput(e.target.value)} placeholder="••••••••" required className="glass-input" />
+                        <input type="password" value={passwordInput} onChange={e=>setPasswordInput(e.target.value)} placeholder="••••••••" required className="glass-input allow-select" />
                       </div>
                       <div className="pt-6">
                         <button type="submit" disabled={isLoading} className="btn-animate w-full glass-effect hover:bg-white text-white hover:text-black border border-white/20 font-bold py-4 rounded-2xl text-xs tracking-widest uppercase flex items-center justify-center gap-2 shadow-[0_5px_20px_rgba(255,255,255,0.2)]">
@@ -951,7 +977,7 @@
                                 <div ref={messagesEndRef} />
                             </div>
                             <form onSubmit={sendMessage} className="bg-[rgba(0,0,0,0.5)] border-t border-white/10 p-4 flex gap-3 items-center">
-                                <input type="text" value={message} onChange={e => setMessage(e.target.value)} placeholder="Type a message..." className="glass-input !py-3"/>
+                                <input type="text" value={message} onChange={e => setMessage(e.target.value)} placeholder="Type a message..." className="glass-input allow-select !py-3"/>
                                 <button type="submit" disabled={!message.trim()} className="btn-animate bg-white text-black p-3.5 rounded-xl disabled:opacity-50"><Send className="w-4 h-4" /></button>
                             </form>
                         </div>
@@ -1161,7 +1187,7 @@
                        <div className="p-4 sm:p-6 bg-transparent border-b border-white/10 sticky top-[73px] z-20">
                            <div className="relative">
                                <Search className="w-5 h-5 text-gray-500 absolute left-4 top-3.5 pointer-events-none" />
-                               <input autoFocus type="text" placeholder="Search app..." value={appSearch} onChange={(e) => setAppSearch(e.target.value)} className="w-full bg-[rgba(255,255,255,0.05)] border border-white/20 rounded-xl pl-12 py-3.5 text-base text-white outline-none focus:border-brand-primary"/>
+                               <input autoFocus type="text" placeholder="Search app..." value={appSearch} onChange={(e) => setAppSearch(e.target.value)} className="w-full bg-[rgba(255,255,255,0.05)] border border-white/20 rounded-xl pl-12 py-3.5 text-base text-white outline-none focus:border-brand-primary allow-select"/>
                            </div>
                        </div>
                        <div className="flex-grow overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-transparent space-y-3 pb-24 z-10 relative">
@@ -1204,7 +1230,7 @@
                         <div className="glass-panel p-4 rounded-2xl hover:border-brand-primary/30 transition-colors">
                             <label className="block text-[9px] font-bold text-gray-400 mb-2.5 uppercase tracking-[0.2em] ml-1">Select Region</label>
                             <div className="relative">
-                                <select value={smsCountry} onChange={e => setSmsCountry(e.target.value)} className={uiInput + " appearance-none cursor-pointer pr-10 text-white h-12 bg-transparent"}>
+                                <select value={smsCountry} onChange={e => setSmsCountry(e.target.value)} className={uiInput + " appearance-none cursor-pointer pr-10 text-white h-12 bg-transparent allow-select"}>
                                     {NETWORK_REGIONS.map(c => <option key={c.id} value={c.id} className="bg-[#121212]">{c.name}</option>)}
                                 </select>
                                 <ChevronDown className="w-4 h-4 text-white absolute right-4 top-4 pointer-events-none" />
@@ -1218,7 +1244,7 @@
                                     value={selectedTier?.originalPrice ? String(selectedTier.originalPrice) : ''}
                                     onChange={(e) => { const tier = Array.isArray(priceTiers) ? priceTiers.find(t => String(t?.originalPrice) === e.target.value) : null; if(tier) setSelectedTier(tier); }}
                                     disabled={isTiersLoading || (!Array.isArray(priceTiers)) || priceTiers.length === 0}
-                                    className={uiInput + " h-12 pl-10 appearance-none cursor-pointer text-[13px] font-mono text-white bg-transparent disabled:opacity-50"}
+                                    className={uiInput + " h-12 pl-10 appearance-none cursor-pointer text-[13px] font-mono text-white bg-transparent disabled:opacity-50 allow-select"}
                                 >
                                     {isTiersLoading ? (
                                         <option value="" className="text-xs bg-[#121212] text-gray-500">...</option>
@@ -1269,7 +1295,7 @@
                                 </div>
 
                                 <div className="flex items-center gap-4 w-full max-w-md mb-10 relative z-10">
-                                    <div className="text-3xl sm:text-5xl font-mono font-bold text-white bg-[rgba(0,0,0,0.5)] px-6 py-6 rounded-2xl border border-white/10 flex-grow text-center whitespace-nowrap overflow-hidden text-ellipsis tracking-wider drop-shadow-md">
+                                    <div className="text-3xl sm:text-5xl font-mono font-bold text-white bg-[rgba(0,0,0,0.5)] px-6 py-6 rounded-2xl border border-white/10 flex-grow text-center whitespace-nowrap overflow-hidden text-ellipsis tracking-wider drop-shadow-md allow-select">
                                         +{String(order.phone).replace(/\D/g, '')}
                                     </div>
                                     <button onClick={() => copyNumberOnly(order.phone)} className="btn-animate p-6 bg-white hover:bg-gray-200 text-black rounded-2xl shadow-[0_0_20px_rgba(255,255,255,0.2)] shrink-0">
@@ -1296,7 +1322,7 @@
                                         {order.codes.map((c, i) => {
                                             return (
                                                 <div key={i} className="flex flex-col gap-4 bg-[rgba(255,255,255,0.05)] border border-brand-primary/30 p-5 rounded-2xl animate-fade-in-up" style={{animationDelay: `${i * 0.1}s`, animationFillMode: 'both'}}>
-                                                    <p className="text-sm text-white font-sans font-medium tracking-normal leading-relaxed text-left break-words drop-shadow-md">{c}</p>
+                                                    <p className="text-sm text-white font-sans font-medium tracking-normal leading-relaxed text-left break-words drop-shadow-md allow-select">{c}</p>
                                                     <button onClick={() => copyText(c)} className="btn-animate w-full py-3.5 bg-brand-primary text-black hover:bg-white rounded-xl flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-bold shadow-[0_0_15px_rgba(6,182,212,0.3)] shrink-0">
                                                         <Copy className="w-4 h-4"/> Copy Full Message
                                                     </button>
@@ -1328,7 +1354,6 @@
                   triggerToast("Please select a State.");
                   return;
               }
-              // 🟢 FIXED: TEXTPLUS PURCHASE BUG (UNDEFINED INSTEAD OF 'RANDOM') 🟢
               const finalState = (!selectedState || selectedState === 'Random') ? undefined : selectedState;
               const cartItem = { ...product };
               if (finalState) cartItem.selectedState = finalState;
@@ -1362,7 +1387,7 @@
                 </div>
                 <div className="w-full sm:w-72 relative">
                      <Search className="w-4 h-4 text-white absolute left-4 top-3.5" />
-                     <input type="text" placeholder="Search accounts..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} className="glass-input !pl-12 !py-3 rounded-2xl bg-[rgba(0,0,0,0.5)]" />
+                     <input type="text" placeholder="Search accounts..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} className="glass-input allow-select !pl-12 !py-3 rounded-2xl bg-[rgba(0,0,0,0.5)]" />
                 </div>
               </div>
 
@@ -1404,7 +1429,7 @@
                                       <select 
                                           value={selectedStates[product.id] || ''} 
                                           onChange={(e) => handleStateChange(product.id, e.target.value)}
-                                          className="w-full bg-[rgba(0,0,0,0.5)] border border-white/10 text-gray-300 text-[10px] rounded-xl px-4 py-3.5 appearance-none outline-none focus:border-brand-primary/50 tracking-wider font-mono cursor-pointer transition-colors"
+                                          className="w-full bg-[rgba(0,0,0,0.5)] border border-white/10 text-gray-300 text-[10px] rounded-xl px-4 py-3.5 appearance-none outline-none focus:border-brand-primary/50 tracking-wider font-mono cursor-pointer transition-colors allow-select"
                                       >
                                           <option value="">Select State</option>
                                           {availableStates.map(state => <option key={state} value={state}>{state}</option>)}
@@ -1577,13 +1602,13 @@
                             <label className="block text-[10px] font-bold text-gray-500 mb-2 uppercase tracking-[0.2em]">Amount (USD)</label>
                             <div className="relative">
                                <DollarSign className="w-4 h-4 text-white absolute left-4 top-3.5" />
-                               <input type="number" step="1" min="1" name="amount" value={cryptoAmountInput} onChange={e => setCryptoAmountInput(e.target.value)} required placeholder="10" className="glass-input pl-11 text-sm font-mono" />
+                               <input type="number" step="1" min="1" name="amount" value={cryptoAmountInput} onChange={e => setCryptoAmountInput(e.target.value)} required placeholder="10" className="glass-input allow-select pl-11 text-sm font-mono" />
                             </div>
                           </div>
                           <div>
                               <label className="block text-[10px] font-bold text-gray-500 mb-2 uppercase tracking-[0.2em]">Select Crypto</label>
                               <div className="relative">
-                                  <select value={cryptoMethod} onChange={e => setCryptoMethod(e.target.value)} className="glass-input cursor-pointer font-mono text-xs appearance-none">
+                                  <select value={cryptoMethod} onChange={e => setCryptoMethod(e.target.value)} className="glass-input cursor-pointer font-mono text-xs appearance-none allow-select">
                                       {validCryptoOptions.map((c, i) => (
                                           <option key={i} value={c.name} className="bg-[#121212]">{c.name} {c.network ? `(${c.network})` : ''}</option>
                                       ))}
@@ -1605,13 +1630,13 @@
                               <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> Waiting for payment
                           </p>
                           
-                          <div className="text-3xl sm:text-4xl font-light font-mono text-white tracking-widest">
+                          <div className="text-3xl sm:text-4xl font-light font-mono text-white tracking-widest allow-select">
                               {autoPay.cryptoAmount} <span className="text-sm text-gray-400">{autoPay.method.split(' ')[0]}</span>
                           </div>
                           
                           <div className="bg-white/5 border border-white/10 p-4 rounded-xl mt-6 shadow-inner">
                               <p className="text-[8px] text-gray-400 font-bold uppercase tracking-[0.3em] mb-2">Send To Address {activeCryptoObj.network ? `(${activeCryptoObj.network})` : ''}</p>
-                              <p className="font-mono text-xs sm:text-sm text-white break-all select-all font-bold tracking-wider bg-black/50 p-3 rounded-lg border border-white/5">
+                              <p className="font-mono text-xs sm:text-sm text-white break-all select-all font-bold tracking-wider bg-black/50 p-3 rounded-lg border border-white/5 allow-select">
                                   {activeCryptoObj.address}
                               </p>
                               <button onClick={() => copyToClipboard(activeCryptoObj.address)} className="btn-animate w-full glass-panel hover:bg-white/20 text-white font-bold py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2 uppercase tracking-widest mt-4 !py-2 !text-[9px]"><Copy className="w-3.5 h-3.5" /> Copy Address</button>
@@ -1646,7 +1671,7 @@
                   <div className="mb-6">
                       <label className="block text-[9px] font-bold text-gray-400 mb-2.5 uppercase tracking-[0.2em] ml-1">Select Payment Method</label>
                       <div className="relative">
-                          <select value={manualMethod} onChange={e => setManualMethod(e.target.value)} className={uiInput + " appearance-none cursor-pointer text-white font-mono text-xs bg-[rgba(0,0,0,0.5)]"}>
+                          <select value={manualMethod} onChange={e => setManualMethod(e.target.value)} className={uiInput + " appearance-none cursor-pointer text-white font-mono text-xs bg-[rgba(0,0,0,0.5)] allow-select"}>
                               <option value="Local Bank Transfer" className="bg-[#121212]">Local Bank Transfer</option>
                               {(customPayments || []).map(p => (
                                   <option key={p.id} value={p.name} className="bg-[#121212]">{p.name}</option>
@@ -1661,14 +1686,14 @@
                       <div className="bg-[rgba(0,0,0,0.5)] border border-white/5 rounded-xl p-4 mb-6 text-[11px] font-mono tracking-wide space-y-3">
                         <div className="flex justify-between items-center border-b border-white/5 pb-2"><span className="text-gray-400">Bank</span> <span className="font-bold text-white">{bankSettings?.bankName || 'Parallex'}</span></div>
                         <div className="flex justify-between items-center border-b border-white/5 pb-2 pt-1"><span className="text-gray-400">Name</span> <span className="font-bold text-white text-right">{bankSettings?.accountName || 'Samuel Osita Emmanuel'}</span></div>
-                        <div className="flex justify-between items-center border-b border-white/5 pb-2 pt-1"><span className="text-gray-400">A/C No.</span> <span className="text-white font-bold text-sm">{bankSettings?.accountNumber || '1120927346'}</span></div>
+                        <div className="flex justify-between items-center border-b border-white/5 pb-2 pt-1"><span className="text-gray-400">A/C No.</span> <span className="text-white font-bold text-sm allow-select">{bankSettings?.accountNumber || '1120927346'}</span></div>
                         <div className="flex justify-between items-center pt-1"><span className="text-gray-400">Rate</span> <span className="text-brand-primary font-bold text-sm">1 USD = ₦{bankSettings?.nairaRate || 1500}</span></div>
                         <button onClick={() => copyToClipboard(bankSettings?.accountNumber || '1120927346')} className="btn-animate w-full glass-panel hover:bg-white/20 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 uppercase tracking-widest mt-2 !text-[10px]"><Copy className="w-3.5 h-3.5" /> Copy Details</button>
                       </div>
                   ) : selectedCustomPayment ? (
                       <div className="bg-[rgba(0,0,0,0.5)] border border-white/5 rounded-xl p-4 mb-6 text-[11px] font-mono tracking-wide space-y-3">
                         <div className="flex justify-between items-center border-b border-white/5 pb-2"><span className="text-gray-400">Method</span> <span className="font-bold text-white">{selectedCustomPayment.name}</span></div>
-                        <div className="flex justify-between items-center border-b border-white/5 pb-2 pt-1"><span className="text-gray-400">Details/Wallet</span> <span className="text-white font-bold text-sm break-all text-right max-w-[60%]">{selectedCustomPayment.details}</span></div>
+                        <div className="flex justify-between items-center border-b border-white/5 pb-2 pt-1"><span className="text-gray-400">Details/Wallet</span> <span className="text-white font-bold text-sm break-all text-right max-w-[60%] allow-select">{selectedCustomPayment.details}</span></div>
                         <div className="flex flex-col pt-1"><span className="text-gray-400 mb-1">Instructions:</span> <span className="text-gray-300 font-light leading-relaxed">{selectedCustomPayment.instruction}</span></div>
                         <button onClick={() => copyToClipboard(selectedCustomPayment.details)} className="btn-animate w-full glass-panel hover:bg-white/20 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 uppercase tracking-widest mt-2 !text-[10px]"><Copy className="w-3.5 h-3.5" /> Copy Data</button>
                       </div>
@@ -1682,7 +1707,7 @@
                               <label className="block text-[9px] font-bold text-gray-400 mb-2 uppercase tracking-[0.2em]">Amount (USD)</label>
                               <div className="relative">
                                  <DollarSign className="w-3.5 h-3.5 text-white absolute left-3 top-3.5" />
-                                 <input type="number" step="0.01" min="1" value={manualAmount} onChange={e => setManualAmount(e.target.value)} required placeholder="10" className="glass-input !pl-9 !py-2.5 font-mono text-xs" />
+                                 <input type="number" step="0.01" min="1" value={manualAmount} onChange={e => setManualAmount(e.target.value)} required placeholder="10" className="glass-input !pl-9 !py-2.5 font-mono text-xs allow-select" />
                               </div>
                           </div>
                           <div>
@@ -1694,7 +1719,7 @@
                       </div>
                       <div>
                           <label className="block text-[9px] font-bold text-gray-400 mb-2 uppercase tracking-[0.2em]">Transaction ID / Sender Name</label>
-                          <input type="text" value={manualTxId} onChange={e => setManualTxId(e.target.value)} required placeholder="Enter TrxID or Phone Number..." className="glass-input !py-2.5 font-mono text-xs" />
+                          <input type="text" value={manualTxId} onChange={e => setManualTxId(e.target.value)} required placeholder="Enter TrxID or Phone Number..." className="glass-input !py-2.5 font-mono text-xs allow-select" />
                       </div>
                       <button type="submit" className="btn-animate w-full bg-white text-black font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 shadow-[0_5px_20px_rgba(255,255,255,0.2)] tracking-widest uppercase text-[10px] mt-2">
                           Submit Request
@@ -1808,7 +1833,7 @@
                         <div className="w-24 h-24 bg-[rgba(0,0,0,0.5)] rounded-full flex items-center justify-center mb-6 border border-white/20">
                           <UserIcon className="w-8 h-8 text-white" strokeWidth={1.5}/>
                         </div>
-                        <h2 className="text-sm font-mono font-bold text-white mb-2 w-full truncate tracking-wide">{user.email}</h2>
+                        <h2 className="text-sm font-mono font-bold text-white mb-2 w-full truncate tracking-wide allow-select">{user.email}</h2>
                         <p className="text-[10px] text-gray-400 font-mono uppercase tracking-widest mb-10">Joined: {safeFormatDate(userInfo?.joined)}</p>
                         
                         <div className="w-full bg-[rgba(0,0,0,0.5)] p-5 rounded-xl border border-white/5">
@@ -1860,7 +1885,7 @@
                              <h3 className="text-sm font-bold tracking-widest text-white mb-3 flex items-center gap-2 uppercase"><Users className="w-4 h-4 text-gray-300"/> Referral Code</h3>
                              <p className="text-xs text-gray-400 font-light mb-6">Share your code with friends to earn commission.</p>
                              <div className="bg-[#0f172a] border border-white/10 p-2 rounded-xl flex justify-between items-center shadow-inner">
-                               <span className="font-mono text-[11px] text-white font-bold px-4 break-all tracking-widest">{referralCode}</span>
+                               <span className="font-mono text-[11px] text-white font-bold px-4 break-all tracking-widest allow-select">{referralCode}</span>
                                <button onClick={() => {
                                   if (navigator.clipboard) navigator.clipboard.writeText(referralCode).then(() => triggerToast("Copied!"));
                                   else { const t = document.createElement("textarea"); t.value = referralCode; document.body.appendChild(t); t.select(); document.execCommand("copy"); document.body.removeChild(t); triggerToast("Copied!"); }
@@ -1922,11 +1947,11 @@
                             <form onSubmit={submitTicket} className="space-y-5 w-full">
                               <div>
                                 <label className="block text-[9px] font-bold text-gray-400 mb-2 uppercase tracking-[0.2em]">Subject</label>
-                                <input type="text" value={ticketSubject} onChange={e => setTicketSubject(e.target.value)} required placeholder="What do you need help with?" className="glass-input" />
+                                <input type="text" value={ticketSubject} onChange={e => setTicketSubject(e.target.value)} required placeholder="What do you need help with?" className="glass-input allow-select" />
                               </div>
                               <div>
                                 <label className="block text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-[0.2em]">Message</label>
-                                <textarea value={ticketMessage} onChange={e => setTicketMessage(e.target.value)} required placeholder="Write your message here..." rows="4" className="glass-input resize-none" />
+                                <textarea value={ticketMessage} onChange={e => setTicketMessage(e.target.value)} required placeholder="Write your message here..." rows="4" className="glass-input resize-none allow-select" />
                               </div>
                               <button type="submit" className="btn-animate w-full bg-white text-black font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-2 tracking-widest uppercase text-xs">Send Message</button>
                             </form>
@@ -1944,7 +1969,7 @@
                                  <span className={`text-[8px] px-2 py-1 rounded border uppercase tracking-[0.2em] font-bold ${t.status === 'Open' ? 'bg-red-900/20 text-red-400 border-red-900/50' : 'bg-green-900/20 text-green-400 border-green-900/50'}`}>{t.status}</span>
                                </div>
                                <div className="bg-[#050505] p-3 rounded-lg mb-3 shadow-inner ml-3">
-                                 <p className="text-[11px] text-gray-400 font-light leading-relaxed break-words">{t.message}</p>
+                                 <p className="text-[11px] text-gray-400 font-light leading-relaxed break-words allow-select">{t.message}</p>
                                </div>
                                <p className="text-[8px] text-gray-500 font-mono flex items-center gap-1.5 uppercase tracking-widest ml-3"><Clock className="w-2.5 h-2.5"/> {safeFormatDate(t.date)}</p>
                              </div>
@@ -2335,21 +2360,21 @@
                          <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-white flex items-center gap-2"><Edit className="w-4 h-4 text-white"/> Edit User</h3>
                          <button onClick={() => setEditUserModal({ show: false, email: '', password: '', balance: 0, totalSpent: 0 })} className="btn-animate p-2 bg-[#000] rounded-full text-gray-500 hover:text-white border border-white/10"><X className="w-3.5 h-3.5" /></button>
                      </div>
-                     <p className="text-[10px] text-gray-400 font-mono mb-6 bg-[#000] border border-white/10 p-3 rounded-lg truncate shadow-inner tracking-widest">{editUserModal.email}</p>
+                     <p className="text-[10px] text-gray-400 font-mono mb-6 bg-[#000] border border-white/10 p-3 rounded-lg truncate shadow-inner tracking-widest allow-select">{editUserModal.email}</p>
                      
                      <form onSubmit={submitEditUser} className="space-y-5">
                         <div>
                            <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-[0.3em]">Password</label>
-                           <input type="text" value={editUserModal.password} onChange={e => setEditUserModal({...editUserModal, password: e.target.value})} className="glass-input text-xs" />
+                           <input type="text" value={editUserModal.password} onChange={e => setEditUserModal({...editUserModal, password: e.target.value})} className="glass-input text-xs allow-select" />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-[0.3em]">Balance ($)</label>
-                               <input type="number" step="0.01" required value={editUserModal.balance} onChange={e => setEditUserModal({...editUserModal, balance: e.target.value})} className="glass-input" />
+                               <input type="number" step="0.01" required value={editUserModal.balance} onChange={e => setEditUserModal({...editUserModal, balance: e.target.value})} className="glass-input allow-select" />
                             </div>
                             <div>
                                <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-[0.3em]">Total Spent ($)</label>
-                               <input type="number" step="0.01" required value={editUserModal.totalSpent} onChange={e => setEditUserModal({...editUserModal, totalSpent: e.target.value})} className="glass-input" />
+                               <input type="number" step="0.01" required value={editUserModal.totalSpent} onChange={e => setEditUserModal({...editUserModal, totalSpent: e.target.value})} className="glass-input allow-select" />
                             </div>
                         </div>
                         <div className="pt-6 mt-4 border-t border-white/10">
@@ -2372,19 +2397,19 @@
                        <form onSubmit={handleAddProduct} className="space-y-4">
                           <div>
                              <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-[0.3em]">Card ID (e.g. facebook_acc)</label>
-                             <input type="text" required value={newProduct.id} onChange={e => setNewProduct({...newProduct, id: e.target.value})} className="glass-input text-xs" />
+                             <input type="text" required value={newProduct.id} onChange={e => setNewProduct({...newProduct, id: e.target.value})} className="glass-input text-xs allow-select" />
                           </div>
                           <div>
                              <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-[0.3em]">Display Name</label>
-                             <input type="text" required value={newProduct.name} onChange={e => setNewProduct({...newProduct, name: e.target.value})} className="glass-input text-xs" />
+                             <input type="text" required value={newProduct.name} onChange={e => setNewProduct({...newProduct, name: e.target.value})} className="glass-input text-xs allow-select" />
                           </div>
                           <div>
                              <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-[0.3em]">Description</label>
-                             <input type="text" required value={newProduct.description} onChange={e => setNewProduct({...newProduct, description: e.target.value})} className="glass-input text-xs" />
+                             <input type="text" required value={newProduct.description} onChange={e => setNewProduct({...newProduct, description: e.target.value})} className="glass-input text-xs allow-select" />
                           </div>
                           <div>
                              <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-[0.3em]">Price ($)</label>
-                             <input type="number" step="0.01" required value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: e.target.value})} className="glass-input text-xs font-mono" />
+                             <input type="number" step="0.01" required value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: e.target.value})} className="glass-input text-xs font-mono allow-select" />
                           </div>
                           <div className="pt-4 mt-2 border-t border-white/10">
                             <button type="submit" className="btn-animate w-full bg-white text-black font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-2 tracking-widest uppercase text-xs">Create Card</button>
@@ -2402,13 +2427,13 @@
                       <form onSubmit={handleUploadAccounts} className="flex flex-col space-y-5">
                         <div>
                           <label className="block text-[10px] font-bold text-gray-500 mb-2 uppercase tracking-[0.2em]">Select Type</label>
-                          <select value={uploadCategory} onChange={(e) => setUploadCategory(e.target.value)} className="glass-input">
+                          <select value={uploadCategory} onChange={(e) => setUploadCategory(e.target.value)} className="glass-input allow-select">
                             {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
                           </select>
                         </div>
                         <div>
                           <label className="block text-[10px] font-bold text-gray-500 mb-2 uppercase tracking-[0.2em]">Accounts Data</label>
-                          <textarea value={uploadText} onChange={(e) => setUploadText(e.target.value)} placeholder="Paste accounts here..." className="glass-input min-h-[200px] resize-none font-mono text-[10px]" required />
+                          <textarea value={uploadText} onChange={(e) => setUploadText(e.target.value)} placeholder="Paste accounts here..." className="glass-input min-h-[200px] resize-none font-mono text-[10px] allow-select" required />
                         </div>
                         <button type="submit" className="btn-animate w-full bg-white text-black font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-2 tracking-widest uppercase text-xs">Upload</button>
                       </form>
@@ -2456,7 +2481,7 @@
                           ) : (
                               inventory[manageStockModal.categoryId].map((acc, index) => (
                                   <div key={index} className="flex justify-between items-center w-full p-4 bg-[rgba(0,0,0,0.5)] border border-white/10 rounded-xl hover:border-white/30 transition-colors">
-                                      <pre className="text-[10px] text-gray-300 font-mono leading-relaxed truncate max-w-[80%]">{acc}</pre>
+                                      <pre className="text-[10px] text-gray-300 font-mono leading-relaxed truncate max-w-[80%] allow-select">{acc}</pre>
                                       <button onClick={() => handleDeleteAccount(manageStockModal.categoryId, index)} className="btn-animate p-2.5 bg-red-900/20 text-red-500 hover:bg-red-900/40 border border-red-900/50 rounded-lg shrink-0 transition-colors">
                                           <Trash2 className="w-4 h-4" />
                                       </button>
@@ -2475,7 +2500,7 @@
                       <div className="flex items-center gap-3 w-full sm:w-auto">
                         <div className="relative flex-grow sm:flex-grow-0 sm:w-64">
                            <Search className="w-4 h-4 text-gray-500 absolute left-3 top-3" />
-                           <input type="text" placeholder="Search email..." value={customerSearch} onChange={(e)=>setCustomerSearch(e.target.value)} className="glass-input !py-2 !pl-9 bg-[#000] border-white/10 text-xs font-mono" />
+                           <input type="text" placeholder="Search email..." value={customerSearch} onChange={(e)=>setCustomerSearch(e.target.value)} className="glass-input allow-select !py-2 !pl-9 bg-[#000] border-white/10 text-xs font-mono" />
                         </div>
                         <span className="text-[10px] font-mono font-bold text-white bg-white/10 border border-white/20 px-3 py-2 rounded-lg uppercase tracking-widest">{filteredUsers.length} Users</span>
                       </div>
@@ -2489,8 +2514,8 @@
                           {filteredUsers.map((email, idx) => (
                             <tr key={email} className="hover:bg-[rgba(255,255,255,0.05)] transition-colors animate-fade-in-up" style={{animationDelay: `${idx * 0.03}s`}}>
                               <td className="p-4 sm:p-5">
-                                  <p className="text-white font-medium text-xs tracking-wide">{String(email)}</p>
-                                  <p className="text-[9px] text-gray-500 mt-1.5 font-mono uppercase tracking-widest">Pass: {usersDB[email].password || 'Hidden'}</p>
+                                  <p className="text-white font-medium text-xs tracking-wide allow-select">{String(email)}</p>
+                                  <p className="text-[9px] text-gray-500 mt-1.5 font-mono uppercase tracking-widest allow-select">Pass: {usersDB[email].password || 'Hidden'}</p>
                               </td>
                               <td className="p-4 sm:p-5 font-mono text-gray-400">${Number(usersDB[email].totalSpent || 0).toFixed(2)}</td>
                               <td className="p-4 sm:p-5 font-mono font-bold text-white">${Number(usersDB[email].balance || 0).toFixed(2)}</td>
@@ -2518,7 +2543,7 @@
                           <div key={t.id} className="bg-[rgba(0,0,0,0.5)] border border-white/10 p-4 rounded-2xl animate-fade-in-up" style={{animationDelay: `${idx * 0.05}s`}}>
                             <div className="flex justify-between items-start mb-3">
                               <div>
-                                <p className="text-gray-300 font-medium text-xs mb-1">{String(t.email || 'Unknown')}</p>
+                                <p className="text-gray-300 font-medium text-xs mb-1 allow-select">{String(t.email || 'Unknown')}</p>
                                 <span className="font-bold text-[10px] text-white uppercase tracking-wide">{t.subject}</span>
                               </div>
                               <div className="flex flex-col items-end gap-2">
@@ -2531,10 +2556,10 @@
                                   )}
                               </div>
                             </div>
-                            <div className="bg-[#000] p-3 rounded-lg mb-3 shadow-inner">
-                              <p className="text-xs text-gray-300 font-light leading-relaxed break-words">{t.message}</p>
+                            <div className="bg-[#000] p-3 rounded-lg mb-3 shadow-inner ml-3">
+                              <p className="text-xs text-gray-300 font-light leading-relaxed break-words allow-select">{t.message}</p>
                             </div>
-                            <p className="text-[9px] text-gray-500 font-mono flex items-center gap-1.5 uppercase tracking-widest"><Clock className="w-3 h-3"/> {safeFormatDate(t.date)}</p>
+                            <p className="text-[9px] text-gray-500 font-mono flex items-center gap-1.5 uppercase tracking-widest ml-3"><Clock className="w-3 h-3"/> {safeFormatDate(t.date)}</p>
                           </div>
                         ))}
                         {tickets.length === 0 && <p className="text-center text-gray-600 py-10 text-xs font-mono uppercase tracking-widest">No tickets.</p>}
@@ -2556,7 +2581,7 @@
                                       <div key={chat.id} onClick={() => setSelectedChatUser(chat.userEmail)} className={`p-4 cursor-pointer border-b border-white/5 transition-all hover:bg-[rgba(255,255,255,0.05)] animate-fade-in-up ${selectedChatUser === chat.userEmail ? 'bg-[rgba(255,255,255,0.1)] border-l-2 border-l-white' : ''}`} style={{animationDelay: `${idx * 0.05}s`}}>
                                           <p className="text-[10px] font-bold text-white truncate w-full mb-1 flex items-center gap-1.5">
                                               {chat.unreadByAdmin && <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>}
-                                              {String(chat.userEmail || chat.id || 'User').split('@')[0]}
+                                              <span className="allow-select">{String(chat.userEmail || chat.id || 'User').split('@')[0]}</span>
                                           </p>
                                           <p className="text-[9px] text-gray-400 truncate w-full font-light">{chat.lastMessage}</p>
                                       </div>
@@ -2569,13 +2594,13 @@
                               {selectedChatUser ? (
                                   <>
                                       <div className="bg-[#0f172a] p-3 text-[10px] font-bold text-white border-b border-white/10 flex justify-between items-center">
-                                          <span className="truncate tracking-wider">{selectedChatUser}</span>
+                                          <span className="truncate tracking-wider allow-select">{selectedChatUser}</span>
                                           <button onClick={() => setSelectedChatUser(null)} className="btn-animate text-gray-500 hover:text-white"><X className="w-3 h-3"/></button>
                                       </div>
                                       <div className="flex-grow overflow-y-auto p-4 space-y-4 custom-scrollbar">
                                           {adminChatMessages.map(msg => (
                                               <div key={msg.id} className={`flex flex-col animate-fade-in-up ${msg.sender === 'admin' ? 'items-end' : 'items-start'}`}>
-                                                  <div className={`px-4 py-2.5 rounded-2xl max-w-[90%] text-[11px] font-medium leading-relaxed shadow-lg ${msg.sender === 'admin' ? 'bg-white text-black rounded-tr-sm' : 'bg-[rgba(0,0,0,0.6)] text-gray-200 border border-white/10 rounded-tl-sm'}`}>
+                                                  <div className={`px-4 py-2.5 rounded-2xl max-w-[90%] text-[11px] font-medium leading-relaxed shadow-lg allow-select ${msg.sender === 'admin' ? 'bg-white text-black rounded-tr-sm' : 'bg-[rgba(0,0,0,0.6)] text-gray-200 border border-white/10 rounded-tl-sm'}`}>
                                                       {msg.text}
                                                   </div>
                                               </div>
@@ -2583,7 +2608,7 @@
                                           <div ref={adminMessagesEndRef} />
                                       </div>
                                       <form onSubmit={sendAdminMessage} className="bg-[#0f172a] border-t border-white/10 p-3 flex gap-2 items-center">
-                                          <input type="text" value={adminChatMessage} onChange={e => setAdminChatMessage(e.target.value)} placeholder="Type reply..." className="glass-input !py-3"/>
+                                          <input type="text" value={adminChatMessage} onChange={e => setAdminChatMessage(e.target.value)} placeholder="Type reply..." className="glass-input allow-select !py-3"/>
                                           <button type="submit" disabled={!adminChatMessage.trim()} className="btn-animate bg-white text-black p-3.5 rounded-xl disabled:opacity-50"><Send className="w-4 h-4"/></button>
                                       </form>
                                   </>
@@ -2642,14 +2667,14 @@
                                       <p className="text-[10px] text-gray-400 font-mono uppercase tracking-widest mt-1">{safeFormatDate(p.date)}</p>
                                   </td>
                                   <td className="p-4 sm:p-5 align-top">
-                                      <p className="text-xs font-bold text-white tracking-wide mt-1">{p.customer}</p>
+                                      <p className="text-xs font-bold text-white tracking-wide mt-1 allow-select">{p.customer}</p>
                                   </td>
                                   <td className="p-4 sm:p-5 align-top">
                                       <span className="bg-brand-primary/10 text-brand-primary border border-brand-primary/20 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest inline-block mt-0.5">{p.type}</span>
                                   </td>
                                   <td className="p-4 sm:p-5">
                                       <div className="bg-[rgba(0,0,0,0.4)] border border-white/5 p-3 rounded-xl min-w-[250px] max-w-sm max-h-32 overflow-y-auto custom-scrollbar shadow-inner">
-                                          <pre className="text-[11px] font-mono text-white font-medium whitespace-pre-wrap break-words">{p.data}</pre>
+                                          <pre className="text-[11px] font-mono text-white font-medium whitespace-pre-wrap break-words allow-select">{p.data}</pre>
                                       </div>
                                   </td>
                                 </tr>
@@ -2679,11 +2704,11 @@
                             return (
                               <tr key={dep.id} className="hover:bg-[rgba(255,255,255,0.05)] transition-colors animate-fade-in-up" style={{animationDelay: `${idx * 0.05}s`}}>
                                 <td className="p-4 sm:p-5">
-                                  <p className="font-mono text-white font-bold text-[10px] truncate max-w-[120px]">{String(dep.id || '')}</p>
+                                  <p className="font-mono text-white font-bold text-[10px] truncate max-w-[120px] allow-select">{String(dep.id || '')}</p>
                                   <p className="text-[9px] text-gray-500 mt-1.5 font-mono uppercase tracking-widest">{safeFormatDate(dep.date)}</p>
                                 </td>
                                 <td className="p-4 sm:p-5">
-                                  <p className="text-gray-200 font-medium text-xs">{String(dep.email || '')}</p>
+                                  <p className="text-gray-200 font-medium text-xs allow-select">{String(dep.email || '')}</p>
                                   <p className="text-[9px] text-gray-500 mt-1.5 font-mono uppercase tracking-widest">{String(dep.method || '')}</p>
                                 </td>
                                 <td className="p-4 sm:p-5 font-mono font-bold text-white">${Number(dep.amount || 0).toFixed(2)}</td>
@@ -2722,10 +2747,10 @@
                            <div className="bg-[#0f172a] border border-white/5 rounded-2xl p-5 shadow-inner">
                                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-3">Add New Crypto Network</p>
                                <div className="grid grid-cols-2 gap-3 mb-3">
-                                   <input type="text" placeholder="Name (e.g. USDT)" value={newCryptoInput.name} onChange={e=>setNewCryptoInput({...newCryptoInput, name: e.target.value})} className="glass-input text-xs" />
-                                   <input type="text" placeholder="Network (Optional)" value={newCryptoInput.network} onChange={e=>setNewCryptoInput({...newCryptoInput, network: e.target.value})} className="glass-input text-xs" />
+                                   <input type="text" placeholder="Name (e.g. USDT)" value={newCryptoInput.name} onChange={e=>setNewCryptoInput({...newCryptoInput, name: e.target.value})} className="glass-input text-xs allow-select" />
+                                   <input type="text" placeholder="Network (Optional)" value={newCryptoInput.network} onChange={e=>setNewCryptoInput({...newCryptoInput, network: e.target.value})} className="glass-input text-xs allow-select" />
                                </div>
-                               <input type="text" placeholder="Wallet Address" value={newCryptoInput.address} onChange={e=>setNewCryptoInput({...newCryptoInput, address: e.target.value})} className="glass-input text-xs font-mono mb-3" />
+                               <input type="text" placeholder="Wallet Address" value={newCryptoInput.address} onChange={e=>setNewCryptoInput({...newCryptoInput, address: e.target.value})} className="glass-input text-xs font-mono mb-3 allow-select" />
                                <button onClick={handleAddCrypto} type="button" className="btn-animate w-full bg-white/10 hover:bg-brand-primary text-white font-bold py-2.5 rounded-xl text-[10px] uppercase tracking-widest">Add Crypto</button>
                            </div>
                            
@@ -2736,7 +2761,7 @@
                                    <div key={i} className="bg-[rgba(0,0,0,0.5)] border border-white/5 p-3 rounded-xl flex justify-between items-center animate-fade-in-up" style={{animationDelay: `${i * 0.05}s`}}>
                                        <div className="max-w-[80%]">
                                            <p className="text-[10px] font-bold text-white uppercase">{c.name} <span className="text-[8px] text-brand-primary">({c.network || 'ANY'})</span></p>
-                                           <p className="text-[9px] text-gray-400 font-mono mt-1 break-all">{c.address}</p>
+                                           <p className="text-[9px] text-gray-400 font-mono mt-1 break-all allow-select">{c.address}</p>
                                        </div>
                                        <button type="button" onClick={() => handleRemoveCrypto(c.id)} className="btn-animate p-2 bg-red-900/20 text-red-500 hover:bg-red-900/50 rounded-lg"><Trash2 className="w-3.5 h-3.5"/></button>
                                    </div>
@@ -2749,20 +2774,20 @@
                            <h3 className="text-[10px] font-bold text-brand-primary uppercase tracking-[0.3em] flex items-center gap-2"><Building className="w-3.5 h-3.5"/> Local Bank Details</h3>
                            <div>
                              <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Bank Name</label>
-                             <input type="text" value={bankNameInput} onChange={(e) => setBankNameInput(e.target.value)} required className={uiInput} />
+                             <input type="text" value={bankNameInput} onChange={(e) => setBankNameInput(e.target.value)} required className={`${uiInput} allow-select`} />
                            </div>
                            <div>
                              <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Account Name</label>
-                             <input type="text" value={bankAccountNameInput} onChange={(e) => setBankAccountNameInput(e.target.value)} required className={uiInput} />
+                             <input type="text" value={bankAccountNameInput} onChange={(e) => setBankAccountNameInput(e.target.value)} required className={`${uiInput} allow-select`} />
                            </div>
                            <div className="grid grid-cols-2 gap-4">
                                <div>
                                  <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Account Number</label>
-                                 <input type="text" value={bankAccountNumberInput} onChange={(e) => setBankAccountNumberInput(e.target.value)} required className={uiInput + " font-mono"} />
+                                 <input type="text" value={bankAccountNumberInput} onChange={(e) => setBankAccountNumberInput(e.target.value)} required className={`${uiInput} allow-select font-mono`} />
                                </div>
                                <div>
                                  <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">1 USD to NGN Rate</label>
-                                 <input type="number" step="0.01" value={nairaRateInput} onChange={(e) => setNairaRateInput(e.target.value)} required className={uiInput} />
+                                 <input type="number" step="0.01" value={nairaRateInput} onChange={(e) => setNairaRateInput(e.target.value)} required className={`${uiInput} allow-select`} />
                                </div>
                            </div>
                         </div>
@@ -2775,7 +2800,7 @@
                            </label>
                            <div>
                              <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Flutterwave Public Key</label>
-                             <input type="text" value={flutterwaveKeyInput} onChange={(e) => setFlutterwaveKeyInput(e.target.value)} placeholder="FLWPUBK_TEST-..." className={uiInput + " font-mono"} />
+                             <input type="text" value={flutterwaveKeyInput} onChange={(e) => setFlutterwaveKeyInput(e.target.value)} placeholder="FLWPUBK_TEST-..." className={`${uiInput} allow-select font-mono`} />
                            </div>
                         </div>
 
@@ -2783,7 +2808,7 @@
                            <h3 className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">SMS Settings</h3>
                            <div>
                              <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Added Profit per SMS ($)</label>
-                             <input type="number" step="0.01" value={smsMarkupInput} onChange={(e) => setSmsMarkupInput(e.target.value)} placeholder="1.00" className={uiInput} />
+                             <input type="number" step="0.01" value={smsMarkupInput} onChange={(e) => setSmsMarkupInput(e.target.value)} placeholder="1.00" className={`${uiInput} allow-select`} />
                            </div>
                            <label className="flex items-center gap-3 cursor-pointer mt-4 pl-1 bg-[rgba(0,0,0,0.5)] border border-white/5 p-4 rounded-xl transition-colors hover:border-white/20">
                              <input type="checkbox" checked={smsActiveInput} onChange={(e) => setSmsActiveInput(e.target.checked)} className="w-4 h-4 rounded text-brand-primary focus:ring-brand-primary bg-[#000]" />
@@ -2796,11 +2821,11 @@
                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                <div>
                                  <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Promo Code</label>
-                                 <input type="text" value={promoInput} onChange={(e) => setPromoInput(e.target.value)} placeholder="DISCOUNT20" className={uiInput + " uppercase"} />
+                                 <input type="text" value={promoInput} onChange={(e) => setPromoInput(e.target.value)} placeholder="DISCOUNT20" className={`${uiInput} allow-select uppercase`} />
                                </div>
                                <div>
                                  <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Discount (%)</label>
-                                 <input type="number" value={discountInput} onChange={(e) => setDiscountInput(e.target.value)} placeholder="10" className={uiInput} />
+                                 <input type="number" value={discountInput} onChange={(e) => setDiscountInput(e.target.value)} placeholder="10" className={`${uiInput} allow-select`} />
                                </div>
                            </div>
                            <label className="flex items-center gap-3 cursor-pointer mt-4 pl-1 bg-[rgba(0,0,0,0.5)] border border-white/5 p-4 rounded-xl mb-4 transition-colors hover:border-white/20">
@@ -2820,7 +2845,7 @@
                         <div className="space-y-5 pt-4 border-t border-white/10">
                            <h3 className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">Global Notice</h3>
                            <div>
-                             <textarea value={noticeInput} onChange={(e) => setNoticeInput(e.target.value)} placeholder="Write a notice for all users..." rows="3" className={uiInput + " resize-none"} />
+                             <textarea value={noticeInput} onChange={(e) => setNoticeInput(e.target.value)} placeholder="Write a notice for all users..." rows="3" className={`${uiInput} allow-select resize-none`} />
                            </div>
                         </div>
 
@@ -2839,15 +2864,15 @@
                               <p className="text-[9px] font-bold text-brand-primary uppercase tracking-widest mb-2">Add New Method (e.g. bKash/Nagad)</p>
                               <div>
                                   <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Method Name</label>
-                                  <input type="text" required value={newCustomPayment.name} onChange={e => setNewCustomPayment({...newCustomPayment, name: e.target.value})} placeholder="bKash Personal" className="glass-input text-xs" />
+                                  <input type="text" required value={newCustomPayment.name} onChange={e => setNewCustomPayment({...newCustomPayment, name: e.target.value})} placeholder="bKash Personal" className="glass-input text-xs allow-select" />
                               </div>
                               <div>
                                   <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Wallet Number / Details</label>
-                                  <input type="text" required value={newCustomPayment.details} onChange={e => setNewCustomPayment({...newCustomPayment, details: e.target.value})} placeholder="017XXXXXXXX" className="glass-input text-xs font-mono" />
+                                  <input type="text" required value={newCustomPayment.details} onChange={e => setNewCustomPayment({...newCustomPayment, details: e.target.value})} placeholder="017XXXXXXXX" className="glass-input text-xs font-mono allow-select" />
                               </div>
                               <div>
                                   <label className="block text-[9px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Instructions for User</label>
-                                  <input type="text" value={newCustomPayment.instruction} onChange={e => setNewCustomPayment({...newCustomPayment, instruction: e.target.value})} placeholder="Send money and enter TRX ID below." className="glass-input text-xs" />
+                                  <input type="text" value={newCustomPayment.instruction} onChange={e => setNewCustomPayment({...newCustomPayment, instruction: e.target.value})} placeholder="Send money and enter TRX ID below." className="glass-input text-xs allow-select" />
                               </div>
                               <button type="submit" className="btn-animate w-full glass-panel hover:bg-white/20 text-white font-bold py-3 px-6 rounded-xl shadow-md text-[10px] uppercase tracking-widest mt-2 flex items-center justify-center gap-2"><Plus className="w-3 h-3"/> Add Method</button>
                           </form>
@@ -2860,7 +2885,7 @@
                                       <div key={p.id || idx} className="bg-[rgba(0,0,0,0.5)] border border-white/5 p-4 rounded-xl flex justify-between items-center animate-fade-in-up">
                                           <div>
                                               <p className="text-[11px] font-bold text-white uppercase tracking-wider">{p.name}</p>
-                                              <p className="text-[9px] font-mono text-gray-400 mt-1">{p.details}</p>
+                                              <p className="text-[9px] font-mono text-gray-400 mt-1 allow-select">{p.details}</p>
                                           </div>
                                           <button onClick={() => handleRemoveCustomPayment(p.id)} className="btn-animate p-2.5 bg-red-900/20 text-red-500 hover:bg-red-900/40 border border-red-900/30 rounded-lg transition-colors">
                                               <Trash2 className="w-3.5 h-3.5"/>
