@@ -540,7 +540,13 @@
           const [globalNotice, setGlobalNotice] = useState('');
           const [featureSettings, setFeatureSettings] = useState({ dailyReward: false, referral: false });
           const [bankSettings, setBankSettings] = useState({ bankName: 'Parallex', accountName: 'Samuel Osita Emmanuel', accountNumber: '1120927346', nairaRate: 1500, flutterwaveKey: '', flutterwaveActive: false });
-          const [cryptoSettings, setCryptoSettings] = useState([]);
+          const [cryptoSettings, setCryptoSettings] = useState([
+              {id: 1, name: 'BTC (Bitcoin)', network: 'BTC', address: 'Your_BTC_Address'},
+              {id: 2, name: 'TRX (Tron (TRC20))', network: 'TRC20', address: 'Your_TRX_Address'},
+              {id: 3, name: 'USDT (bep20)', network: 'BEP20', address: 'Your_USDT_BEP20_Address'},
+              {id: 4, name: 'ETH (ERC20)', network: 'ERC20', address: 'Your_ETH_Address'},
+              {id: 5, name: 'LTC (Litecoin)', network: 'LTC', address: 'Your_LTC_Address'}
+          ]);
           const [smsSettings, setSmsSettings] = useState({ active: true, markup: 1.00 });
           const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
           const [customPayments, setCustomPayments] = useState([]);
@@ -610,8 +616,7 @@
             unsubs.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'Bank'), (snap) => { if (snap.exists()) setBankSettings(prev => ({...prev, ...snap.data()})); }, errLog));
             
             unsubs.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'CryptoMethods'), (snap) => { 
-                if (snap.exists() && Array.isArray(snap.data().list)) { setCryptoSettings(snap.data().list); }
-                else { setCryptoSettings([]); } 
+                if (snap.exists() && Array.isArray(snap.data().list) && snap.data().list.length > 0) { setCryptoSettings(snap.data().list); }
             }, errLog));
 
             unsubs.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'Store_Settings', 'CustomPayments'), (snap) => { 
@@ -1310,9 +1315,10 @@
                                 <div className="w-full max-w-md space-y-4 animate-bouncy-pop relative z-10">
                                     <p className="text-[11px] text-green-400 font-bold uppercase tracking-[0.3em] text-center mb-5">SMS Received</p>
                                     {order.codes.map((c, i) => (
-                                        <div key={i} className="flex items-center justify-between gap-4 glass-panel border-white/20 p-5 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] animate-spring-card" style={{animationDelay: `${i * 0.1}s`, animationFillMode: 'both'}}>
-                                            <div className="text-3xl sm:text-4xl font-mono font-bold text-brand-primary tracking-[0.3em] flex-grow text-center drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">{c}</div>
-                                            <button onClick={() => copyText(c)} className="btn-animate p-4 bg-white hover:bg-gray-200 rounded-xl text-black transition-colors shadow-[0_0_15px_rgba(255,255,255,0.3)] shrink-0"><Copy className="w-4 h-4"/></button>
+                                        /* 🟢 FIXED VISIBILITY: REMOVED opacity: 0 IN KEYFRAMES AND ADDED SOLID BACKGROUND 🟢 */
+                                        <div key={i} className="flex items-center justify-between gap-4 bg-[#1e293b] border border-brand-primary/30 p-5 rounded-2xl shadow-[0_5px_20px_rgba(6,182,212,0.15)] animate-fade-in-up">
+                                            <div className="text-3xl sm:text-4xl font-mono font-bold text-white tracking-[0.3em] flex-grow text-center drop-shadow-md">{c}</div>
+                                            <button onClick={() => copyText(c)} className="btn-animate p-4 bg-brand-primary text-black hover:bg-white rounded-xl transition-colors shadow-[0_0_15px_rgba(6,182,212,0.4)] shrink-0"><Copy className="w-5 h-5"/></button>
                                         </div>
                                     ))}
                                     <button onClick={() => setActiveOrders([])} className="btn-animate w-full glass-panel hover:bg-white/20 text-white font-bold py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-2 uppercase tracking-widest shadow-md mt-8 !text-xs">Close Order</button>
@@ -1441,7 +1447,14 @@
           const [depositAmountUsd, setDepositAmountUsd] = useState('');
           const [cryptoAmountInput, setCryptoAmountInput] = useState(''); 
           
-          const validCryptoOptions = cryptoSettings && cryptoSettings.length > 0 ? cryptoSettings : [{id: 1, name: 'USDT', network: 'TRC20', address: 'TELRyMwDmdKzBRb7Uaw3zNvphrc8V3D5Mj'}];
+          // 🟢 FIXED: DYNAMIC CRYPTO OPTIONS FOR AUTO VERIFICATION 🟢
+          const validCryptoOptions = cryptoSettings && cryptoSettings.length > 0 ? cryptoSettings : [
+              {id: 1, name: 'BTC (Bitcoin)', network: 'BTC', address: 'Your_BTC_Address'},
+              {id: 2, name: 'TRX (Tron)', network: 'TRC20', address: 'Your_TRX_Address'},
+              {id: 3, name: 'USDT (bep20)', network: 'BEP20', address: 'Your_USDT_BEP20_Address'},
+              {id: 4, name: 'ETH (ERC20)', network: 'ERC20', address: 'Your_ETH_Address'},
+              {id: 5, name: 'LTC (Litecoin)', network: 'LTC', address: 'Your_LTC_Address'}
+          ];
           const [cryptoMethod, setCryptoMethod] = useState(validCryptoOptions[0].name);
           const activeCryptoObj = validCryptoOptions.find(c => c.name === cryptoMethod) || validCryptoOptions[0];
           
@@ -1460,7 +1473,7 @@
               
               const newInvoiceId = 'DEP-' + Date.now();
               let cryptoAmount = finalAmount;
-              if (cryptoMethod === 'BTC') {
+              if (String(cryptoMethod).toUpperCase().includes('BTC')) {
                  try {
                      const btcRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
                      const btcData = await btcRes.json();
@@ -1591,7 +1604,7 @@
                               <div className="relative">
                                   <select value={cryptoMethod} onChange={e => setCryptoMethod(e.target.value)} className="glass-input cursor-pointer font-mono text-xs appearance-none">
                                       {validCryptoOptions.map((c, i) => (
-                                          <option key={i} value={c.name} className="bg-[#121212]">{c.name} {c.network ? `(${c.network})` : ''}</option>
+                                          <option key={i} value={c.name} className="bg-[#121212]">{c.name}</option>
                                       ))}
                                   </select>
                                   <ChevronDown className="w-4 h-4 text-gray-500 absolute right-4 top-4 pointer-events-none"/>
@@ -1611,7 +1624,7 @@
                           </p>
                           
                           <div className="text-3xl sm:text-4xl font-light font-mono text-white tracking-widest">
-                              {autoPay.cryptoAmount} <span className="text-sm text-gray-400">{autoPay.method === 'BTC' ? 'BTC' : 'USDT'}</span>
+                              {autoPay.cryptoAmount} <span className="text-sm text-gray-400">{autoPay.method.split(' ')[0]}</span>
                           </div>
                           
                           <div className="bg-white/5 border border-white/10 p-4 rounded-xl mt-6 shadow-inner">
@@ -1801,7 +1814,7 @@
 
           return (
             <div className="animate-matrix-in w-full">
-              <div className="flex space-x-1.5 mb-8 p-1.5 bg-white/5 rounded-xl border border-white/10 shadow-inner max-w-fit mx-auto md:mx-0">
+              <div className="flex space-x-1.5 mb-8 p-1.5 bg-[#0f172a] rounded-xl border border-white/10 shadow-inner max-w-fit mx-auto md:mx-0">
                   <button onClick={() => setProfileSubTab('overview')} className={`btn-animate px-5 py-2.5 rounded-lg text-[9px] uppercase tracking-widest font-bold ${profileSubTab === 'overview' ? 'bg-white text-black shadow-md' : 'text-gray-400 hover:text-white'}`}>My Profile</button>
                   <button onClick={() => setProfileSubTab('history')} className={`btn-animate px-5 py-2.5 rounded-lg text-[9px] uppercase tracking-widest font-bold ${profileSubTab === 'history' ? 'bg-white text-black shadow-md' : 'text-gray-400 hover:text-white'}`}>History</button>
                   <button onClick={() => setProfileSubTab('support')} className={`btn-animate px-5 py-2.5 rounded-lg text-[9px] uppercase tracking-widest font-bold ${profileSubTab === 'support' ? 'bg-white text-black shadow-md' : 'text-gray-400 hover:text-white'}`}>Support</button>
