@@ -40,30 +40,30 @@
             keyframes: {
               /* 🟢 HIGH-LEVEL 3D ANIMATIONS (ZERO CPU HEATING - NO BLUR) 🟢 */
               matrixIn: {
-                '0%': { transform: 'perspective(2000px) rotateX(10deg) rotateY(-5deg) translateZ(-50px) translateY(30px)', opacity: '0' },
-                '100%': { transform: 'perspective(2000px) rotateX(0deg) rotateY(0deg) translateZ(0) translateY(0)', opacity: '1' }
+                '0%': { transform: 'perspective(2000px) rotateX(10deg) rotateY(-5deg) translateY(30px)', opacity: '0' },
+                '100%': { transform: 'none', opacity: '1' }
               },
               springCard: {
                 '0%': { transform: 'scale(0.85) translateY(40px)', opacity: '0' },
                 '50%': { transform: 'scale(1.02) translateY(-5px)', opacity: '1' },
-                '100%': { transform: 'scale(1) translateY(0)', opacity: '1' }
+                '100%': { transform: 'none', opacity: '1' }
               },
               swooshIn: {
                 '0%': { transform: 'translate3d(40px, 0, 0) skewX(-5deg)', opacity: '0' },
-                '100%': { transform: 'translate3d(0, 0, 0) skewX(0deg)', opacity: '1' }
+                '100%': { transform: 'none', opacity: '1' }
               },
               bouncyPop: {
                 '0%': { transform: 'scale(0.8) translate3d(0, 30px, 0)', opacity: '0' },
                 '50%': { transform: 'scale(1.03) translate3d(0, -5px, 0)', opacity: '1' },
-                '100%': { transform: 'scale(1) translate3d(0, 0, 0)', opacity: '1' }
+                '100%': { transform: 'none', opacity: '1' }
               },
               fadeInUp: {
                 '0%': { opacity: '0', transform: 'translateY(15px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' }
+                '100%': { opacity: '1', transform: 'none' }
               },
               popIn: {
                 '0%': { opacity: '0', transform: 'scale(0.95)' },
-                '100%': { opacity: '1', transform: 'scale(1)' }
+                '100%': { opacity: '1', transform: 'none' }
               },
               pulseSlow: {
                 '0%, 100%': { opacity: '1' },
@@ -121,17 +121,14 @@
         /* 🌟 CRAZY ELASTIC BUTTON ANIMATIONS (HARDWARE ACCELERATED) 🌟 */
         .btn-animate {
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, background-color 0.3s ease;
-            position: relative;
-            transform-origin: center center;
-            transform: translateZ(0); 
             will-change: transform;
         }
         .btn-animate:hover {
-            transform: scale(1.05) translate3d(0, -3px, 0);
+            transform: scale(1.05) translateY(-3px);
             box-shadow: 0 15px 25px -5px rgba(6, 182, 212, 0.4);
         }
         .btn-animate:active {
-            transform: scale(0.9) translate3d(0, 4px, 0) !important;
+            transform: scale(0.9) translateY(4px) !important;
             box-shadow: 0 2px 5px rgba(6, 182, 212, 0.2) !important;
             transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
@@ -141,27 +138,26 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.15); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.4); }
 
-        /* 🌟 ULTRA CLEAR GLASS EFFECT (0% HEATING, NO BLUR) 🌟 */
+        /* 🌟 ULTRA CLEAR GLASS EFFECT (0% HEATING, 1% BLUR) 🌟 */
         .glass-effect {
-            background: rgba(255, 255, 255, 0.03); /* Super transparent */
-            border: 1px solid rgba(255, 255, 255, 0.15); /* Distinct border */
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+            background: rgba(15, 23, 42, 0.3); /* Super sheer background */
+            backdrop-filter: blur(2px); /* 1% Blur */
+            -webkit-backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             transition: border-color 0.3s ease, background 0.3s ease;
-            transform: translateZ(0);
         }
         .glass-effect:hover {
-            border-color: rgba(6, 182, 212, 0.4);
-            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(6, 182, 212, 0.3);
+            background: rgba(15, 23, 42, 0.4);
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.03); /* Transparent */
             border: 1px solid rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(2px); /* 1% Blur */
             -webkit-backdrop-filter: blur(2px);
             border-radius: 16px;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-            transform: translateZ(0);
         }
 
         .glass-input {
@@ -172,28 +168,15 @@
             padding: 14px 18px;
             font-size: 13px;
             color: #fff;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: border-color 0.2s ease;
             outline: none;
-            transform: translateZ(0);
         }
         .glass-input:focus {
             border-color: #06b6d4;
             background: rgba(0, 0, 0, 0.6);
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
-            transform: scale(1.02) translateZ(0);
         }
 
-        .tab-transition-enter { animation: matrixIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-
-        @keyframes slideInNotify {
-            0% { transform: translate3d(0,-100%,0) scale(0.8); opacity: 0; }
-            10% { transform: translate3d(0,0,0) scale(1); opacity: 1; }
-            90% { transform: translate3d(0,0,0) scale(1); opacity: 1; }
-            100% { transform: translate3d(0,-100%,0) scale(0.8); opacity: 0; }
-        }
-        .msg-alert-anim {
-            animation: slideInNotify 5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        }
+        .tab-transition-enter { animation: fadeInUp 0.4s ease-out forwards; }
 
         /* 🌟 EXTREMELY OPTIMIZED FLOATING ANIMATIONS (GPU ONLY) 🌟 */
         .hardware-accelerated {
@@ -201,19 +184,21 @@
             backface-visibility: hidden;
             pointer-events: none;
             will-change: transform;
+            position: absolute;
         }
 
+        /* Using extremely slow animations and translate3d to guarantee zero CPU usage */
         @keyframes fly1 {
-            0% { transform: translate3d(-10vw, 110vh, 0) scale(0.8); }
-            100% { transform: translate3d(110vw, -10vh, 0) scale(1.1); }
+            from { transform: translate3d(-20vw, 110vh, 0) rotate(0deg); }
+            to { transform: translate3d(120vw, -10vh, 0) rotate(360deg); }
         }
         @keyframes fly2 {
-            0% { transform: translate3d(110vw, 90vh, 0) scale(1); }
-            100% { transform: translate3d(-10vw, -10vh, 0) scale(0.7); }
+            from { transform: translate3d(120vw, 90vh, 0) rotate(0deg); }
+            to { transform: translate3d(-20vw, -10vh, 0) rotate(-360deg); }
         }
         @keyframes fly3 {
-            0% { transform: translate3d(30vw, 110vh, 0) scale(0.9); }
-            100% { transform: translate3d(-10vw, -30vh, 0) scale(1.2); }
+            from { transform: translate3d(-20vw, -10vh, 0) rotate(0deg); }
+            to { transform: translate3d(120vw, 110vh, 0) rotate(180deg); }
         }
     </style>
 </head>
@@ -777,7 +762,7 @@
             return (
               <div className="min-h-screen flex items-center justify-center p-4 relative font-sans w-full bg-transparent text-white">
                 <FloatingLogos />
-                <div className="w-full max-w-[400px] animate-fade-in-up z-10">
+                <div className="w-full max-w-[400px] animate-matrix-in z-10">
                   <div className="flex flex-col items-center mb-8">
                     <h2 className="text-4xl sm:text-5xl font-bold tracking-[0.2em] text-white uppercase text-center drop-shadow-md">Verify<span className="font-light text-brand-primary">Hub</span></h2>
                   </div>
@@ -1202,6 +1187,40 @@
                     </div>
                 )}
 
+                {/* 🟢 FULL SCREEN APP SELECTION MODAL MOVED OUTSIDE 🟢 */}
+                {isAppDropdownOpen && (
+                   <div className="fixed inset-0 z-[99999] bg-[#030712]/95 backdrop-blur-2xl flex flex-col animate-pop-in overflow-hidden">
+                       <div className="p-4 sm:p-6 border-b border-white/10 flex justify-between items-center bg-[rgba(255,255,255,0.02)] sticky top-0 z-10 backdrop-blur-md">
+                           <h3 className="font-bold text-white text-sm sm:text-base tracking-widest uppercase">Select Application</h3>
+                           <button onClick={() => setIsAppDropdownOpen(false)} className="btn-animate p-2 bg-white/10 hover:bg-white text-white hover:text-black rounded-full transition-colors"><X className="w-5 h-5"/></button>
+                       </div>
+                       <div className="p-4 sm:p-6 bg-[#030712] border-b border-white/10 sticky top-[73px] z-10 shadow-lg">
+                           <div className="relative">
+                               <Search className="w-5 h-5 text-gray-500 absolute left-4 top-3.5 pointer-events-none" />
+                               <input autoFocus type="text" placeholder="Search app..." value={appSearch} onChange={(e) => setAppSearch(e.target.value)} className="glass-input !pl-12 !py-3.5 w-full text-base bg-[#0f172a] border-white/20 focus:border-brand-primary"/>
+                           </div>
+                       </div>
+                       <div className="flex-grow overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-transparent space-y-3 pb-24">
+                           {filteredApps.length === 0 ? (<p className="text-center text-gray-500 py-10 text-xs font-mono uppercase tracking-widest">{isFetchingServices ? 'Fetching...' : 'No apps found.'}</p>) : 
+                               filteredApps.map((s, i) => {
+                                   if(!s) return null;
+                                   return (
+                                       <div key={s.code} onClick={() => { setSelectedSmsService(s.code); setIsAppDropdownOpen(false); setAppSearch(''); }} className={`btn-animate p-4 rounded-2xl cursor-pointer text-sm font-bold flex items-center justify-between animate-fade-in-up ${selectedSmsService === s.code ? 'bg-white text-black shadow-[0_5px_20px_rgba(255,255,255,0.3)]' : 'text-gray-200 bg-[#0f172a] border border-white/5 hover:border-white/20'}`} style={{animationDelay: `${(i % 15) * 0.03}s`, animationFillMode: 'both'}}>
+                                           <div className="flex items-center gap-3">
+                                                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${selectedSmsService === s.code ? 'bg-black/10' : 'bg-white/5'}`}>
+                                                    <Smartphone className="w-4 h-4"/>
+                                                </div>
+                                                {s.name}
+                                           </div>
+                                           {selectedSmsService === s.code && <CheckCircle className="w-5 h-5" />}
+                                       </div>
+                                   );
+                               })
+                           }
+                       </div>
+                   </div>
+                )}
+
                 <div className={uiCard + " p-6 sm:p-8"}>
                     <div className="flex items-center justify-between mb-8 pb-5 border-b border-white/10 relative z-10">
                         <h2 className="text-lg sm:text-xl font-light tracking-[0.2em] text-white flex items-center gap-3 uppercase">
@@ -1260,40 +1279,6 @@
                                {isFetchingServices ? <RefreshCw className="w-4 h-4 text-brand-primary absolute left-4 animate-spin"/> : <Smartphone className="w-4 h-4 text-brand-primary absolute left-4"/>}
                                <ChevronDown className={`w-4 h-4 text-gray-400 absolute right-4 transition-transform ${isAppDropdownOpen ? 'rotate-180' : ''}`}/>
                            </div>
-                           
-                           {/* 🟢 FULL SCREEN APP SELECTION MODAL 🟢 */}
-                           {isAppDropdownOpen && (
-                               <div className="fixed inset-0 z-[99999] bg-[#030712] flex flex-col animate-swoosh-in overflow-hidden">
-                                   <div className="p-4 sm:p-6 border-b border-white/10 flex justify-between items-center bg-[rgba(255,255,255,0.02)] sticky top-0 z-10 backdrop-blur-md">
-                                       <h3 className="font-bold text-white text-sm sm:text-base tracking-widest uppercase">Select Application</h3>
-                                       <button onClick={() => setIsAppDropdownOpen(false)} className="btn-animate p-2 bg-white/10 hover:bg-white text-white hover:text-black rounded-full transition-colors"><X className="w-5 h-5"/></button>
-                                   </div>
-                                   <div className="p-4 sm:p-6 bg-[#030712] border-b border-white/10 sticky top-[73px] z-10 shadow-lg">
-                                       <div className="relative">
-                                           <Search className="w-5 h-5 text-gray-500 absolute left-4 top-3.5 pointer-events-none" />
-                                           <input autoFocus type="text" placeholder="Search app..." value={appSearch} onChange={(e) => setAppSearch(e.target.value)} className="glass-input !pl-12 !py-3.5 w-full text-base bg-[#0f172a] border-white/20 focus:border-brand-primary"/>
-                                       </div>
-                                   </div>
-                                   <div className="flex-grow overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-transparent space-y-3 pb-24">
-                                       {filteredApps.length === 0 ? (<p className="text-center text-gray-500 py-10 text-xs font-mono uppercase tracking-widest">{isFetchingServices ? 'Fetching...' : 'No apps found.'}</p>) : 
-                                           filteredApps.map((s, i) => {
-                                               if(!s) return null;
-                                               return (
-                                                   <div key={s.code} onClick={() => { setSelectedSmsService(s.code); setIsAppDropdownOpen(false); setAppSearch(''); }} className={`btn-animate p-4 rounded-2xl cursor-pointer text-sm font-bold flex items-center justify-between animate-fade-in-up ${selectedSmsService === s.code ? 'bg-white text-black shadow-[0_5px_20px_rgba(255,255,255,0.3)]' : 'text-gray-200 bg-[#0f172a] border border-white/5 hover:border-white/20'}`} style={{animationDelay: `${(i % 15) * 0.03}s`, animationFillMode: 'both'}}>
-                                                       <div className="flex items-center gap-3">
-                                                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${selectedSmsService === s.code ? 'bg-black/10' : 'bg-white/5'}`}>
-                                                                <Smartphone className="w-4 h-4"/>
-                                                            </div>
-                                                            {s.name}
-                                                       </div>
-                                                       {selectedSmsService === s.code && <CheckCircle className="w-5 h-5" />}
-                                                   </div>
-                                               );
-                                           })
-                                       }
-                                   </div>
-                               </div>
-                           )}
                        </div>
                     </div>
 
@@ -1377,7 +1362,11 @@
                   triggerToast("Please select a State.");
                   return;
               }
-              const cartItem = { ...product, selectedState: selectedState || 'Random' };
+              // 🟢 FIXED: TEXTPLUS PURCHASE BUG (UNDEFINED INSTEAD OF 'RANDOM') 🟢
+              const finalState = (!selectedState || selectedState === 'Random') ? undefined : selectedState;
+              const cartItem = { ...product };
+              if (finalState) cartItem.selectedState = finalState;
+              
               setCart([...cart, cartItem]); 
               triggerToast(`Added to cart.`);
           };
@@ -1980,7 +1969,7 @@
                          <h3 className="text-sm font-bold tracking-widest text-white mb-6 pb-4 border-b border-white/10 uppercase">My Tickets</h3>
                          <div className="space-y-4 overflow-y-auto scrollbar-hide pr-1">
                            {tickets.length === 0 ? <p className="text-center text-gray-500 font-mono text-[10px] uppercase tracking-widest py-20">No tickets found.</p> : tickets.map((t, idx) => (
-                             <div key={t.id} className="bg-black/40 border border-white/10 p-5 rounded-2xl group hover:border-white/30 transition-colors relative overflow-hidden animate-fade-in-up" style={{animationDelay: `${idx * 0.1}s`}}>
+                             <div key={t.id} className="bg-[rgba(0,0,0,0.5)] border border-white/10 p-4 rounded-2xl group hover:border-white/30 transition-colors relative overflow-hidden animate-fade-in-up" style={{animationDelay: `${idx * 0.1}s`}}>
                                <div className="absolute top-0 left-0 w-1.5 h-full bg-white/10 group-hover:bg-white transition-colors"></div>
                                <div className="flex justify-between items-start mb-4 pl-3">
                                  <h4 className="font-bold text-gray-200 text-xs uppercase tracking-wider break-words w-[70%]">{t.subject}</h4>
