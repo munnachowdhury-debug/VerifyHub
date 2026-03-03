@@ -1025,6 +1025,7 @@
 
           const [confirmAction, setConfirmAction] = useState({ show: false, type: '', orderId: null, price: 0 });
 
+          const ordersContainerRef = useRef(null);
           const [activeOrders, setActiveOrders] = useState(() => {
               try { const saved = localStorage.getItem(`smsOrders_${user?.email}`); if (saved) { const parsed = JSON.parse(saved); if(Array.isArray(parsed)) return parsed.filter(o => o && o.status === 'ACTIVE'); } } catch(e) {} return [];
           });
@@ -1055,7 +1056,8 @@
           }, [selectedSmsService, smsCountry]);
 
           const filteredApps = Array.isArray(availableServices) ? availableServices.filter(app => (app?.name || '').toLowerCase().includes((appSearch || '').toLowerCase())) : [];
-          useEffect(() => { if (filteredApps.length > 0 && !selectedSmsService) setSelectedSmsService(filteredApps[0].code); }, [filteredApps, selectedSmsService]);
+          // Removed auto-selecting the first app so the Get Number button is initially hidden
+          // useEffect(() => { if (filteredApps.length > 0 && !selectedSmsService) setSelectedSmsService(filteredApps[0].code); }, [filteredApps, selectedSmsService]);
 
           const currentService = availableServices.find(s => s?.code === selectedSmsService) || null;
           const fallbackPrice = currentService?.finalPrice ? parseFloat(currentService.finalPrice) : 0;
@@ -1099,6 +1101,15 @@
                       const newOrder = { id: data.orderId, phone: data.phone, service: cleanName, countryId: smsCountry, price: finalOrderPrice, status: 'ACTIVE', codes: [], expiresAt: Date.now() + 240 * 1000, isCancelling: false, isNew: true };
                       setActiveOrders(prev => [newOrder, ...prev]); 
                       triggerToast("Number assigned!");
+
+                      // 🟢 SCROLL ANIMATION DOWN TO THE NEW NUMBER 🟢
+                      setTimeout(() => {
+                          if (ordersContainerRef.current) {
+                              const y = ordersContainerRef.current.getBoundingClientRect().top + window.scrollY - 100;
+                              window.scrollTo({ top: y, behavior: 'smooth' });
+                          }
+                      }, 300);
+
                   } else {
                       await fetch('https://voicestore-backend.onrender.com/api/sms-refund', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ email: user.email, price: finalBuyPrice }) });
                       triggerToast(data?.message || "Failed to get number.");
@@ -1250,30 +1261,36 @@
                                <ChevronDown className={`w-4 h-4 text-gray-400 absolute right-4 transition-transform ${isAppDropdownOpen ? 'rotate-180' : ''}`}/>
                            </div>
                            
-                           {/* 🟢 Z-INDEX FIXED MODAL WITH HIGH BLUR 🟢 */}
+                           {/* 🟢 FULL SCREEN APP SELECTION MODAL 🟢 */}
                            {isAppDropdownOpen && (
-                               <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#030712]/95 backdrop-blur-2xl animate-pop-in">
-                                   <div className="glass-effect border border-white/20 w-full max-w-sm rounded-3xl flex flex-col h-[70vh] shadow-[0_20px_50px_rgba(0,0,0,0.9)] overflow-hidden">
-                                       <div className="p-4 border-b border-white/10 flex justify-between items-center bg-[rgba(255,255,255,0.05)]">
-                                           <h3 className="font-bold text-white text-xs tracking-widest uppercase">Select Application</h3>
-                                           <button onClick={() => setIsAppDropdownOpen(false)} className="btn-animate p-1 text-gray-400 hover:text-white transition-colors"><X className="w-5 h-5"/></button>
+                               <div className="fixed inset-0 z-[99999] bg-[#030712] flex flex-col animate-swoosh-in overflow-hidden">
+                                   <div className="p-4 sm:p-6 border-b border-white/10 flex justify-between items-center bg-[rgba(255,255,255,0.02)] sticky top-0 z-10 backdrop-blur-md">
+                                       <h3 className="font-bold text-white text-sm sm:text-base tracking-widest uppercase">Select Application</h3>
+                                       <button onClick={() => setIsAppDropdownOpen(false)} className="btn-animate p-2 bg-white/10 hover:bg-white text-white hover:text-black rounded-full transition-colors"><X className="w-5 h-5"/></button>
+                                   </div>
+                                   <div className="p-4 sm:p-6 bg-[#030712] border-b border-white/10 sticky top-[73px] z-10 shadow-lg">
+                                       <div className="relative">
+                                           <Search className="w-5 h-5 text-gray-500 absolute left-4 top-3.5 pointer-events-none" />
+                                           <input autoFocus type="text" placeholder="Search app..." value={appSearch} onChange={(e) => setAppSearch(e.target.value)} className="glass-input !pl-12 !py-3.5 w-full text-base bg-[#0f172a] border-white/20 focus:border-brand-primary"/>
                                        </div>
-                                       <div className="p-4 bg-[rgba(0,0,0,0.3)] border-b border-white/10">
-                                           <input autoFocus type="text" placeholder="Search app..." value={appSearch} onChange={(e) => setAppSearch(e.target.value)} className="glass-input !py-3 w-full bg-[rgba(0,0,0,0.5)]"/>
-                                       </div>
-                                       <div className="flex-grow overflow-y-auto p-3 custom-scrollbar bg-transparent space-y-2">
-                                           {filteredApps.length === 0 ? (<p className="text-center text-gray-500 py-10 text-[10px] font-mono uppercase tracking-widest">{isFetchingServices ? 'Fetching...' : 'No apps found.'}</p>) : 
-                                               filteredApps.map((s, i) => {
-                                                   if(!s) return null;
-                                                   return (
-                                                       <div key={s.code} onClick={() => { setSelectedSmsService(s.code); setIsAppDropdownOpen(false); setAppSearch(''); }} className={`btn-animate px-4 py-3.5 rounded-xl cursor-pointer text-xs font-bold flex items-center justify-between animate-swoosh-in ${selectedSmsService === s.code ? 'bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)]' : 'text-gray-300 hover:bg-[rgba(255,255,255,0.05)] glass-panel'}`} style={{animationDelay: `${i * 0.02}s`, animationFillMode: 'both'}}>
-                                                           {s.name}
-                                                           {selectedSmsService === s.code && <CheckCircle className="w-4 h-4" />}
+                                   </div>
+                                   <div className="flex-grow overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-transparent space-y-3 pb-24">
+                                       {filteredApps.length === 0 ? (<p className="text-center text-gray-500 py-10 text-xs font-mono uppercase tracking-widest">{isFetchingServices ? 'Fetching...' : 'No apps found.'}</p>) : 
+                                           filteredApps.map((s, i) => {
+                                               if(!s) return null;
+                                               return (
+                                                   <div key={s.code} onClick={() => { setSelectedSmsService(s.code); setIsAppDropdownOpen(false); setAppSearch(''); }} className={`btn-animate p-4 rounded-2xl cursor-pointer text-sm font-bold flex items-center justify-between animate-fade-in-up ${selectedSmsService === s.code ? 'bg-white text-black shadow-[0_5px_20px_rgba(255,255,255,0.3)]' : 'text-gray-200 bg-[#0f172a] border border-white/5 hover:border-white/20'}`} style={{animationDelay: `${(i % 15) * 0.03}s`, animationFillMode: 'both'}}>
+                                                       <div className="flex items-center gap-3">
+                                                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${selectedSmsService === s.code ? 'bg-black/10' : 'bg-white/5'}`}>
+                                                                <Smartphone className="w-4 h-4"/>
+                                                            </div>
+                                                            {s.name}
                                                        </div>
-                                                   );
-                                               })
-                                           }
-                                       </div>
+                                                       {selectedSmsService === s.code && <CheckCircle className="w-5 h-5" />}
+                                                   </div>
+                                               );
+                                           })
+                                       }
                                    </div>
                                </div>
                            )}
@@ -1288,58 +1305,60 @@
                     )}
                 </div>
 
-                {activeOrders.map((order, index) => {
-                    return (
-                        <div key={order.id} className="glass-effect rounded-3xl border border-white/20 flex flex-col items-center py-10 px-6 sm:px-10 animate-fade-in-up relative overflow-hidden group mt-8">
-                            <div className="absolute top-0 left-0 w-full h-[3px] bg-white/10">
-                                <OrderProgressBar expiresAt={order.expiresAt} />
-                            </div>
-                            
-                            <div className="flex items-center gap-2.5 mb-8 glass-panel px-5 py-2.5 rounded-full border-white/20 relative z-10">
-                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                <p className="text-white font-bold uppercase tracking-[0.3em] text-[10px] pt-0.5">{order.service}</p>
-                            </div>
+                <div ref={ordersContainerRef} className="w-full max-w-3xl mx-auto">
+                    {activeOrders.map((order, index) => {
+                        return (
+                            <div key={order.id} className="glass-effect rounded-3xl border border-white/20 flex flex-col items-center py-10 px-6 sm:px-10 animate-fade-in-up relative overflow-hidden group mt-8">
+                                <div className="absolute top-0 left-0 w-full h-[3px] bg-white/10">
+                                    <OrderProgressBar expiresAt={order.expiresAt} />
+                                </div>
+                                
+                                <div className="flex items-center gap-2.5 mb-8 glass-panel px-5 py-2.5 rounded-full border-white/20 relative z-10">
+                                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                    <p className="text-white font-bold uppercase tracking-[0.3em] text-[10px] pt-0.5">{order.service}</p>
+                                </div>
 
-                            <div className="flex items-center gap-4 w-full max-w-md mb-10 relative z-10">
-                                <div className="text-3xl sm:text-5xl font-mono font-bold text-white bg-[rgba(0,0,0,0.5)] px-6 py-6 rounded-2xl border border-white/10 flex-grow text-center whitespace-nowrap overflow-hidden text-ellipsis tracking-wider drop-shadow-md">
-                                    +{String(order.phone).replace(/\D/g, '')}
-                                </div>
-                                <button onClick={() => copyNumberOnly(order.phone)} className="btn-animate p-6 bg-white hover:bg-gray-200 text-black rounded-2xl shadow-[0_0_20px_rgba(255,255,255,0.2)] shrink-0">
-                                    <Copy className="w-6 h-6"/>
-                                </button>
-                            </div>
-                            
-                            {order.codes.length === 0 ? (
-                                <div className="w-full max-w-md relative z-10">
-                                    <p className="text-gray-400 font-mono text-[10px] uppercase tracking-widest mb-4 flex justify-center items-center gap-2"><RefreshCw className="w-3 h-3 animate-spin text-white"/> {order.lastMsg === 'WAITING' || !order.lastMsg ? 'Waiting for SMS...' : `Status: ${order.lastMsg}`}</p>
-                                    <div className="flex justify-between items-center bg-[rgba(0,0,0,0.5)] p-4 rounded-2xl border border-white/10">
-                                        <div className="flex items-center gap-3 pl-2">
-                                            <Clock className="w-4 h-4 text-gray-400 hidden sm:block"/>
-                                            <OrderTimerDisplay expiresAt={order.expiresAt} />
-                                        </div>
-                                        
-                                        <button onClick={() => setConfirmAction({show: true, type: 'skip', orderId: order.id, price: order.price})} className="btn-animate bg-red-900/20 hover:bg-red-900/40 border border-red-900/50 text-red-400 px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold flex items-center gap-2"><Ban className="w-3.5 h-3.5"/> Skip</button>
+                                <div className="flex items-center gap-4 w-full max-w-md mb-10 relative z-10">
+                                    <div className="text-3xl sm:text-5xl font-mono font-bold text-white bg-[rgba(0,0,0,0.5)] px-6 py-6 rounded-2xl border border-white/10 flex-grow text-center whitespace-nowrap overflow-hidden text-ellipsis tracking-wider drop-shadow-md">
+                                        +{String(order.phone).replace(/\D/g, '')}
                                     </div>
+                                    <button onClick={() => copyNumberOnly(order.phone)} className="btn-animate p-6 bg-white hover:bg-gray-200 text-black rounded-2xl shadow-[0_0_20px_rgba(255,255,255,0.2)] shrink-0">
+                                        <Copy className="w-6 h-6"/>
+                                    </button>
                                 </div>
-                            ) : (
-                                <div className="w-full max-w-md space-y-5 relative z-10 animate-swoosh-in">
-                                    <p className="text-[11px] text-green-400 font-bold uppercase tracking-[0.3em] text-center mb-5">SMS Received</p>
-                                    {order.codes.map((c, i) => {
-                                        return (
-                                            <div key={i} className="flex flex-col gap-4 bg-[#0f172a] border border-white/10 p-6 rounded-2xl shadow-xl animate-fade-in-up" style={{animationDelay: `${i * 0.1}s`, animationFillMode: 'both'}}>
-                                                <p className="text-sm text-white font-medium leading-relaxed text-left break-words">{c}</p>
-                                                <button onClick={() => copyText(c)} className="btn-animate w-full py-3.5 bg-brand-primary text-black hover:bg-white rounded-xl flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-bold shadow-[0_0_15px_rgba(6,182,212,0.3)] shrink-0">
-                                                    <Copy className="w-4 h-4"/> Copy Full Message
-                                                </button>
+                                
+                                {order.codes.length === 0 ? (
+                                    <div className="w-full max-w-md relative z-10">
+                                        <p className="text-gray-400 font-mono text-[10px] uppercase tracking-widest mb-4 flex justify-center items-center gap-2"><RefreshCw className="w-3 h-3 animate-spin text-white"/> {order.lastMsg === 'WAITING' || !order.lastMsg ? 'Waiting for SMS...' : `Status: ${order.lastMsg}`}</p>
+                                        <div className="flex justify-between items-center bg-[rgba(0,0,0,0.5)] p-4 rounded-2xl border border-white/10">
+                                            <div className="flex items-center gap-3 pl-2">
+                                                <Clock className="w-4 h-4 text-gray-400 hidden sm:block"/>
+                                                <OrderTimerDisplay expiresAt={order.expiresAt} />
                                             </div>
-                                        );
-                                    })}
-                                    <button onClick={() => setActiveOrders([])} className="btn-animate w-full glass-panel hover:bg-white/20 text-white font-bold py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-2 uppercase tracking-widest mt-8 !text-xs">Close Order</button>
-                                </div>
-                            )}
-                        </div>
-                    )
-                })}
+                                            
+                                            <button onClick={() => setConfirmAction({show: true, type: 'skip', orderId: order.id, price: order.price})} className="btn-animate bg-red-900/20 hover:bg-red-900/40 border border-red-900/50 text-red-400 px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold flex items-center gap-2"><Ban className="w-3.5 h-3.5"/> Skip</button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="w-full max-w-md space-y-5 relative z-10 animate-swoosh-in">
+                                        <p className="text-[11px] text-green-400 font-bold uppercase tracking-[0.3em] text-center mb-5">SMS Received</p>
+                                        {order.codes.map((c, i) => {
+                                            return (
+                                                <div key={i} className="flex flex-col gap-4 bg-[#0f172a] border border-white/10 p-6 rounded-2xl shadow-xl animate-fade-in-up" style={{animationDelay: `${i * 0.1}s`, animationFillMode: 'both'}}>
+                                                    <p className="text-sm text-white font-medium leading-relaxed text-left break-words">{c}</p>
+                                                    <button onClick={() => copyText(c)} className="btn-animate w-full py-3.5 bg-brand-primary text-black hover:bg-white rounded-xl flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-bold shadow-[0_0_15px_rgba(6,182,212,0.3)] shrink-0">
+                                                        <Copy className="w-4 h-4"/> Copy Full Message
+                                                    </button>
+                                                </div>
+                                            );
+                                        })}
+                                        <button onClick={() => setActiveOrders([])} className="btn-animate w-full glass-panel hover:bg-white/20 text-white font-bold py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-2 uppercase tracking-widest mt-8 !text-xs">Close Order</button>
+                                    </div>
+                                )}
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
           );
         }
