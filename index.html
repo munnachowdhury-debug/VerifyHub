@@ -86,6 +86,7 @@
         "imports": {
           "react": "https://esm.sh/react@18.2.0?target=es2020",
           "react-dom/client": "https://esm.sh/react-dom@18.2.0/client?target=es2020",
+          "react-dom": "https://esm.sh/react-dom@18.2.0?target=es2020",
           "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react&target=es2020"
         }
       }
@@ -138,26 +139,27 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.15); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.4); }
 
-        /* 🌟 ULTRA CLEAR GLASS EFFECT (0% HEATING, 1% BLUR) 🌟 */
+        /* 🌟 ULTRA CLEAR GLASS EFFECT (0% HEATING, NO BLUR) 🌟 */
         .glass-effect {
-            background: rgba(15, 23, 42, 0.3); /* Super sheer background */
-            backdrop-filter: blur(2px); /* 1% Blur */
-            -webkit-backdrop-filter: blur(2px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.03); /* Super transparent */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Distinct border */
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 10px 40px -10px rgba(0, 0, 0, 0.5);
             transition: border-color 0.3s ease, background 0.3s ease;
+            transform: translateZ(0);
         }
         .glass-effect:hover {
-            border-color: rgba(6, 182, 212, 0.3);
-            background: rgba(15, 23, 42, 0.4);
+            border-color: rgba(6, 182, 212, 0.4);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.03); /* Transparent */
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(2px); /* 1% Blur */
             -webkit-backdrop-filter: blur(2px);
             border-radius: 16px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+            transform: translateZ(0);
         }
 
         .glass-input {
@@ -168,15 +170,28 @@
             padding: 14px 18px;
             font-size: 13px;
             color: #fff;
-            transition: border-color 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             outline: none;
+            transform: translateZ(0);
         }
         .glass-input:focus {
             border-color: #06b6d4;
             background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+            transform: scale(1.02) translateZ(0);
         }
 
-        .tab-transition-enter { animation: fadeInUp 0.4s ease-out forwards; }
+        .tab-transition-enter { animation: matrixIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+
+        @keyframes slideInNotify {
+            0% { transform: translate3d(0,-100%,0) scale(0.8); opacity: 0; }
+            10% { transform: translate3d(0,0,0) scale(1); opacity: 1; }
+            90% { transform: translate3d(0,0,0) scale(1); opacity: 1; }
+            100% { transform: translate3d(0,-100%,0) scale(0.8); opacity: 0; }
+        }
+        .msg-alert-anim {
+            animation: slideInNotify 5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
 
         /* 🌟 EXTREMELY OPTIMIZED FLOATING ANIMATIONS (GPU ONLY) 🌟 */
         .hardware-accelerated {
@@ -184,21 +199,19 @@
             backface-visibility: hidden;
             pointer-events: none;
             will-change: transform;
-            position: absolute;
         }
 
-        /* Using extremely slow animations and translate3d to guarantee zero CPU usage */
         @keyframes fly1 {
-            from { transform: translate3d(-20vw, 110vh, 0) rotate(0deg); }
-            to { transform: translate3d(120vw, -10vh, 0) rotate(360deg); }
+            0% { transform: translate3d(-10vw, 110vh, 0) scale(0.8); }
+            100% { transform: translate3d(110vw, -10vh, 0) scale(1.1); }
         }
         @keyframes fly2 {
-            from { transform: translate3d(120vw, 90vh, 0) rotate(0deg); }
-            to { transform: translate3d(-20vw, -10vh, 0) rotate(-360deg); }
+            0% { transform: translate3d(110vw, 90vh, 0) scale(1); }
+            100% { transform: translate3d(-10vw, -10vh, 0) scale(0.7); }
         }
         @keyframes fly3 {
-            from { transform: translate3d(-20vw, -10vh, 0) rotate(0deg); }
-            to { transform: translate3d(120vw, 110vh, 0) rotate(180deg); }
+            0% { transform: translate3d(30vw, 110vh, 0) scale(0.9); }
+            100% { transform: translate3d(-10vw, -30vh, 0) scale(1.2); }
         }
     </style>
 </head>
@@ -208,6 +221,7 @@
     <script type="text/babel" data-type="module">
         import React, { useState, useEffect, useRef, useMemo } from 'react';
         import { createRoot } from 'react-dom/client';
+        import { createPortal } from 'react-dom';
 
         import { 
             ShoppingCart, LogOut, Package, Users, DollarSign, Settings, Plus, Trash2, CheckCircle, 
@@ -294,6 +308,15 @@
             return 'Invalid Date';
         };
 
+        // 🟢 HELPER FUNCTION TO EXTRACT ONLY THE OTP CODE FROM SMS 🟢
+        const extractSmsCode = (fullText) => {
+            if (!fullText) return null;
+            const textStr = String(fullText);
+            // Matches 4 to 8 consecutive digits (standard for WhatsApp, Telegram, etc)
+            const match = textStr.match(/\b\d{4,8}\b/);
+            return match ? match[0] : null;
+        };
+
         // 🟢 NEW: DEFINED PremiumBackground COMPONENT 🟢
         const PremiumBackground = () => (
           <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden flex items-center justify-center bg-transparent">
@@ -321,7 +344,7 @@
                     const animationName = animationsList[i % animationsList.length];
                     
                     arr.push(
-                        <div key={i} className="hardware-accelerated opacity-20" style={{
+                        <div key={i} className="hardware-accelerated absolute opacity-20" style={{
                             width: `${randomSize}px`,
                             height: `${randomSize}px`,
                             animation: `${animationName} ${randomDuration}s linear infinite`,
@@ -374,8 +397,8 @@
 
             if (!msg) return null;
             
-            return (
-                <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-[300] w-[90%] max-w-sm transition-all duration-300 ease-in-out ${show ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'}`}>
+            return createPortal(
+                <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-[9999] w-[90%] max-w-sm transition-all duration-300 ease-in-out ${show ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'}`}>
                     <div className="glass-effect p-4 rounded-3xl flex items-center gap-4 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
                         <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(255,255,255,0.5)]">
                             <MessageSquare className="w-6 h-6 animate-pulse" />
@@ -388,7 +411,8 @@
                             <p className="text-sm text-white font-medium leading-snug line-clamp-2">{msg}</p>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             );
         };
 
@@ -752,10 +776,6 @@
             finally { setIsLoading(false); }
           };
 
-          // 🟢 ADMIN SPECIFIC: HANDLE USERS
-          const [adminSearchUser, setAdminSearchUser] = useState('');
-          const [selectedUserForDetails, setSelectedUserForDetails] = useState(null);
-
           const handleLogout = () => { signOut(auth).then(() => { setUser(null); setCart([]); setShowCart(false); setEmailInput(''); setPasswordInput(''); }); };
 
           if (showSplash) return <SplashScreen />;
@@ -815,13 +835,13 @@
               <FloatingLogos />
               <MessageNotification msg={incomingMsg} onClose={() => setIncomingMsg(null)} />
               
-              {toastData.show && (
-                <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[400] w-[90%] sm:w-auto max-w-sm animate-fade-in-up">
-                  <div className="glass-effect p-3.5 rounded-2xl shadow-xl flex items-center gap-3 border border-white/20">
+              {toastData.show && createPortal(
+                <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[9999] w-[90%] sm:w-auto max-w-sm animate-fade-in-up">
+                  <div className="glass-effect p-3.5 rounded-2xl shadow-xl flex items-center gap-3 border border-white/20 bg-[#030712]/90">
                     <CheckCircle className="w-4 h-4 text-brand-primary shrink-0" />
                     <span className="font-bold text-[10px] sm:text-xs tracking-widest text-white uppercase">{toastData.msg}</span>
                   </div>
-                </div>
+                </div>, document.body
               )}
 
               <header className="sticky top-0 z-40 w-full glass-effect rounded-none border-t-0 border-x-0 border-b border-white/10">
@@ -1045,8 +1065,6 @@
           }, [selectedSmsService, smsCountry]);
 
           const filteredApps = Array.isArray(availableServices) ? availableServices.filter(app => (app?.name || '').toLowerCase().includes((appSearch || '').toLowerCase())) : [];
-          // Removed auto-selecting the first app so the Get Number button is initially hidden
-          // useEffect(() => { if (filteredApps.length > 0 && !selectedSmsService) setSelectedSmsService(filteredApps[0].code); }, [filteredApps, selectedSmsService]);
 
           const currentService = availableServices.find(s => s?.code === selectedSmsService) || null;
           const fallbackPrice = currentService?.finalPrice ? parseFloat(currentService.finalPrice) : 0;
@@ -1093,11 +1111,11 @@
 
                       // 🟢 SCROLL ANIMATION DOWN TO THE NEW NUMBER 🟢
                       setTimeout(() => {
-                          if (ordersContainerRef.current) {
-                              const y = ordersContainerRef.current.getBoundingClientRect().top + window.scrollY - 100;
-                              window.scrollTo({ top: y, behavior: 'smooth' });
+                          const elements = document.querySelectorAll('.order-card-anim');
+                          if(elements.length > 0) {
+                              elements[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
                           }
-                      }, 300);
+                      }, 200);
 
                   } else {
                       await fetch('https://voicestore-backend.onrender.com/api/sms-refund', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ email: user.email, price: finalBuyPrice }) });
@@ -1170,9 +1188,9 @@
           return (
             <div className="w-full max-w-3xl mx-auto space-y-6 sm:space-y-8 relative animate-matrix-in">
                 
-                {confirmAction.show && (
-                    <div className="fixed inset-0 z-[600] flex items-center justify-center p-4 bg-[#000]/80">
-                        <div className="glass-effect w-full max-w-sm rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-white/20 animate-fade-in-up">
+                {confirmAction.show && createPortal(
+                    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-[#000]/80 backdrop-blur-sm">
+                        <div className="glass-effect w-full max-w-sm rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-white/20 animate-fade-in-up bg-[#0f172a]">
                             <div className="absolute top-0 left-0 w-full h-1.5 bg-red-600"></div>
                             <div className="flex items-center gap-4 mb-6">
                                 <div className="p-3.5 rounded-2xl glass-panel text-red-500 border border-red-500/30">
@@ -1188,28 +1206,29 @@
                                 <button onClick={executeConfirmAction} className="btn-animate flex-1 py-3.5 rounded-xl font-bold text-white text-xs uppercase tracking-widest bg-red-600 hover:bg-red-500 border border-red-500/50">Yes, Skip</button>
                             </div>
                         </div>
-                    </div>
+                    </div>,
+                    document.body
                 )}
 
-                {/* 🟢 FULL SCREEN APP SELECTION MODAL MOVED OUTSIDE 🟢 */}
-                {isAppDropdownOpen && (
-                   <div className="fixed inset-0 z-[99999] bg-[#030712]/95 backdrop-blur-2xl flex flex-col animate-pop-in overflow-hidden">
-                       <div className="p-4 sm:p-6 border-b border-white/10 flex justify-between items-center bg-[rgba(255,255,255,0.02)] sticky top-0 z-10 backdrop-blur-md">
+                {/* 🟢 FULL SCREEN APP SELECTION MODAL RENDERED IN PORTAL 🟢 */}
+                {isAppDropdownOpen && createPortal(
+                   <div className="fixed inset-0 z-[99999] bg-[rgba(3,7,18,0.95)] backdrop-blur-2xl flex flex-col animate-pop-in overflow-hidden">
+                       <div className="p-4 sm:p-6 border-b border-white/10 flex justify-between items-center bg-transparent sticky top-0 z-20">
                            <h3 className="font-bold text-white text-sm sm:text-base tracking-widest uppercase">Select Application</h3>
                            <button onClick={() => setIsAppDropdownOpen(false)} className="btn-animate p-2 bg-white/10 hover:bg-white text-white hover:text-black rounded-full transition-colors"><X className="w-5 h-5"/></button>
                        </div>
-                       <div className="p-4 sm:p-6 bg-[#030712] border-b border-white/10 sticky top-[73px] z-10 shadow-lg">
+                       <div className="p-4 sm:p-6 bg-transparent border-b border-white/10 sticky top-[73px] z-20">
                            <div className="relative">
                                <Search className="w-5 h-5 text-gray-500 absolute left-4 top-3.5 pointer-events-none" />
-                               <input autoFocus type="text" placeholder="Search app..." value={appSearch} onChange={(e) => setAppSearch(e.target.value)} className="glass-input !pl-12 !py-3.5 w-full text-base bg-[#0f172a] border-white/20 focus:border-brand-primary"/>
+                               <input autoFocus type="text" placeholder="Search app..." value={appSearch} onChange={(e) => setAppSearch(e.target.value)} className="w-full bg-[rgba(255,255,255,0.05)] border border-white/20 rounded-xl pl-12 py-3.5 text-base text-white outline-none focus:border-brand-primary"/>
                            </div>
                        </div>
-                       <div className="flex-grow overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-transparent space-y-3 pb-24">
+                       <div className="flex-grow overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-transparent space-y-3 pb-24 z-10 relative">
                            {filteredApps.length === 0 ? (<p className="text-center text-gray-500 py-10 text-xs font-mono uppercase tracking-widest">{isFetchingServices ? 'Fetching...' : 'No apps found.'}</p>) : 
                                filteredApps.map((s, i) => {
                                    if(!s) return null;
                                    return (
-                                       <div key={s.code} onClick={() => { setSelectedSmsService(s.code); setIsAppDropdownOpen(false); setAppSearch(''); }} className={`btn-animate p-4 rounded-2xl cursor-pointer text-sm font-bold flex items-center justify-between animate-fade-in-up ${selectedSmsService === s.code ? 'bg-white text-black shadow-[0_5px_20px_rgba(255,255,255,0.3)]' : 'text-gray-200 bg-[#0f172a] border border-white/5 hover:border-white/20'}`} style={{animationDelay: `${(i % 15) * 0.03}s`, animationFillMode: 'both'}}>
+                                       <div key={s.code} onClick={() => { setSelectedSmsService(s.code); setIsAppDropdownOpen(false); setAppSearch(''); }} className={`btn-animate p-4 rounded-2xl cursor-pointer text-sm font-bold flex items-center justify-between animate-fade-in-up ${selectedSmsService === s.code ? 'bg-white text-black shadow-[0_5px_20px_rgba(255,255,255,0.3)]' : 'text-gray-200 bg-[rgba(15,23,42,0.6)] border border-white/5 hover:border-white/20'}`} style={{animationDelay: `${(i % 15) * 0.03}s`, animationFillMode: 'both'}}>
                                            <div className="flex items-center gap-3">
                                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center ${selectedSmsService === s.code ? 'bg-black/10' : 'bg-white/5'}`}>
                                                     <Smartphone className="w-4 h-4"/>
@@ -1222,7 +1241,8 @@
                                })
                            }
                        </div>
-                   </div>
+                   </div>,
+                   document.body
                 )}
 
                 <div className={uiCard + " p-6 sm:p-8"}>
@@ -1297,7 +1317,7 @@
                 <div ref={ordersContainerRef} className="w-full max-w-3xl mx-auto">
                     {activeOrders.map((order, index) => {
                         return (
-                            <div key={order.id} className="glass-effect rounded-3xl border border-white/20 flex flex-col items-center py-10 px-6 sm:px-10 animate-fade-in-up relative overflow-hidden group mt-8">
+                            <div key={order.id} className="glass-effect order-card-anim rounded-3xl border border-white/20 flex flex-col items-center py-10 px-6 sm:px-10 animate-fade-in-up relative overflow-hidden group mt-8">
                                 <div className="absolute top-0 left-0 w-full h-[3px] bg-white/10">
                                     <OrderProgressBar expiresAt={order.expiresAt} />
                                 </div>
@@ -1331,19 +1351,14 @@
                                 ) : (
                                     <div className="w-full max-w-md space-y-5 relative z-10 animate-swoosh-in">
                                         <p className="text-[11px] text-green-400 font-bold uppercase tracking-[0.3em] text-center mb-5">SMS Received</p>
+                                        {/* 🟢 FULL TEXT DISPLAY & COPY AS REQUESTED 🟢 */}
                                         {order.codes.map((c, i) => {
-                                            /* 🟢 EXACT CODE EXTRACTION & NORMAL TEXT DISPLAY 🟢 */
-                                            const exactCode = extractSmsCode(c);
                                             return (
                                                 <div key={i} className="flex flex-col gap-4 bg-[rgba(255,255,255,0.05)] border border-brand-primary/30 p-5 rounded-2xl animate-fade-in-up" style={{animationDelay: `${i * 0.1}s`, animationFillMode: 'both'}}>
-                                                    <p className="text-sm text-white font-sans leading-relaxed text-left break-words">{c}</p>
-                                                    
-                                                    {exactCode && (
-                                                        <div className="flex items-center justify-between bg-[#0f172a] p-3 pl-5 rounded-xl border border-white/10">
-                                                            <div className="text-2xl font-mono font-bold text-white tracking-widest drop-shadow-md">{exactCode}</div>
-                                                            <button onClick={() => copyText(exactCode)} className="btn-animate px-4 py-3 bg-brand-primary text-black hover:bg-white rounded-lg flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold shadow-[0_0_15px_rgba(6,182,212,0.3)] shrink-0"><Copy className="w-4 h-4"/> Copy Code</button>
-                                                        </div>
-                                                    )}
+                                                    <p className="text-sm text-white font-sans font-medium tracking-normal leading-relaxed text-left break-words drop-shadow-md">{c}</p>
+                                                    <button onClick={() => copyText(c)} className="btn-animate w-full py-3.5 bg-brand-primary text-black hover:bg-white rounded-xl flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-bold shadow-[0_0_15px_rgba(6,182,212,0.3)] shrink-0">
+                                                        <Copy className="w-4 h-4"/> Copy Full Message
+                                                    </button>
                                                 </div>
                                             );
                                         })}
@@ -2029,9 +2044,9 @@
                 finally { setIsCheckingOut(false); }
             };
 
-            return (
-                <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-[#000]/80 backdrop-blur-sm animate-fade-in-up">
-                    <div className="glass-effect shadow-[0_20px_50px_rgba(0,0,0,0.8)] rounded-3xl w-full max-w-md p-6 sm:p-8 border border-white/20">
+            return createPortal(
+                <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-[#000]/80 backdrop-blur-sm animate-fade-in-up">
+                    <div className="glass-effect shadow-[0_20px_50px_rgba(0,0,0,0.8)] rounded-3xl w-full max-w-md p-6 sm:p-8 border border-white/20 bg-[#0f172a]">
                         <div className="flex justify-between items-center mb-6 pb-4 border-b border-white/10">
                             <h3 className="text-sm font-bold tracking-widest text-white flex items-center gap-2 uppercase"><ShoppingCart className="w-4 h-4"/> Your Cart</h3>
                             <button onClick={() => setShowCart(false)} className="btn-animate p-2 bg-black/50 hover:bg-white/10 rounded-full text-gray-400 border border-white/10"><X className="w-3.5 h-3.5" /></button>
@@ -2072,14 +2087,15 @@
                             </div>
                         )}
                     </div>
-                </div>
+                </div>,
+                document.body
             );
         }
 
         // ==========================================
         // ADMIN DASHBOARD
         // ==========================================
-        function AdminDashboard({ inventory, orders, deposits, categories, usersDB, db, appId, promoSettings, globalNotice, tickets, featureSettings, bankSettings, cryptoSettings, customPayments, smsSettings, activeChats, auth, user, triggerToast, activeTab, setActiveTab }) {
+        function AdminDashboard({ inventory, orders, deposits, categories, usersDB, purchases, db, appId, promoSettings, globalNotice, tickets, featureSettings, bankSettings, cryptoSettings, customPayments, smsSettings, activeChats, auth, user, triggerToast, activeTab, setActiveTab }) {
           const [uploadCategory, setUploadCategory] = useState('new');
           const [uploadText, setUploadText] = useState('');
           const [customerSearch, setCustomerSearch] = useState('');
@@ -2369,9 +2385,9 @@
 
           return (
             <>
-              {editUserModal.show && (
-                <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-[#000]/90 animate-fade-in-up">
-                  <div className="glass-effect w-full max-w-md p-8 rounded-3xl border border-white/20">
+              {editUserModal.show && createPortal(
+                <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-[#000]/90 animate-fade-in-up">
+                  <div className="glass-effect w-full max-w-md p-8 rounded-3xl border border-white/20 bg-[#0f172a]">
                      <div className="flex justify-between items-center mb-6 pb-4 border-b border-white/10">
                          <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-white flex items-center gap-2"><Edit className="w-4 h-4 text-white"/> Edit User</h3>
                          <button onClick={() => setEditUserModal({ show: false, email: '', password: '', balance: 0, totalSpent: 0 })} className="btn-animate p-2 bg-[#000] rounded-full text-gray-500 hover:text-white border border-white/10"><X className="w-3.5 h-3.5" /></button>
@@ -2398,13 +2414,13 @@
                         </div>
                      </form>
                   </div>
-                </div>
+                </div>, document.body
               )}
 
               {/* 🟢 NEW PRODUCT MODAL 🟢 */}
-              {newProductModal && (
-                  <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-[#000]/90 animate-fade-in-up">
-                    <div className="glass-effect w-full max-w-md p-8 rounded-3xl border border-white/20">
+              {newProductModal && createPortal(
+                  <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-[#000]/90 animate-fade-in-up">
+                    <div className="glass-effect w-full max-w-md p-8 rounded-3xl border border-white/20 bg-[#0f172a]">
                        <div className="flex justify-between items-center mb-6 pb-4 border-b border-white/10">
                            <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-white flex items-center gap-2"><Plus className="w-4 h-4"/> Create New Card</h3>
                            <button onClick={() => setNewProductModal(false)} className="btn-animate p-2 bg-[#000] rounded-full text-gray-500 hover:text-white border border-white/10"><X className="w-3.5 h-3.5" /></button>
@@ -2432,7 +2448,7 @@
                           </div>
                        </form>
                     </div>
-                  </div>
+                  </div>, document.body
               )}
 
               <div className="flex-grow w-full min-w-0 mt-2 sm:mt-4 animate-matrix-in">
@@ -2484,9 +2500,9 @@
                   </div>
                 )}
 
-                {manageStockModal.show && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#000]/90 animate-bouncy-pop">
-                    <div className="glass-effect w-full max-w-3xl p-6 sm:p-8 flex flex-col max-h-[85vh] rounded-3xl border border-white/20">
+                {manageStockModal.show && createPortal(
+                  <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-[#000]/90 animate-bouncy-pop">
+                    <div className="glass-effect w-full max-w-3xl p-6 sm:p-8 flex flex-col max-h-[85vh] rounded-3xl border border-white/20 bg-[#0f172a]">
                        <div className="flex justify-between items-center mb-6 pb-4 border-b border-white/10 shrink-0">
                          <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-white flex items-center gap-2"><Package className="w-4 h-4"/> View Stock</h3>
                          <button onClick={() => setManageStockModal({ show: false, categoryId: null })} className="btn-animate p-2 bg-[#000] rounded-full text-gray-500 hover:text-white border border-white/10"><X className="w-4 h-4" /></button>
@@ -2506,7 +2522,7 @@
                           )}
                        </div>
                     </div>
-                  </div>
+                  </div>, document.body
                 )}
 
                 {activeTab === 'users' && (
