@@ -693,6 +693,29 @@
           const triggerToast = (msg) => { const id = Date.now(); setToastData({ show: true, msg, id }); setTimeout(() => { setToastData(prev => prev.id === id ? { ...prev, show: false } : prev); }, 3000); };
           const addNotification = (title, text) => { setNotifications(prev => [{ id: Date.now(), title, text, time: 'Just now' }, ...prev].slice(0, 5)); };
 
+          const getFriendlyAuthError = (errorCode) => {
+              switch (errorCode) {
+                  case 'auth/invalid-email':
+                      return 'আপনার ইমেইল এড্রেসটি সঠিক নয়। দয়া করে ঠিকভাবে লিখুন।';
+                  case 'auth/user-disabled':
+                      return 'এই অ্যাকাউন্টটি ডিজেবল করা হয়েছে।';
+                  case 'auth/user-not-found':
+                      return 'এই ইমেইল দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি। আগে সাইন আপ করুন।';
+                  case 'auth/wrong-password':
+                      return 'পাসওয়ার্ড ভুল হয়েছে। আবার চেষ্টা করুন।';
+                  case 'auth/email-already-in-use':
+                      return 'এই ইমেইল দিয়ে আগে থেকেই একটি অ্যাকাউন্ট খোলা আছে। দয়া করে লগইন করুন।';
+                  case 'auth/weak-password':
+                      return 'পাসওয়ার্ড খুব দুর্বল। কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।';
+                  case 'auth/network-request-failed':
+                      return 'ইন্টারনেট কানেকশন সমস্যা। চেক করে আবার চেষ্টা করুন।';
+                  case 'auth/too-many-requests':
+                      return 'অনেকবার ভুল চেষ্টা করা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করুন।';
+                  default:
+                      return 'একটি সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।';
+              }
+          };
+
           useEffect(() => {
             const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
               if (firebaseUser && firebaseUser.email) {
@@ -848,28 +871,30 @@
                 
                 await sendEmailVerification(userCredential.user);
                 await auth.signOut(); 
-                setAuthSuccessMsg('Account created! Please verify your email inbox before logging in.'); 
+                setAuthSuccessMsg('অ্যাকাউন্ট তৈরি হয়েছে! লগইন করার আগে আপনার ইমেইল ইনবক্স চেক করে ভেরিফাই করুন।'); 
                 setAuthMethod('login'); 
               } else {
                 const userCredential = await signInWithEmailAndPassword(auth, email, pwd);
                 if (!userCredential.user.emailVerified) {
                    await auth.signOut(); 
-                   setAuthError('Please verify your email inbox first!');
+                   setAuthError('দয়া করে আগে আপনার ইমেইল ভেরিফাই করুন!');
                    setIsLoading(false); 
                    return;
                 }
                 setAuthSuccessMsg('Login Successful.');
               }
-            } catch (error) { setAuthError("Error: " + error.message); } finally { setIsLoading(false); }
+            } catch (error) { 
+                setAuthError(getFriendlyAuthError(error.code)); 
+            } finally { setIsLoading(false); }
           };
 
           const handleForgotPassword = async () => {
-            if (!emailInput.trim()) { setAuthError('Enter your email to receive reset link.'); return; }
+            if (!emailInput.trim()) { setAuthError('পাসওয়ার্ড রিসেট করতে আগে ইমেইল এড্রেস লিখুন।'); return; }
             setIsLoading(true);
             try {
               await sendPasswordResetEmail(auth, emailInput.trim());
-              setAuthError(''); setAuthSuccessMsg('Recovery link sent to email.');
-            } catch (error) { setAuthError(error.message); } 
+              setAuthError(''); setAuthSuccessMsg('আপনার ইমেইলে পাসওয়ার্ড রিসেট লিংক পাঠানো হয়েছে।');
+            } catch (error) { setAuthError(getFriendlyAuthError(error.code)); } 
             finally { setIsLoading(false); }
           };
 
@@ -900,8 +925,8 @@
                     {authMethod === 'admin' && <div className="text-center mb-8 pb-4 border-b border-white/10"><span className="text-[10px] font-bold text-brand-primary uppercase tracking-[0.3em] flex items-center justify-center gap-2"><ShieldCheck className="w-4 h-4"/> Admin Portal</span></div>}
                     
                     <form onSubmit={handleAuthSubmit} className="space-y-5">
-                      {authError && <div className="text-red-400 text-xs font-bold glass-panel border-red-500/30 p-4 rounded-xl flex items-center gap-3"><AlertTriangle className="w-5 h-5 shrink-0"/>{authError}</div>}
-                      {authSuccessMsg && <div className="text-green-400 text-xs font-bold glass-panel border-green-500/30 p-4 rounded-xl flex items-center gap-3"><CheckCircle className="w-5 h-5 shrink-0"/>{authSuccessMsg}</div>}
+                      {authError && <div className="text-red-400 text-[11px] font-bold glass-panel border-red-500/30 p-4 rounded-xl flex items-center gap-3 leading-relaxed"><AlertTriangle className="w-5 h-5 shrink-0"/>{authError}</div>}
+                      {authSuccessMsg && <div className="text-green-400 text-[11px] font-bold glass-panel border-green-500/30 p-4 rounded-xl flex items-center gap-3 leading-relaxed"><CheckCircle className="w-5 h-5 shrink-0"/>{authSuccessMsg}</div>}
                       
                       <div className="space-y-2">
                         <label className="text-[9px] font-bold text-gray-400 pl-1 uppercase tracking-widest">Email Address</label>
@@ -2151,7 +2176,7 @@
                                <div className="bg-[#050505] p-3 rounded-lg mb-3 shadow-inner ml-3">
                                  <p className="text-xs text-gray-300 font-light leading-relaxed break-words allow-select">{t.message}</p>
                                </div>
-                               <p className="text-[8px] text-gray-500 font-mono flex items-center gap-1.5 uppercase tracking-widest ml-3"><Clock className="w-2.5 h-2.5"/> {safeFormatDate(t.date)}</p>
+                               <p className="text-[8px] text-gray-500 font-mono flex items-center gap-1.5 uppercase tracking-widest ml-3"><Clock className="w-3 h-3"/> {safeFormatDate(t.date)}</p>
                              </div>
                            ))}
                          </div>
