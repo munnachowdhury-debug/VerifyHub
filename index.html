@@ -3,8 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VerifyHub Elite</title>
     
+    <!-- 🟢 SEO META TAGS START 🟢 -->
+    <title>VerifyHub Elite - Buy Virtual Numbers & Premium Accounts</title>
+    <meta name="description" content="Welcome to VerifyHub Elite. Buy reliable virtual numbers for SMS verification and premium verified accounts instantly. High quality service with crypto and manual payment support.">
+    <meta name="keywords" content="virtual number, buy sms, sms verification, premium accounts, buy google voice, textplus accounts, phone verification">
+    <meta name="author" content="VerifyHub">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yourwebsite.com"> <!-- 🔴 আপনার ওয়েবসাইটের আসল ডোমেইন দিন -->
+    
+    <!-- Open Graph (Facebook/WhatsApp Preview) -->
+    <meta property="og:title" content="VerifyHub Elite - Virtual Numbers & Accounts">
+    <meta property="og:description" content="Instant SMS verification numbers and premium accounts. Secure payments accepted.">
+    <meta property="og:image" content="https://yourwebsite.com/preview-image.jpg"> <!-- 🔴 একটি ইমেজের লিংক দিন -->
+    <meta property="og:url" content="https://yourwebsite.com">
+    <meta property="og:type" content="website">
+    <!-- 🟢 SEO META TAGS END 🟢 -->
+
+    <!-- 🟢 FAVICON START 🟢 -->
+    <!-- একটি সুন্দর "V" অক্ষরের SVG ফ্যাভিকন -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23030712'/><path d='M30 30 L50 70 L70 30' stroke='%2306b6d4' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
+    <!-- Apple Touch Icon (iPhone/iPad এর জন্য) -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23030712'/><path d='M30 30 L50 70 L70 30' stroke='%2306b6d4' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
+    <!-- 🟢 FAVICON END 🟢 -->
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -973,7 +995,7 @@
                                 ) : (
                                     chatMessages.map((msg, i) => (
                                         <div key={msg.id} className={`flex flex-col animate-swoosh-in ${msg.sender === 'user' ? 'items-end' : 'items-start'}`} style={{animationDelay: `${i * 0.03}s`}}>
-                                            <div className={`px-4 py-3 rounded-2xl max-w-[85%] text-[12px] font-medium leading-relaxed shadow-lg ${msg.sender === 'user' ? 'bg-white text-black rounded-tr-sm' : 'glass-panel text-white rounded-tl-sm'}`}>
+                                            <div className={`px-4 py-3 rounded-2xl max-w-[85%] text-[12px] font-medium leading-relaxed shadow-lg allow-select ${msg.sender === 'user' ? 'bg-white text-black rounded-tr-sm' : 'glass-panel text-white rounded-tl-sm'}`}>
                                                 {msg.text}
                                             </div>
                                             <span className="text-[8px] text-gray-500 mt-1.5 font-mono tracking-wider">
