@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <!-- 🟢 SEO META TAGS START 🟢 -->
-    <title>VerifyHub Elite - Buy Virtual Numbers & Premium Accounts</title>
-    <meta name="description" content="Welcome to VerifyHub Elite. Buy reliable virtual numbers for SMS verification and premium verified accounts instantly. High quality service with crypto and manual payment support.">
-    <meta name="keywords" content="virtual number, buy sms, sms verification, premium accounts, buy google voice, textplus accounts, phone verification, verifyhub elite">
-    <meta name="author" content="VerifyHub Elite">
+    <title>VoiceStore - Buy Virtual Numbers & Premium Accounts</title>
+    <meta name="description" content="Welcome to VoiceStore. Buy reliable virtual numbers for SMS verification and premium verified accounts instantly. High quality service with crypto and manual payment support.">
+    <meta name="keywords" content="virtual number, buy sms, sms verification, premium accounts, buy google voice, textplus accounts, phone verification, voicestore">
+    <meta name="author" content="VoiceStore">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://verify-hub-psi.vercel.app"> 
     
     <!-- Open Graph (Facebook/WhatsApp Preview) -->
-    <meta property="og:title" content="VerifyHub Elite - Virtual Numbers & Accounts">
+    <meta property="og:title" content="VoiceStore - Virtual Numbers & Accounts">
     <meta property="og:description" content="Instant SMS verification numbers and premium accounts. Secure payments accepted.">
     <meta property="og:url" content="https://verify-hub-psi.vercel.app">
     <meta property="og:type" content="website">
@@ -475,7 +475,7 @@
                <div className="relative z-10 flex flex-col items-center justify-center px-4 w-full h-full animate-pop-in text-center">
                   <EliteLogo className="w-32 h-32 mb-6 drop-shadow-[0_0_30px_rgba(191,149,63,0.6)]" />
                   <h1 className="text-4xl sm:text-6xl font-bold tracking-[0.2em] mb-2 text-white uppercase text-center w-full drop-shadow-lg">
-                      Verify<span className="text-brand-primary font-light">Hub</span>
+                      Voice<span className="text-brand-primary font-light">Store</span>
                   </h1>
                   <div className="text-xl sm:text-2xl font-bold tracking-[0.6em] text-transparent bg-clip-text bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] mt-2">
                       ELITE
@@ -886,7 +886,7 @@
                 <div className="w-full max-w-[400px] animate-matrix-in z-10">
                   <div className="flex flex-col items-center mb-8">
                     <EliteLogo className="w-20 h-20 mb-4 drop-shadow-[0_0_15px_rgba(191,149,63,0.5)]" />
-                    <h2 className="text-4xl sm:text-5xl font-bold tracking-[0.2em] text-white uppercase text-center drop-shadow-md">Verify<span className="font-light text-brand-primary">Hub</span></h2>
+                    <h2 className="text-4xl sm:text-5xl font-bold tracking-[0.2em] text-white uppercase text-center drop-shadow-md">Voice<span className="font-light text-brand-primary">Store</span></h2>
                     <div className="text-sm tracking-[0.5em] text-yellow-500 font-bold mt-2">ELITE</div>
                   </div>
                   
@@ -1978,7 +1978,7 @@
           const myPurchases = (purchases || []).filter(p => p && p.customer === user?.email);
 
           const unifiedHistory = [
-              ...myDeposits.map(d => ({ id: d.id, type: 'Funds Added', amount: d.amount, date: d.date, status: d.status, method: d.method })),
+              ...myDeposits.map(d => ({ id: d.id, type: d.status === 'Approved' ? 'Funds Added' : 'Deposit Processing', amount: d.amount, date: d.date, status: d.status, method: d.method })),
               ...myOrders.map(o => ({ id: o.id, type: 'Bought Account', amount: o.total, date: o.date, status: o.status, method: 'Account Balance' })),
               ...myPurchases.filter(p => String(p.type).includes('Network') || String(p.type).includes('Protocol')).map(p => ({ id: p.id, type: p.type, amount: 0, date: p.date, status: 'Acquired', method: 'Account Balance' }))
           ].sort((a,b) => {
@@ -2078,7 +2078,7 @@
                       <div className="space-y-4 w-full">
                         {unifiedHistory.map((item, idx) => {
                             if (!item) return null;
-                            const isDeposit = item.type === 'Funds Added';
+                            const isDeposit = item.type === 'Funds Added' || item.type === 'Deposit Processing';
                             const isPending = item.status === 'Awaiting Payment' || item.status === 'Pending Review' || item.status === 'Pending';
                             const isApproved = item.status === 'Approved' || item.status === 'Completed' || item.status === 'Acquired';
 
