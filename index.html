@@ -844,8 +844,31 @@
                 }, errLog));
             }
 
+            // Global polling for this user's pending auto deposits
+            if (user.role === 'customer') {
+                const poll = setInterval(() => {
+                    const pendingInvoices = (deposits || []).filter(d => d && d.email === user.email && (d.status === 'Awaiting Payment' || d.status === 'Verifying...') && String(d.method).includes('(Auto)'));
+                    if (pendingInvoices.length > 0) {
+                        getAuthToken().then(token => {
+                            pendingInvoices.forEach(inv => {
+                                fetch('https://voicestore-backend.onrender.com/api/verify-deposit', {
+                                    method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                                    body: JSON.stringify({ invoiceId: inv.id, amount: inv.amount, method: inv.method, cryptoAmount: inv.cryptoAmount })
+                                }).then(r => r.json()).then(result => {
+                                    if (result.success) {
+                                        triggerToast(`Payment Verified! $${inv.amount} added.`);
+                                        addNotification('Deposit Successful', `$${inv.amount} added to balance.`);
+                                    }
+                                }).catch(e => {});
+                            });
+                        });
+                    }
+                }, 15000);
+                unsubs.push(() => clearInterval(poll));
+            }
+
             return () => unsubs.forEach(unsub => { if(typeof unsub === 'function') unsub(); });
-          }, [user]);
+          }, [user, deposits]);
 
           const handleAuthSubmit = async (e) => {
             e.preventDefault(); setAuthError(''); setAuthSuccessMsg(''); setIsLoading(true);
