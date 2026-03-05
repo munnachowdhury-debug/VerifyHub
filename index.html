@@ -1243,6 +1243,14 @@
                       method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                       body: JSON.stringify({ email: user.email, price: finalBuyPrice })
                   });
+                  
+                  // 🟢 FIX 3: Better Error Message Display for Deduction Fails 🟢
+                  if (!deductRes.ok) {
+                      triggerToast(`Server Error ${deductRes.status}: Deduction failed.`);
+                      setIsSmsLoading(false);
+                      return;
+                  }
+                  
                   const deductData = await deductRes.json();
                   if (!deductData.success) { triggerToast(deductData.message || "Balance deduction failed."); setIsSmsLoading(false); return; }
 
